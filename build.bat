@@ -15,7 +15,9 @@ IF EXIST "%py64%\python.exe" GOTO py64
 	rem choco install python3 --params "/InstallDir:%py64%"
 	certutil.exe -urlcache -f https://www.python.org/ftp/python/3.9.0/python-3.9.0-embed-amd64.zip py39.zip
 	7z x py39.zip -o%py64%
-	echo import site >> %py64%\python39._pth
+	echo python39.zip>%py64%\python39._pth
+	echo .>>%py64%\python39._pth
+	echo import site>>%py64%\python39._pth
 	certutil.exe -urlcache -f https://bootstrap.pypa.io/get-pip.py %scriptpath%\get-pip.py
 	del py39.zip
 	dir %cd%
@@ -34,7 +36,9 @@ IF EXIST "%py32%\python.exe" GOTO py32
 	
 	certutil.exe -urlcache -f https://www.python.org/ftp/python/3.9.0/python-3.9.0-embed-win32.zip py39.zip
 	7z x py39.zip -o%py32%
-	echo import site >> %py32%\python39._pth
+	echo python39.zip>%py64%\python39._pth
+	echo .>>%py64%\python39._pth
+	echo import site>>%py64%\python39._pth
 	certutil.exe -urlcache -f https://bootstrap.pypa.io/get-pip.py %scriptpath%\get-pip.py
 	del py39.zip
 	dir %cd%
