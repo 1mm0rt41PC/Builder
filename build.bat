@@ -20,8 +20,6 @@ IF EXIST "%py64%\python.exe" GOTO py64
 	echo import site>>%py64%\python39._pth
 	certutil.exe -urlcache -f https://bootstrap.pypa.io/get-pip.py %scriptpath%\get-pip.py
 	del py39.zip
-	dir %cd%
-	dir %py64%
 	%py64%\python.exe -c "print('It works');"
 	%py64%\python.exe %scriptpath%\get-pip.py
 	%py64%\python.exe -m pip
@@ -36,17 +34,14 @@ IF EXIST "%py32%\python.exe" GOTO py32
 	
 	certutil.exe -urlcache -f https://www.python.org/ftp/python/3.9.0/python-3.9.0-embed-win32.zip py39.zip
 	7z x py39.zip -o%py32%
-	echo python39.zip>%py64%\python39._pth
-	echo .>>%py64%\python39._pth
-	echo import site>>%py64%\python39._pth
+	echo python39.zip>%py32%\python39._pth
+	echo .>>%py32%\python39._pth
+	echo import site>>%py32%\python39._pth
 	certutil.exe -urlcache -f https://bootstrap.pypa.io/get-pip.py %scriptpath%\get-pip.py
 	del py39.zip
-	dir %cd%
-	dir %py32%
 	%py32%\python.exe -c "print('It works');"
 	%py32%\python.exe %scriptpath%\get-pip.py
 	%py32%\python.exe -m pip
-	dir %py32%
 :py32
 
 rem Generate random key for encryption
@@ -63,8 +58,11 @@ set /p pykey= < %tmp%\pykey
 del /q /s /f %tmp%\pykey 
 
 rem Install pyinstaller
-%py64%\python.exe -m pip install -U pip wheel tinyaes dnspython ldap3 pywin32 pypiwin32
-%py32%\python.exe -m pip install -U pip wheel tinyaes dnspython ldap3 pywin32 pypiwin32
+%py64%\python.exe -m pip install -U pip wheel ldap3 pywin32 pypiwin32
+%py64%\python.exe -m pip install -U tinyaes dnspython
+%py32%\python.exe -m pip install -U pip wheel ldap3 pywin32 pypiwin32
+%py32%\python.exe -m pip install -U tinyaes dnspython
+::%py32%\python.exe -m pip install -U pip wheel tinyaes dnspython ldap3 pywin32 pypiwin32
 CALL :Clone pyinstaller/pyinstaller , pyinstaller
 
 rem Build impacket
