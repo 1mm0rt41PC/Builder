@@ -9,38 +9,19 @@ set py32=%scriptpath%\Py3_x86
 set keylen=64
 IF EXIST "%py64%\python.exe" GOTO py64
 	echo "Installing Python 3 x64 in %py64% from %scriptpath%..."
-	rem certutil.exe -urlcache -f https://www.python.org/ftp/python/3.9.0/python-3.9.0-amd64.exe python_installer.exe
-	rem python_installer.exe /quiet InstallAllUsers=0 SimpleInstall=1 "TargetDir=%py64%" Include_doc=0 Include_launcher=0 Include_test=0
-	rem del /q /s python_installer.exe
-	rem choco install python3 --params "/InstallDir:%py64%"
-	certutil.exe -urlcache -f https://www.python.org/ftp/python/3.9.0/python-3.9.0-embed-amd64.zip py39.zip
-	7z x py39.zip -o%py64%
-	echo python39.zip>%py64%\python39._pth
-	echo .>>%py64%\python39._pth
-	echo import site>>%py64%\python39._pth
-	certutil.exe -urlcache -f https://bootstrap.pypa.io/get-pip.py %scriptpath%\get-pip.py
-	del py39.zip
+	certutil.exe -urlcache -f https://www.python.org/ftp/python/3.9.0/python-3.9.0-amd64.exe python_installer.exe
+	python_installer.exe /quiet "InstallAllUsers=0" SimpleInstall=1 "DefaultJustForMeTargetDir=%py64%" AssociateFiles=0 InstallLauncherAllUsers=0 Include_doc=0 Include_launcher=0 Include_test=0
+	del /q /s python_installer.exe
 	%py64%\python.exe -c "print('It works');"
-	%py64%\python.exe %scriptpath%\get-pip.py
 	%py64%\python.exe -m pip
 :py64
 
 IF EXIST "%py32%\python.exe" GOTO py32
 	echo "Installing Python 3 x86 in %py32% from %scriptpath%..."
-	rem certutil.exe -urlcache -f https://www.python.org/ftp/python/3.9.0/python-3.9.0.exe python_installer.exe
-	rem python_installer.exe /quiet InstallAllUsers=0 SimpleInstall=1 "TargetDir=%py32%" Include_doc=0 Include_launcher=0 Include_test=0
-	rem del /q /s python_installer.exe
-	rem choco install python3 --params "/InstallDir32:%py64%"
-	
-	certutil.exe -urlcache -f https://www.python.org/ftp/python/3.9.0/python-3.9.0-embed-win32.zip py39.zip
-	7z x py39.zip -o%py32%
-	echo python39.zip>%py32%\python39._pth
-	echo .>>%py32%\python39._pth
-	echo import site>>%py32%\python39._pth
-	certutil.exe -urlcache -f https://bootstrap.pypa.io/get-pip.py %scriptpath%\get-pip.py
-	del py39.zip
+	certutil.exe -urlcache -f https://www.python.org/ftp/python/3.9.0/python-3.9.0-amd64.exe python_installer.exe
+	python_installer.exe /quiet "InstallAllUsers=0" SimpleInstall=1 "DefaultJustForMeTargetDir=%py32%" AssociateFiles=0 InstallLauncherAllUsers=0 Include_doc=0 Include_launcher=0 Include_test=0
+	del /q /s python_installer.exe
 	%py32%\python.exe -c "print('It works');"
-	%py32%\python.exe %scriptpath%\get-pip.py
 	%py32%\python.exe -m pip
 :py32
 
