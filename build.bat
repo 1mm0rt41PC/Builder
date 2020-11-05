@@ -13,6 +13,8 @@ IF EXIST "%py64%\python.exe" GOTO py64
 	dir 
 	python_installer.exe /quiet "InstallAllUsers=0" SimpleInstall=1 "DefaultJustForMeTargetDir=%py64%" AssociateFiles=0 InstallLauncherAllUsers=0 Include_doc=0 Include_launcher=0 Include_test=0
 	dir
+	ping 127.0.0.1 -n 10
+	dir
 	del /q /s python_installer.exe
 	%py64%\python.exe -c "print('It works');"
 	%py64%\python.exe -m pip
