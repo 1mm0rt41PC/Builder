@@ -10,7 +10,9 @@ set keylen=64
 IF EXIST "%py64%\python.exe" GOTO py64
 	echo "Installing Python 3 x64 in %py64% from %scriptpath%..."
 	certutil.exe -urlcache -f https://www.python.org/ftp/python/3.9.0/python-3.9.0-amd64.exe python_installer.exe
+	dir 
 	python_installer.exe /quiet "InstallAllUsers=0" SimpleInstall=1 "DefaultJustForMeTargetDir=%py64%" AssociateFiles=0 InstallLauncherAllUsers=0 Include_doc=0 Include_launcher=0 Include_test=0
+	dir
 	del /q /s python_installer.exe
 	%py64%\python.exe -c "print('It works');"
 	%py64%\python.exe -m pip
