@@ -4,8 +4,8 @@ set scriptpath=%scriptpath:~0,-1%
 IF "%APPVEYOR_BUILD_FOLDER%" NEQ "^%APPVEYOR_BUILD_FOLDER^%" SET scriptpath=%APPVEYOR_BUILD_FOLDER%
 IF "%scriptpath%" == "" SET scriptpath=%CD%
 IF %scriptpath% == ^%scriptpath^% SET scriptpath=%CD%
-set py64=%scriptpath%\Py3_x64
-set py32=%scriptpath%\Py3_x86
+set py64=C:\Python39-x64
+set py32=C:\Python39
 set keylen=64
 IF EXIST "%py64%\python.exe" GOTO py64
 	echo "Installing Python 3 x64 in %py64% from %scriptpath%..."
@@ -63,6 +63,8 @@ CALL :Build psexec , psexec
 
 :: Build pypykatz
 CALL :Clone skelsec/pypykatz , pypykatz
+:: From https://github.com/skelsec/pypykatz/commit/f53ed8c691b32c2a5a0189604d56afe4732fb639
+git am %scriptpath%\patch_pypykatz
 cd pypykatz
 CALL :Build __main__ , pypykatz
 
