@@ -98,10 +98,11 @@ set I=A
 	IF "%I%" == "AAAAAA" EXIT /B 42
 IF NOT EXIST %scriptpath%\bin\bloodhound_x64.ok GOTO LOOP
 
-
 dir %scriptpath%\bin\
 dir %7Z_OUPUT%
 cd %7Z_OUPUT%
+
+echo = BUILD OK
 
 EXIT /B 0
 :: #############################################################################
