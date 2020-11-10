@@ -101,14 +101,14 @@ EXIT /B 0
 echo ===========================================================================
 echo = Building %~1.py in x86
 ::%py32%\Scripts\pyinstaller.exe --key=%pykey% --icon=%scriptpath%\pytools.ico --onefile %~1.py & copy dist\%~1.exe %scriptpath%\bin\%~2_x86.exe
-start "Building %~2 x86" /D "%CD%" cmd /c "%py32%\Scripts\pyinstaller.exe --key=%pykey% --icon=%scriptpath%\pytools.ico --onefile %~1.py & copy dist\%~1.exe %scriptpath%\bin\%~2_x86.exe & 7z a -t7z -mhe -pPimpMyPowny -o%scriptpath%\bin\ %~2_x86.7z %scriptpath%\bin\%~2_x86.exe"
+start "Building %~2 x86" /D "%CD%" cmd /c "%py32%\Scripts\pyinstaller.exe --key=%pykey% --icon=%scriptpath%\pytools.ico --onefile %~1.py & copy dist\%~1.exe %scriptpath%\bin\%~2_x86.exe & 7z a -t7z -mhe -pPimpMyPowny %scriptpath%\bin\%~2_x86.7z %scriptpath%\bin\%~2_x86.exe"
 EXIT /B 0
 
 :Build_x64
 echo ===========================================================================
 echo = Building %~1.py in x64
 ::%py64%\Scripts\pyinstaller.exe --key=%pykey% --icon=%scriptpath%\pytools.ico --onefile %~1.py & copy dist\%~1.exe %scriptpath%\bin\%~2_x64.exe
-start "Building %~2 x64" /D "%CD%" cmd /c "%py64%\Scripts\pyinstaller.exe --key=%pykey% --icon=%scriptpath%\pytools.ico --onefile %~1.py & copy dist\%~1.exe %scriptpath%\bin\%~2_x64.exe & 7z a -t7z -mhe -pPimpMyPowny -o%scriptpath%\bin\ %~2_x64.7z %scriptpath%\bin\%~2_x64.exe"
+start "Building %~2 x64" /D "%CD%" cmd /c "%py64%\Scripts\pyinstaller.exe --key=%pykey% --icon=%scriptpath%\pytools.ico --onefile %~1.py & copy dist\%~1.exe %scriptpath%\bin\%~2_x64.exe & 7z a -t7z -mhe -pPimpMyPowny %scriptpath%\bin\%~2_x64.7z %scriptpath%\bin\%~2_x64.exe"
 EXIT /B 0
 
 :Clone
