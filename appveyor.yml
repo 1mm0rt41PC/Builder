@@ -1,0 +1,15 @@
+version: build-{build}
+branches:
+  only:
+    - release
+skip_tags: true
+skip_branch_with_pr: true
+
+cache:
+  - '%APPDATA%\npm-cache'
+  - node_modules
+  - *.pyc
+  - __pycache__
+
+build_script:
+  - build.bat
