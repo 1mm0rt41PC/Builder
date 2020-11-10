@@ -9,6 +9,18 @@ set py32=C:\Python39
 set keylen=64
 set DEBUG_BATCH=0
 set 7Z_OUPUT=%scriptpath%
+
+
+echo ===========================================================================
+echo = CONFIG =
+echo scriptpath=%scriptpath%
+echo APPVEYOR_BUILD_FOLDER=%APPVEYOR_BUILD_FOLDER%
+echo py64=%py64%
+echo py32=%py32%
+echo keylen=%keylen%
+echo DEBUG_BATCH=%DEBUG_BATCH%
+echo 7Z_OUPUT=%7Z_OUPUT%
+
 IF EXIST "%py64%\python.exe" GOTO py64
 	echo "Installing Python 3 x64 in %py64% from %scriptpath%..."
 	certutil.exe -urlcache -f https://www.python.org/ftp/python/3.9.0/python-3.9.0-amd64.exe python_installer.exe
@@ -87,7 +99,8 @@ IF NOT EXIST %scriptpath%\bin\bloodhound_x64.ok GOTO LOOP
 
 
 dir %scriptpath%\bin\
-dir %scriptpath%\
+dir %7Z_OUPUT%
+cd %7Z_OUPUT%
 
 EXIT /B %ERRORLEVEL%
 :: #############################################################################
