@@ -5,10 +5,5 @@ branches:
 skip_tags: true
 skip_branch_with_pr: true
 
-cache:
-  - '%APPDATA%\npm-cache'
-  - node_modules
-  - '__pycache__'
-
 build_script:
   - build.bat
