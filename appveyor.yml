@@ -7,3 +7,16 @@ skip_branch_with_pr: true
 
 build_script:
   - build.bat
+
+deploy:
+  release: builder-v$(APPVEYOR_BUILD_VERSION)
+  description: 'Release description'
+  provider: GitHub
+  auth_token:
+    secure: Ud4Jsv5IpT4+8zy5SPHn/HUphV6414u713Q7tZL1J2TTWE9yDdnKCUUeBVcYY3dP # your encrypted token from GitHub
+  artifact: %APPVEYOR_BUILD_FOLDER%\bin\*.7z
+  draft: false
+  prerelease: false
+  on:
+    branch: master                 # release from master branch only
+    APPVEYOR_REPO_TAG: true        # deploy on tag push only

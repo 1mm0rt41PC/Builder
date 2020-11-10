@@ -1,0 +1,64 @@
+From d30d517ffbf9847be6ad607aa4d3808d92d4b474 Mon Sep 17 00:00:00 2001
+From: 1mm0rt41 <1mm0rt41@nowhere.404>
+Date: Tue, 10 Nov 2042 00:00:00 +0100
+Subject: [PATCH 1/1] Enable BruteForcer
+
+---
+ .../lsadecryptor/packages/msv/decryptor.py    | 42 ++++++++++---------
+ 1 file changed, 22 insertions(+), 20 deletions(-)
+
+diff --git a/pypykatz/lsadecryptor/packages/msv/decryptor.py b/pypykatz/lsadecryptor/packages/msv/decryptor.py
+index d1e6124..36495b4 100644
+--- a/pypykatz/lsadecryptor/packages/msv/decryptor.py
++++ b/pypykatz/lsadecryptor/packages/msv/decryptor.py
+@@ -373,25 +373,27 @@ class MsvDecryptor(PackageDecryptor):
+ 				continue
+ 			
+ 			self.walk_list(entry_ptr, self.add_entry)
++		try:
++			self.brute_test()
++		except:
++			pass;
+ 
+-		#self.brute_test()
++	def brute_test(self):
++		from pypykatz.commons.win_datatypes import LUID
++		luid_int = 1138792
++		luid_bytes = luid_int.to_bytes(8, byteorder='little', signed=False)
++		needle_luid = LUID(io.BytesIO(luid_bytes)).value
++		offset = 0x70
+ 	
+-	#def brute_test(self):
+-	#	from pypykatz.commons.win_datatypes import LUID
+-	#	luid_int = 1138792
+-	#	luid_bytes = luid_int.to_bytes(8, byteorder='little', signed=False)
+-	#	needle_luid = LUID(io.BytesIO(luid_bytes)).value
+-	#	offset = 0x70
+-	#
+-	#	for luid_pos in self.reader.find_all_global(luid_bytes):
+-	#		self.reader.move(luid_pos - offset)
+-	#		et = self.decryptor_template.list_entry(self.reader).finaltype
+-	#		self.reader.move(luid_pos - offset)
+-	#		test_ptr = et(self.reader)
+-	#		if test_ptr.LocallyUniqueIdentifier == needle_luid:
+-	#			print('HIT!')
+-	#			entry_ptr = self.decryptor_template.list_entry(self.reader)
+-	#			try:
+-	#				self.walk_list(test_ptr.Flink, self.add_entry)
+-	#			except Exception as e:
+-	#				print('ERR! %s' % e)
+\ No newline at end of file
++		for luid_pos in self.reader.find_all_global(luid_bytes):
++			self.reader.move(luid_pos - offset)
++			et = self.decryptor_template.list_entry(self.reader).finaltype
++			self.reader.move(luid_pos - offset)
++			test_ptr = et(self.reader)
++			if test_ptr.LocallyUniqueIdentifier == needle_luid:
++				#print('HIT!')
++				entry_ptr = self.decryptor_template.list_entry(self.reader)
++				try:
++					self.walk_list(test_ptr.Flink, self.add_entry)
++				except Exception as e:
++					pass
+-- 
+2.28.0

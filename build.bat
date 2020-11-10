@@ -60,6 +60,7 @@ CALL :Build secretsdump , secretsdump
 CALL :Build smbserver , smbserver
 CALL :Build smbexec , smbexec
 CALL :Build psexec , psexec
+7z a -t7z -mhe -pPimpMyPowny impacket.7z %scriptpath%\bin\wmiexec* %scriptpath%\bin\secretsdump* %scriptpath%\bin\smbserver* %scriptpath%\bin\smbexec* %scriptpath%\bin\psexec*
 
 :: Build pypykatz
 CALL :Clone skelsec/pypykatz , pypykatz
@@ -67,10 +68,12 @@ CALL :Clone skelsec/pypykatz , pypykatz
 git am %scriptpath%\patch_pypykatz
 cd pypykatz
 CALL :Build __main__ , pypykatz
+7z a -t7z -mhe -pPimpMyPowny impacket.7z %scriptpath%\bin\pypykatz*
 
 :: Build BloodHound
 CALL :Clone fox-it/BloodHound.py , BloodHound.py
 CALL :Build bloodhound, bloodhound
+7z a -t7z -mhe -pPimpMyPowny impacket.7z %scriptpath%\bin\bloodhound*
 
 dir %scriptpath%\bin\
 
