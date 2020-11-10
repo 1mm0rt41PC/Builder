@@ -14,7 +14,7 @@ deploy:
   provider: GitHub
   auth_token:
     secure: Ud4Jsv5IpT4+8zy5SPHn/HUphV6414u713Q7tZL1J2TTWE9yDdnKCUUeBVcYY3dP # your encrypted token from GitHub
-  artifact: /bin\\.*\.7z/
+  artifact: /.*\.7z/
   draft: false
   prerelease: false
   force_update: true
