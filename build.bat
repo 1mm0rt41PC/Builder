@@ -60,7 +60,12 @@ CALL :Build secretsdump , secretsdump
 CALL :Build smbserver , smbserver
 CALL :Build smbexec , smbexec
 CALL :Build psexec , psexec
-7z a -t7z -mhe -pPimpMyPowny impacket.7z %scriptpath%\bin\wmiexec* %scriptpath%\bin\secretsdump* %scriptpath%\bin\smbserver* %scriptpath%\bin\smbexec* %scriptpath%\bin\psexec*
+7z a -t7z -mhe -pPimpMyPowny -o%scriptpath%\bin\ wmiexec.7z %scriptpath%\bin\wmiexec*
+7z a -t7z -mhe -pPimpMyPowny -o%scriptpath%\bin\ secretsdump.7z %scriptpath%\bin\secretsdump*
+7z a -t7z -mhe -pPimpMyPowny -o%scriptpath%\bin\ smbserver.7z %scriptpath%\bin\smbserver*
+7z a -t7z -mhe -pPimpMyPowny -o%scriptpath%\bin\ smbexec.7z %scriptpath%\bin\smbexec*
+7z a -t7z -mhe -pPimpMyPowny -o%scriptpath%\bin\ psexec.7z %scriptpath%\bin\psexec*
+7z a -t7z -mhe -pPimpMyPowny -o%scriptpath%\bin\ impacket.7z %scriptpath%\bin\wmiexec* %scriptpath%\bin\secretsdump* %scriptpath%\bin\smbserver* %scriptpath%\bin\smbexec* %scriptpath%\bin\psexec*
 
 :: Build pypykatz
 CALL :Clone skelsec/pypykatz , pypykatz
@@ -68,12 +73,12 @@ CALL :Clone skelsec/pypykatz , pypykatz
 git am %scriptpath%\patch_pypykatz
 cd pypykatz
 CALL :Build __main__ , pypykatz
-7z a -t7z -mhe -pPimpMyPowny impacket.7z %scriptpath%\bin\pypykatz*
+7z a -t7z -mhe -pPimpMyPowny -o%scriptpath%\bin\ pypykatz.7z %scriptpath%\bin\pypykatz*
 
 :: Build BloodHound
 CALL :Clone fox-it/BloodHound.py , BloodHound.py
 CALL :Build bloodhound, bloodhound
-7z a -t7z -mhe -pPimpMyPowny impacket.7z %scriptpath%\bin\bloodhound*
+7z a -t7z -mhe -pPimpMyPowny -o%scriptpath%\bin\ bloodhound.7z %scriptpath%\bin\bloodhound*
 
 dir %scriptpath%\bin\
 
@@ -87,11 +92,15 @@ CALL :Build_x64 %~1 , %~2
 EXIT /B 0
 
 :Build_x86
+echo ===========================================================================
+echo = Building %~1.py in x86
 %py32%\Scripts\pyinstaller.exe --key=%pykey% --icon=%scriptpath%\pytools.ico --onefile %~1.py & copy dist\%~1.exe %scriptpath%\bin\%~2_x86.exe
 ::start "Building %~2 x86" /D "%CD%" cmd /c "%py32%\Scripts\pyinstaller.exe --key=%pykey% --icon=%scriptpath%\pytools.ico --onefile %~1.py & copy dist\%~1.exe %scriptpath%\bin\%~2_x86.exe"
 EXIT /B 0
 
 :Build_x64
+echo ===========================================================================
+echo = Building %~1.py in x64
 %py64%\Scripts\pyinstaller.exe --key=%pykey% --icon=%scriptpath%\pytools.ico --onefile %~1.py & copy dist\%~1.exe %scriptpath%\bin\%~2_x64.exe
 ::start "Building %~2 x64" /D "%CD%" cmd /c "%py64%\Scripts\pyinstaller.exe --key=%pykey% --icon=%scriptpath%\pytools.ico --onefile %~1.py & copy dist\%~1.exe %scriptpath%\bin\%~2_x64.exe"
 EXIT /B 0
