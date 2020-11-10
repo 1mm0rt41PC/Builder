@@ -91,6 +91,7 @@ CALL :Build bloodhound, bloodhound
 set I=A
 :LOOP
 	dir %scriptpath%\bin\
+	dir %7Z_OUPUT%
 	:: Sleep 10
 	ping -n 10 127.0.0.1
 	set I=A%I%
@@ -102,7 +103,7 @@ dir %scriptpath%\bin\
 dir %7Z_OUPUT%
 cd %7Z_OUPUT%
 
-EXIT /B %ERRORLEVEL%
+EXIT /B 0
 :: #############################################################################
 
 
@@ -138,7 +139,7 @@ cd %tmp%
 rmdir /s /q %~2
 git clone https://github.com/%~1 --depth 1
 cd %~2
-%py64%\python.exe -m pip install -r requirements.txt
+IF EXIST requirements.txt %py64%\python.exe -m pip install -r requirements.txt
 %py64%\python.exe -m pip install .
-%py32%\python.exe -m pip install -r requirements.txt
+IF EXIST requirements.txt %py32%\python.exe -m pip install -r requirements.txt
 %py32%\python.exe -m pip install .
