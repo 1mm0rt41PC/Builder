@@ -20,6 +20,7 @@ echo py32=%py32%
 echo keylen=%keylen%
 echo DEBUG_BATCH=%DEBUG_BATCH%
 echo _7Z_OUPUT_=%_7Z_OUPUT_%
+echo ===========================================================================
 
 IF EXIST "%py64%\python.exe" GOTO py64
 	echo "Installing Python 3 x64 in %py64% from %scriptpath%..."
@@ -44,12 +45,6 @@ IF EXIST "%py32%\python.exe" GOTO py32
 	%py32%\python.exe %scriptpath%\get-pip.py
 	%py32%\python.exe -m pip install -U pip
 :py32
-
-:: Generate random key for encryption
-%py64%\python.exe -c "import random,string; print(''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(%keylen%)));" > %tmp%\pykey
-set /p pykey= < %tmp%\pykey
-del /q /s /f %tmp%\pykey 
-
 
 mkdir %scriptpath%\bin
 
@@ -120,8 +115,8 @@ EXIT /B 0
 :: @param python script to build
 :: @param prefix for the exe name
 :Build
-CALL :Build_arch %~1 , %~2, x86, %py32%\Scripts\pyinstaller.exe
-CALL :Build_arch %~1 , %~2, x64, %py64%\Scripts\pyinstaller.exe
+CALL :Build_arch %~1 , %~2 , x86 , %py32%\Scripts\pyinstaller.exe
+CALL :Build_arch %~1 , %~2 , x64 , %py64%\Scripts\pyinstaller.exe
 EXIT /B 0
 
 
