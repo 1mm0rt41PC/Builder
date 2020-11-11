@@ -10,9 +10,8 @@ set keylen=64
 set DEBUG_BATCH=1
 set _7Z_OUPUT_=%scriptpath%\bin
 set _7Z_PASSWORD_=PimpMyPowny
-
-echo ===========================================================================
-echo = CONFIG =
+echo [105;93m =========================================================================== [0m
+echo [105;93m = CONFIG = [0m
 echo scriptpath=%scriptpath%
 echo APPVEYOR_BUILD_FOLDER=%APPVEYOR_BUILD_FOLDER%
 echo py64=%py64%
@@ -145,7 +144,7 @@ if "%DEBUG_BATCH%" == "0" GOTO Build_arch_thread
 		7z a -t7z -mhe -p%_7Z_PASSWORD_% %_7Z_OUPUT_%\%_outTarget%_%_arch%.7z %scriptpath%\bin\%_outTarget%_%_arch%.exe
 		appveyor PushArtifact %_7Z_OUPUT_%\%_outTarget%_%_arch%.7z
 	) else (
-		echo = Build %_outTarget%_%_arch%.exe FAIL (%ERRORLEVEL%) !!!!!!
+		echo = Build %_outTarget%_%_arch%.exe FAIL (%ERRORLEVEL%)
 	)
 	EXIT /B 0
 :Build_arch_thread
