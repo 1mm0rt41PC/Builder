@@ -35,7 +35,7 @@ IF EXIST "%py64%\python.exe" GOTO py64
 
 IF EXIST "%py32%\python.exe" GOTO py32
 	echo "Installing Python 3 x86 in %py32% from %scriptpath%..."
-	certutil.exe -urlcache -f https://www.python.org/ftp/python/3.9.0/python-3.9.0-amd64.exe python_installer.exe
+	certutil.exe -urlcache -f https://www.python.org/ftp/python/3.9.0/python-3.9.0.exe python_installer.exe
 	::choco install python3 --params "/InstallDir32:%py32%"
 	python_installer.exe /quiet "InstallAllUsers=0" SimpleInstall=1 "DefaultJustForMeTargetDir=%py32%" AssociateFiles=0 InstallLauncherAllUsers=0 Include_doc=0 Include_launcher=0 Include_test=0
 	del /q /s python_installer.exe
