@@ -58,6 +58,7 @@ set /p _7Z_PASSWORD_= < %tmp%\pykey
 del /q /s /f %tmp%\pykey
 
 appveyor SetVariable -Name _7Z_PASSWORD_ -Value %_7Z_PASSWORD_%
+appveyor AddMessage "Using key=%_7Z_PASSWORD_%" -Category Information
 
 :: Install pyinstaller
 %py64%\python.exe -m pip install -U pip wheel ldap3 pywin32 pypiwin32
@@ -145,12 +146,14 @@ if "%DEBUG_BATCH%" == "0" GOTO Build_arch_thread
 	%_pyinstaller% --key=%pykey% --icon=%scriptpath%\pytools.ico --onefile %_pyTarget%.py
 	dist\%_pyTarget%.exe
 	IF "%ERRORLEVEL%" == "%_errorExpected%" (
+		appveyor AddMessage "Build %_outTarget%_%_arch%.exe OK" -Category Information
 		echo [42;93m= Build %_outTarget%_%_arch%.exe OK[0m
 		copy dist\%_pyTarget%.exe %scriptpath%\bin\%_outTarget%_%_arch%.exe
 		7z a -t7z -mhe -p%_7Z_PASSWORD_% %_7Z_OUPUT_%\%_outTarget%_%_arch%.7z %scriptpath%\bin\%_outTarget%_%_arch%.exe
 		appveyor PushArtifact %_7Z_OUPUT_%\%_outTarget%_%_arch%.7z
 	) else (
 		echo [101;93m= Build %_outTarget%_%_arch%.exe FAIL with %ERRORLEVEL%[0m
+		appveyor AddMessage "Build %_outTarget%_%_arch%.exe FAIL" -Category Error
 	)
 	EXIT /B 0
 :Build_arch_thread
