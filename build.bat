@@ -10,8 +10,8 @@ set keylen=64
 set DEBUG_BATCH=1
 set _7Z_OUPUT_=%scriptpath%\bin
 set _7Z_PASSWORD_=PimpMyPowny
-echo [105;93m =========================================================================== [0m
-echo [105;93m = CONFIG = [0m
+echo [105;93m===========================================================================
+echo = CONFIG =
 echo scriptpath=%scriptpath%
 echo APPVEYOR_BUILD_FOLDER=%APPVEYOR_BUILD_FOLDER%
 echo py64=%py64%
@@ -19,7 +19,7 @@ echo py32=%py32%
 echo keylen=%keylen%
 echo DEBUG_BATCH=%DEBUG_BATCH%
 echo _7Z_OUPUT_=%_7Z_OUPUT_%
-echo ===========================================================================
+echo ===========================================================================[0m
 
 IF EXIST "%py64%\python.exe" GOTO py64
 	echo "Installing Python 3 x64 in %py64% from %scriptpath%..."
@@ -101,8 +101,7 @@ appveyor PushArtifact %_7Z_OUPUT_%\All.7z
 dir %scriptpath%\bin\
 dir %_7Z_OUPUT_%
 cd %_7Z_OUPUT_%
-
-echo = BUILD OK
+echo [42;93m= Build END[0m
 
 EXIT /B 0
 :: #############################################################################
@@ -128,23 +127,23 @@ EXIT /B 0
 :: @param pyinstaller to use
 :: @param Error code expected
 :Build_arch
-echo ===========================================================================
+echo [105;93m===========================================================================
 set _pyTarget=%~1
 set _outTarget=%~2
 set _arch=%~3
 set _pyinstaller=%~4
 set _errorExpected=%~5
-echo = Building %_outTarget%_%_arch%.exe
+echo = Building %_outTarget%_%_arch%.exe[0m
 if "%DEBUG_BATCH%" == "0" GOTO Build_arch_thread
 	%_pyinstaller% --key=%pykey% --icon=%scriptpath%\pytools.ico --onefile %_pyTarget%.py
 	dist\%_pyTarget%.exe
 	IF "%ERRORLEVEL%" == "%_errorExpected%" (
-		echo = Build %_outTarget%_%_arch%.exe OK
+		echo [42;93m= Build %_outTarget%_%_arch%.exe OK[0m
 		copy dist\%_pyTarget%.exe %scriptpath%\bin\%_outTarget%_%_arch%.exe
 		7z a -t7z -mhe -p%_7Z_PASSWORD_% %_7Z_OUPUT_%\%_outTarget%_%_arch%.7z %scriptpath%\bin\%_outTarget%_%_arch%.exe
 		appveyor PushArtifact %_7Z_OUPUT_%\%_outTarget%_%_arch%.7z
 	) else (
-		echo = Build %_outTarget%_%_arch%.exe FAIL (%ERRORLEVEL%)
+		echo [101;93m= Build %_outTarget%_%_arch%.exe FAIL with %ERRORLEVEL%[0m
 	)
 	EXIT /B 0
 :Build_arch_thread
