@@ -120,18 +120,18 @@ EXIT /B 0
 :: @param python script to build
 :: @param prefix for the exe name
 :Build
-CALL Build_arch %~1 , %~2, x86, %py32%\Scripts\pyinstaller.exe
-CALL Build_arch %~1 , %~2, x64, %py64%\Scripts\pyinstaller.exe
-
+CALL :Build_arch %~1 , %~2, x86, %py32%\Scripts\pyinstaller.exe
+CALL :Build_arch %~1 , %~2, x64, %py64%\Scripts\pyinstaller.exe
 EXIT /B 0
 
+
+:: #############################################################################
+:: @brief Build bin
+:: @param python script to build
+:: @param prefix for the exe name
+:: @param arch: x64 / x86
+:: @param pyinstaller to use
 :Build_arch
-echo ===========================================================================
-echo = Building %~1.py in x86
-:: %~1 => xxx.py
-:: %~2 => output.exe
-:: %~3 => arch: x64 / x86
-:: %~4 => pyinstaller to use
 echo ===========================================================================
 set _pyTarget=%~1
 set _outTarget=%~2
