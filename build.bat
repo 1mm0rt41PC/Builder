@@ -80,6 +80,8 @@ CALL :Build psexec , psexec , 1
 :: Build pypykatz
 CALL :Clone skelsec/pypykatz , pypykatz
 :: From https://github.com/skelsec/pypykatz/commit/f53ed8c691b32c2a5a0189604d56afe4732fb639
+git config --global user.email "appveyor@appveyor-vm.com"
+git config --global user.name "1mm0rt41PC"
 git am %scriptpath%\patch_pypykatz
 cd pypykatz
 CALL :Build __main__ , pypykatz , 2
@@ -147,7 +149,7 @@ if "%DEBUG_BATCH%" == "0" GOTO Build_arch_thread
 	dist\%_pyTarget%.exe
 	IF "%ERRORLEVEL%" == "%_errorExpected%" (
 		appveyor AddMessage "Build %_outTarget%_%_arch%.exe OK" -Category Information
-		echo [42;93m= Build %_outTarget%_%_arch%.exe OK[0m
+		echo [42;93m= ☑ Build %_outTarget%_%_arch%.exe OK[0m
 		copy dist\%_pyTarget%.exe %scriptpath%\bin\%_outTarget%_%_arch%.exe
 		7z a -t7z -mhe -p%_7Z_PASSWORD_% %_7Z_OUPUT_%\%_outTarget%_%_arch%.7z %scriptpath%\bin\%_outTarget%_%_arch%.exe
 		appveyor PushArtifact %_7Z_OUPUT_%\%_outTarget%_%_arch%.7z
