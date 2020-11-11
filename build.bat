@@ -50,7 +50,14 @@ mkdir %scriptpath%\bin
 :: Generate random key for encryption
 %py64%\python.exe -c "import random,string; print(''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(%keylen%)));" > %tmp%\pykey
 set /p pykey= < %tmp%\pykey
-del /q /s /f %tmp%\pykey 
+del /q /s /f %tmp%\pykey
+
+:: Generate random key for 7z encryption
+%py64%\python.exe -c "import random,string; print(''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(%keylen%)));" > %tmp%\pykey
+set /p _7Z_PASSWORD_= < %tmp%\pykey
+del /q /s /f %tmp%\pykey
+
+appveyor SetVariable -Name _7Z_PASSWORD_ -Value %_7Z_PASSWORD_%
 
 :: Install pyinstaller
 %py64%\python.exe -m pip install -U pip wheel ldap3 pywin32 pypiwin32
