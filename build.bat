@@ -135,12 +135,13 @@ set _pyinstaller=%~4
 echo = Building %_outTarget%_%_arch%.exe
 if "%DEBUG_BATCH%" == "0" GOTO Build_arch_thread
 	%_pyinstaller% --key=%pykey% --icon=%scriptpath%\pytools.ico --onefile %_pyTarget%.py
-	dist\%_pyTarget%.exe && (
+	dist\%_pyTarget%.exe
+	IF "%ERRORLEVEL%" == "1" (
 		echo = Build %_outTarget%_%_arch%.exe OK
 		copy dist\%_pyTarget%.exe %scriptpath%\bin\%_outTarget%_%_arch%.exe
 		7z a -t7z -mhe -p%_7Z_PASSWORD_% %_7Z_OUPUT_%\%_outTarget%_%_arch%.7z %scriptpath%\bin\%_outTarget%_%_arch%.exe
 		appveyor PushArtifact %_7Z_OUPUT_%\%_outTarget%_%_arch%.7z
-	) || (
+	) else (
 		echo = Build %_outTarget%_%_arch%.exe FAIL !!!!!!
 	)
 	EXIT /B 0
