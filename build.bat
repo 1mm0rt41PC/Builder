@@ -58,7 +58,7 @@ set /p _7Z_PASSWORD_= < %tmp%\pykey
 del /q /s /f %tmp%\pykey
 
 appveyor SetVariable -Name _7Z_PASSWORD_ -Value %_7Z_PASSWORD_%
-appveyor AddMessage "🔒 Using key=%_7Z_PASSWORD_%" -Category Information
+appveyor AddMessage "Using key=%_7Z_PASSWORD_%" -Category Information
 
 :: Install pyinstaller
 %py64%\python.exe -m pip install -U pip wheel ldap3 pywin32 pypiwin32
