@@ -9,7 +9,7 @@ set py32=C:\Python39
 set keylen=64
 set DEBUG_BATCH=0
 set _7Z_OUPUT_=%scriptpath%\bin
-
+set _7Z_PASSWORD_=PimpMyPowny
 
 echo ===========================================================================
 echo = CONFIG =
@@ -102,6 +102,8 @@ set I=A
 IF NOT EXIST %scriptpath%\bin\bloodhound_x64.ok GOTO LOOP
 
 :End
+7z a -t7z -mhe -p%_7Z_PASSWORD_% %_7Z_OUPUT_%\All.7z %scriptpath%\bin\*.exe
+appveyor PushArtifact %_7Z_OUPUT_%\All.7z
 dir %scriptpath%\bin\
 dir %_7Z_OUPUT_%
 cd %_7Z_OUPUT_%
@@ -125,10 +127,10 @@ echo = Building %~1.py in x86
 if "%DEBUG_BATCH%" == "1" (
 	%py32%\Scripts\pyinstaller.exe --key=%pykey% --icon=%scriptpath%\pytools.ico --onefile %~1.py
 	copy dist\%~1.exe %scriptpath%\bin\%~2_x86.exe
-	7z a -t7z -mhe -pPimpMyPowny %_7Z_OUPUT_%\%~2_x86.7z %scriptpath%\bin\%~2_x86.exe
-	appveyor PushArtifact %scriptpath%\bin\%~2_x86.7z
+	7z a -t7z -mhe -p%_7Z_PASSWORD_% %_7Z_OUPUT_%\%~2_x86.7z %scriptpath%\bin\%~2_x86.exe
+	appveyor PushArtifact %_7Z_OUPUT_%\%~2_x86.7z
 ) else (
-	start "Building %~2 x86" /D "%CD%" cmd /c "%py32%\Scripts\pyinstaller.exe --key=%pykey% --icon=%scriptpath%\pytools.ico --onefile %~1.py & copy dist\%~1.exe %scriptpath%\bin\%~2_x86.exe & 7z a -t7z -mhe -pPimpMyPowny %_7Z_OUPUT_%\%~2_x86.7z %scriptpath%\bin\%~2_x86.exe & appveyor PushArtifact %scriptpath%\bin\%~2_x86.7z & echo . > %scriptpath%\bin\%~2_x86.ok"
+	start "Building %~2 x86" /D "%CD%" cmd /c "%py32%\Scripts\pyinstaller.exe --key=%pykey% --icon=%scriptpath%\pytools.ico --onefile %~1.py & copy dist\%~1.exe %scriptpath%\bin\%~2_x86.exe & 7z a -t7z -mhe -p%_7Z_PASSWORD_% %_7Z_OUPUT_%\%~2_x86.7z %scriptpath%\bin\%~2_x86.exe & appveyor PushArtifact %_7Z_OUPUT_%\%~2_x86.7z & echo . > %scriptpath%\bin\%~2_x86.ok"
 )
 EXIT /B 0
 
@@ -138,10 +140,10 @@ echo = Building %~1.py in x64
 if "%DEBUG_BATCH%" == "1" (
 	%py64%\Scripts\pyinstaller.exe --key=%pykey% --icon=%scriptpath%\pytools.ico --onefile %~1.py
 	copy dist\%~1.exe %scriptpath%\bin\%~2_x64.exe
-	7z a -t7z -mhe -pPimpMyPowny %_7Z_OUPUT_%\%~2_x64.7z %scriptpath%\bin\%~2_x64.exe
-	appveyor PushArtifact %scriptpath%\bin\%~2_x64.7z
+	7z a -t7z -mhe -p%_7Z_PASSWORD_% %_7Z_OUPUT_%\%~2_x64.7z %scriptpath%\bin\%~2_x64.exe
+	appveyor PushArtifact %_7Z_OUPUT_%\%~2_x64.7z
 ) else (
-	start "Building %~2 x64" /D "%CD%" cmd /c "%py64%\Scripts\pyinstaller.exe --key=%pykey% --icon=%scriptpath%\pytools.ico --onefile %~1.py & copy dist\%~1.exe %scriptpath%\bin\%~2_x64.exe & 7z a -t7z -mhe -pPimpMyPowny %_7Z_OUPUT_%\%~2_x64.7z %scriptpath%\bin\%~2_x64.exe & appveyor PushArtifact %scriptpath%\bin\%~2_x64.7z & echo . > %scriptpath%\bin\%~2_x64.ok"
+	start "Building %~2 x64" /D "%CD%" cmd /c "%py64%\Scripts\pyinstaller.exe --key=%pykey% --icon=%scriptpath%\pytools.ico --onefile %~1.py & copy dist\%~1.exe %scriptpath%\bin\%~2_x64.exe & 7z a -t7z -mhe -p%_7Z_PASSWORD_% %_7Z_OUPUT_%\%~2_x64.7z %scriptpath%\bin\%~2_x64.exe & appveyor PushArtifact %_7Z_OUPUT_%\%~2_x64.7z & echo . > %scriptpath%\bin\%~2_x64.ok"
 )
 EXIT /B 0
 
