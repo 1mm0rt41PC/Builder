@@ -58,7 +58,7 @@ set /p _7Z_PASSWORD_= < %tmp%\pykey
 del /q /s /f %tmp%\pykey
 
 appveyor SetVariable -Name _7Z_PASSWORD_ -Value %_7Z_PASSWORD_%
-appveyor AddMessage "Using key=%_7Z_PASSWORD_%" -Category Information
+appveyor AddMessage "🔒 Using key=%_7Z_PASSWORD_%" -Category Information
 
 :: Install pyinstaller
 %py64%\python.exe -m pip install -U pip wheel ldap3 pywin32 pypiwin32
@@ -79,6 +79,8 @@ CALL :Build psexec , psexec , 1
 
 :: Build pypykatz
 CALL :Clone skelsec/pypykatz , pypykatz
+:: https://skelsec.medium.com/play-with-katz-get-scratched-6c2c350fadf2
+:: https://drive.google.com/drive/folders/1KT2yWziJHvaH41jtZMsatey2KycWF824?usp=sharing
 :: From https://github.com/skelsec/pypykatz/commit/f53ed8c691b32c2a5a0189604d56afe4732fb639
 git config --global user.email "appveyor@appveyor-vm.com"
 git config --global user.name "1mm0rt41PC"
@@ -111,7 +113,7 @@ appveyor PushArtifact %_7Z_OUPUT_%\All.7z
 dir %scriptpath%\bin\
 dir %_7Z_OUPUT_%
 cd %_7Z_OUPUT_%
-echo [42;93m= Build END[0m
+echo [42;93m= ✅ Build END[0m
 
 EXIT /B 0
 :: #############################################################################
@@ -149,7 +151,7 @@ if "%DEBUG_BATCH%" == "0" GOTO Build_arch_thread
 	dist\%_pyTarget%.exe
 	IF "%ERRORLEVEL%" == "%_errorExpected%" (
 		appveyor AddMessage "Build %_outTarget%_%_arch%.exe OK" -Category Information
-		echo [42;93m= ☑ Build %_outTarget%_%_arch%.exe OK[0m
+		echo [42;93m= ✅ Build %_outTarget%_%_arch%.exe OK[0m
 		copy dist\%_pyTarget%.exe %scriptpath%\bin\%_outTarget%_%_arch%.exe
 		7z a -t7z -mhe -p%_7Z_PASSWORD_% %_7Z_OUPUT_%\%_outTarget%_%_arch%.7z %scriptpath%\bin\%_outTarget%_%_arch%.exe
 		appveyor PushArtifact %_7Z_OUPUT_%\%_outTarget%_%_arch%.7z
