@@ -64,26 +64,26 @@ CALL :Clone pyinstaller/pyinstaller , pyinstaller
 :: Build impacket
 CALL :Clone SecureAuthCorp/impacket , impacket
 cd examples
-CALL :Build wmiexec , wmiexec
-CALL :Build secretsdump , secretsdump
-CALL :Build smbserver , smbserver
-CALL :Build smbexec , smbexec
-CALL :Build psexec , psexec
+CALL :Build wmiexec , wmiexec , 1
+CALL :Build secretsdump , secretsdump , 1
+CALL :Build smbserver , smbserver , 1
+CALL :Build smbexec , smbexec , 1
+CALL :Build psexec , psexec , 1
 
 :: Build pypykatz
 CALL :Clone skelsec/pypykatz , pypykatz
 :: From https://github.com/skelsec/pypykatz/commit/f53ed8c691b32c2a5a0189604d56afe4732fb639
 git am %scriptpath%\patch_pypykatz
 cd pypykatz
-CALL :Build __main__ , pypykatz
+CALL :Build __main__ , pypykatz , 2
 
 :: Build BloodHound
 CALL :Clone fox-it/BloodHound.py , BloodHound.py
-CALL :Build bloodhound, bloodhound
+CALL :Build bloodhound, bloodhound , 1
 
 
 :: #############################################################################
-IF "%DEBUG_BATCH%" == "0" GOTO End
+IF "%DEBUG_BATCH%" == "1" GOTO End
 
 :: Wait for 01min00
 set I=A
@@ -114,9 +114,10 @@ EXIT /B 0
 :: @brief Build bin in x64 and in x86
 :: @param python script to build
 :: @param prefix for the exe name
+:: @param Error code expected
 :Build
-CALL :Build_arch %~1 , %~2 , x86 , %py32%\Scripts\pyinstaller.exe
-CALL :Build_arch %~1 , %~2 , x64 , %py64%\Scripts\pyinstaller.exe
+CALL :Build_arch %~1 , %~2 , x86 , %py32%\Scripts\pyinstaller.exe , %~3
+CALL :Build_arch %~1 , %~2 , x64 , %py64%\Scripts\pyinstaller.exe , %~3
 EXIT /B 0
 
 
@@ -126,23 +127,25 @@ EXIT /B 0
 :: @param prefix for the exe name
 :: @param arch: x64 / x86
 :: @param pyinstaller to use
+:: @param Error code expected
 :Build_arch
 echo ===========================================================================
 set _pyTarget=%~1
 set _outTarget=%~2
 set _arch=%~3
 set _pyinstaller=%~4
+set _errorExpected=%~5
 echo = Building %_outTarget%_%_arch%.exe
 if "%DEBUG_BATCH%" == "0" GOTO Build_arch_thread
 	%_pyinstaller% --key=%pykey% --icon=%scriptpath%\pytools.ico --onefile %_pyTarget%.py
 	dist\%_pyTarget%.exe
-	IF "%ERRORLEVEL%" == "1" (
+	IF "%ERRORLEVEL%" == "%_errorExpected%" (
 		echo = Build %_outTarget%_%_arch%.exe OK
 		copy dist\%_pyTarget%.exe %scriptpath%\bin\%_outTarget%_%_arch%.exe
 		7z a -t7z -mhe -p%_7Z_PASSWORD_% %_7Z_OUPUT_%\%_outTarget%_%_arch%.7z %scriptpath%\bin\%_outTarget%_%_arch%.exe
 		appveyor PushArtifact %_7Z_OUPUT_%\%_outTarget%_%_arch%.7z
 	) else (
-		echo = Build %_outTarget%_%_arch%.exe FAIL !!!!!!
+		echo = Build %_outTarget%_%_arch%.exe FAIL (%ERRORLEVEL%) !!!!!!
 	)
 	EXIT /B 0
 :Build_arch_thread
