@@ -8,7 +8,7 @@ set py64=C:\Python39-x64
 set py32=C:\Python39
 set keylen=64
 set DEBUG_BATCH=0
-set _7Z_OUPUT_=%scriptpath%
+set _7Z_OUPUT_=%scriptpath%\bin
 
 
 echo ===========================================================================
@@ -86,7 +86,10 @@ CALL :Build __main__ , pypykatz
 CALL :Clone fox-it/BloodHound.py , BloodHound.py
 CALL :Build bloodhound, bloodhound
 
+
 :: #############################################################################
+IF "%DEBUG_BATCH%" == "0" GOTO End
+
 :: Wait for 01min00
 set I=A
 :LOOP
@@ -98,6 +101,7 @@ set I=A
 	IF "%I%" == "AAAAAA" EXIT /B 42
 IF NOT EXIST %scriptpath%\bin\bloodhound_x64.ok GOTO LOOP
 
+:End
 dir %scriptpath%\bin\
 dir %_7Z_OUPUT_%
 cd %_7Z_OUPUT_%
@@ -119,9 +123,12 @@ EXIT /B 0
 echo ===========================================================================
 echo = Building %~1.py in x86
 if "%DEBUG_BATCH%" == "1" (
-	%py32%\Scripts\pyinstaller.exe --key=%pykey% --icon=%scriptpath%\pytools.ico --onefile %~1.py & copy dist\%~1.exe %scriptpath%\bin\%~2_x86.exe & 7z a -t7z -mhe -pPimpMyPowny %_7Z_OUPUT_%\%~2_x86.7z %scriptpath%\bin\%~2_x86.exe
+	%py32%\Scripts\pyinstaller.exe --key=%pykey% --icon=%scriptpath%\pytools.ico --onefile %~1.py
+	copy dist\%~1.exe %scriptpath%\bin\%~2_x86.exe
+	7z a -t7z -mhe -pPimpMyPowny %_7Z_OUPUT_%\%~2_x86.7z %scriptpath%\bin\%~2_x86.exe
+	appveyor PushArtifact %scriptpath%\bin\%~2_x86.7z
 ) else (
-	start "Building %~2 x86" /D "%CD%" cmd /c "%py32%\Scripts\pyinstaller.exe --key=%pykey% --icon=%scriptpath%\pytools.ico --onefile %~1.py & copy dist\%~1.exe %scriptpath%\bin\%~2_x86.exe & 7z a -t7z -mhe -pPimpMyPowny %_7Z_OUPUT_%\%~2_x86.7z %scriptpath%\bin\%~2_x86.exe & echo . > %scriptpath%\bin\%~2_x86.ok"
+	start "Building %~2 x86" /D "%CD%" cmd /c "%py32%\Scripts\pyinstaller.exe --key=%pykey% --icon=%scriptpath%\pytools.ico --onefile %~1.py & copy dist\%~1.exe %scriptpath%\bin\%~2_x86.exe & 7z a -t7z -mhe -pPimpMyPowny %_7Z_OUPUT_%\%~2_x86.7z %scriptpath%\bin\%~2_x86.exe & appveyor PushArtifact %scriptpath%\bin\%~2_x86.7z & echo . > %scriptpath%\bin\%~2_x86.ok"
 )
 EXIT /B 0
 
@@ -129,9 +136,12 @@ EXIT /B 0
 echo ===========================================================================
 echo = Building %~1.py in x64
 if "%DEBUG_BATCH%" == "1" (
-	%py64%\Scripts\pyinstaller.exe --key=%pykey% --icon=%scriptpath%\pytools.ico --onefile %~1.py & copy dist\%~1.exe %scriptpath%\bin\%~2_x64.exe & 7z a -t7z -mhe -pPimpMyPowny %_7Z_OUPUT_%\%~2_x64.7z %scriptpath%\bin\%~2_x64.exe
+	%py64%\Scripts\pyinstaller.exe --key=%pykey% --icon=%scriptpath%\pytools.ico --onefile %~1.py
+	copy dist\%~1.exe %scriptpath%\bin\%~2_x64.exe
+	7z a -t7z -mhe -pPimpMyPowny %_7Z_OUPUT_%\%~2_x64.7z %scriptpath%\bin\%~2_x64.exe
+	appveyor PushArtifact %scriptpath%\bin\%~2_x64.7z
 ) else (
-	start "Building %~2 x64" /D "%CD%" cmd /c "%py64%\Scripts\pyinstaller.exe --key=%pykey% --icon=%scriptpath%\pytools.ico --onefile %~1.py & copy dist\%~1.exe %scriptpath%\bin\%~2_x64.exe & 7z a -t7z -mhe -pPimpMyPowny %_7Z_OUPUT_%\%~2_x64.7z %scriptpath%\bin\%~2_x64.exe & echo . > %scriptpath%\bin\%~2_x64.ok"
+	start "Building %~2 x64" /D "%CD%" cmd /c "%py64%\Scripts\pyinstaller.exe --key=%pykey% --icon=%scriptpath%\pytools.ico --onefile %~1.py & copy dist\%~1.exe %scriptpath%\bin\%~2_x64.exe & 7z a -t7z -mhe -pPimpMyPowny %_7Z_OUPUT_%\%~2_x64.7z %scriptpath%\bin\%~2_x64.exe & appveyor PushArtifact %scriptpath%\bin\%~2_x64.7z & echo . > %scriptpath%\bin\%~2_x64.ok"
 )
 EXIT /B 0
 
