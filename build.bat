@@ -96,6 +96,8 @@ CALL :Build bloodhound, bloodhound , 1
 :: Build mitm6
 CALL :Clone fox-it/mitm6 , mitm6
 cd mitm6
+%py64%\python.exe -m pip install service_identity
+%py32%\python.exe -m pip install service_identity
 CALL :Build mitm6, mitm6 , 1
 
 :: Build Responder3
@@ -169,7 +171,7 @@ echo = Building %_outTarget%_%_arch%.exe[0m
 if "%DEBUG_BATCH%" == "0" GOTO Build_arch_thread
 	%_pyinstaller% --key=%pykey% --icon=%scriptpath%\pytools.ico --onefile %_pyTarget%.py
 	if not exist dist\%_pyTarget%.exe appveyor AddMessage "Build %_outTarget%_%_arch%.exe FAIL" -Category Error
-	dist\%_pyTarget%.exe
+	dist\%_pyTarget%.exe -h
 	IF "%ERRORLEVEL%" == "%_errorExpected%" (
 		appveyor AddMessage "Build %_outTarget%_%_arch%.exe OK" -Category Information
 		echo [42;93m= ✅ Build %_outTarget%_%_arch%.exe OK[0m
