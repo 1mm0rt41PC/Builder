@@ -174,8 +174,9 @@ if "%DEBUG_BATCH%" == "0" GOTO Build_arch_thread
 		appveyor AddMessage "Build %_outTarget%_%_arch%.exe OK" -Category Information
 		echo [42;93m= ✅ Build %_outTarget%_%_arch%.exe OK[0m
 		copy dist\%_pyTarget%.exe %scriptpath%\bin\%_outTarget%_%_arch%.exe
-		echo %scriptpath%\bin\%_outTarget%_%_arch%.exe >> %_outTarget%.lst7z
-		7z a -t7z -mhe -p%_7Z_PASSWORD_% %_7Z_OUPUT_%\%_outTarget%_%_arch%.7z @%_outTarget%.lst7z
+		if exit %_outTarget%.lst7z type %_outTarget%.lst7z > %_outTarget%_%_arch%.lst7z
+		echo %scriptpath%\bin\%_outTarget%_%_arch%.exe >> %_outTarget%_%_arch%.lst7z
+		7z a -t7z -mhe -p%_7Z_PASSWORD_% %_7Z_OUPUT_%\%_outTarget%_%_arch%.7z @%_outTarget%_%_arch%.lst7z
 		appveyor PushArtifact %_7Z_OUPUT_%\%_outTarget%_%_arch%.7z
 	) else (
 		echo [101;93m= Build %_outTarget%_%_arch%.exe FAIL with %ERRORLEVEL%[0m
