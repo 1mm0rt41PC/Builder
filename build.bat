@@ -179,7 +179,7 @@ if "%DEBUG_BATCH%" == "0" GOTO Build_arch_thread
 		echo = Trying to use %_outTarget%.lst7z
 		if exist "%_outTarget%.lst7z" (
 			echo = Using %_outTarget%.lst7z
-			xcopy /f /y /R %_outTarget%.lst7z %_outTarget%_%_arch%.lst7z
+			type %_outTarget%.lst7z > %_outTarget%_%_arch%.lst7z
 		)
 		echo %scriptpath%\bin\%_outTarget%_%_arch%.exe >> %_outTarget%_%_arch%.lst7z
 		echo [105;93m= Create %_outTarget%_%_arch%.7z with required files...[0m
