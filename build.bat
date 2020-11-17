@@ -71,12 +71,12 @@ CALL :Clone pyinstaller/pyinstaller , pyinstaller
 :: Build impacket
 CALL :Clone SecureAuthCorp/impacket , impacket
 cd examples
-CALL :Build wmiexec , wmiexec , 1
-CALL :Build secretsdump , secretsdump , 1
-CALL :Build smbserver , smbserver , 1
-CALL :Build smbexec , smbexec , 1
-CALL :Build psexec , psexec , 1
-CALL :Build dcomexec , dcomexec , 1
+CALL :Build wmiexec , wmiexec , 0
+CALL :Build secretsdump , secretsdump , 0
+CALL :Build smbserver , smbserver , 0
+CALL :Build smbexec , smbexec , 0
+CALL :Build psexec , psexec , 0
+CALL :Build dcomexec , dcomexec , 0
 
 :: Build pypykatz
 CALL :Clone skelsec/pypykatz , pypykatz
@@ -87,24 +87,24 @@ git config --global user.email "appveyor@appveyor-vm.com"
 git config --global user.name "1mm0rt41PC"
 git am %scriptpath%\patch_pypykatz
 cd pypykatz
-CALL :Build __main__ , pypykatz , 2
+CALL :Build __main__ , pypykatz , 0
 
 :: Build BloodHound
 CALL :Clone fox-it/BloodHound.py , BloodHound.py
-CALL :Build bloodhound, bloodhound , 1
+CALL :Build bloodhound, bloodhound , 0
 
 :: Build mitm6
 CALL :Clone fox-it/mitm6 , mitm6
 cd mitm6
 %py64%\python.exe -m pip install service_identity
 %py32%\python.exe -m pip install service_identity
-CALL :Build mitm6, mitm6 , 1
+CALL :Build mitm6, mitm6 , 0
 
 :: Build Responder3
 CALL :Clone skelsec/Responder3 , Responder3
 cd responder3
 echo ..\examples\config.py > Responder3.lst7z
-CALL :Build __main__ , responder3 , 2
+CALL :Build __main__ , responder3 , 0
 
 :: Build responder
 CALL :Clone lgandx/Responder , Responder
@@ -112,7 +112,7 @@ echo Responder.conf > Responder.lst7z
 echo logs >> Responder.lst7z
 echo files >> Responder.lst7z
 echo certs >> Responder.lst7z
-CALL :Build Responder , Responder , 1
+CALL :Build Responder , Responder , 0
 
 
 :: #############################################################################
