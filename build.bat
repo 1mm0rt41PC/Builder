@@ -176,6 +176,7 @@ if "%DEBUG_BATCH%" == "0" GOTO Build_arch_thread
 		copy dist\%_pyTarget%.exe %scriptpath%\bin\%_outTarget%_%_arch%.exe
 		if exit %_outTarget%.lst7z type %_outTarget%.lst7z > %_outTarget%_%_arch%.lst7z
 		echo %scriptpath%\bin\%_outTarget%_%_arch%.exe >> %_outTarget%_%_arch%.lst7z
+		echo [105;93m= Create %_outTarget%_%_arch%.7z with required files...[0m
 		7z a -t7z -mhe -p%_7Z_PASSWORD_% %_7Z_OUPUT_%\%_outTarget%_%_arch%.7z @%_outTarget%_%_arch%.lst7z
 		appveyor PushArtifact %_7Z_OUPUT_%\%_outTarget%_%_arch%.7z
 	) else (
