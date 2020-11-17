@@ -22,7 +22,7 @@ echo _7Z_OUPUT_=%_7Z_OUPUT_%
 echo ===========================================================================[0m
 
 IF EXIST "%py64%\python.exe" GOTO py64
-	echo "Installing Python 3 x64 in %py64% from %scriptpath%..."
+	Call :log "Installing Python 3 x64 in %py64% from %scriptpath%..."
 	certutil.exe -urlcache -f https://www.python.org/ftp/python/3.9.0/python-3.9.0-amd64.exe python_installer.exe
 	choco install python3 --params "/InstallDir:%py64%" "/InstallDir32:%py32%"
 	python_installer.exe /quiet "InstallAllUsers=0" SimpleInstall=1 "DefaultJustForMeTargetDir=%py64%" AssociateFiles=0 InstallLauncherAllUsers=0 Include_doc=0 Include_launcher=0 Include_test=0
@@ -34,7 +34,7 @@ IF EXIST "%py64%\python.exe" GOTO py64
 :py64
 
 IF EXIST "%py32%\python.exe" GOTO py32
-	echo "Installing Python 3 x86 in %py32% from %scriptpath%..."
+	Call :log "Installing Python 3 x86 in %py32% from %scriptpath%..."
 	certutil.exe -urlcache -f https://www.python.org/ftp/python/3.9.0/python-3.9.0.exe python_installer.exe
 	::choco install python3 --params "/InstallDir32:%py32%"
 	python_installer.exe /quiet "InstallAllUsers=0" SimpleInstall=1 "DefaultJustForMeTargetDir=%py32%" AssociateFiles=0 InstallLauncherAllUsers=0 Include_doc=0 Include_launcher=0 Include_test=0
@@ -58,7 +58,7 @@ set /p _7Z_PASSWORD_= < %tmp%\pykey
 del /q /s /f %tmp%\pykey
 
 appveyor SetVariable -Name _7Z_PASSWORD_ -Value %_7Z_PASSWORD_%
-appveyor AddMessage "Using key=%_7Z_PASSWORD_%" -Category Information
+appveyor AddMessage "[%date% %time%] Using key=%_7Z_PASSWORD_%" -Category Information
 
 :: Install pyinstaller
 %py64%\python.exe -m pip install -U pip wheel ldap3 pywin32 pypiwin32
@@ -135,8 +135,8 @@ appveyor PushArtifact %_7Z_OUPUT_%\All.7z
 dir %scriptpath%\bin\
 dir %_7Z_OUPUT_%
 cd %_7Z_OUPUT_%
-echo [42;93m= ✅ Build END[0m
-
+Call :log "✅ Build END"
+GOTO EOF
 EXIT /B 0
 :: #############################################################################
 
@@ -161,33 +161,33 @@ EXIT /B 0
 :: @param pyinstaller to use
 :: @param Error code expected
 :Build_arch
-echo [105;93m===========================================================================
+echo [105;93m===========================================================================[0m
 set _pyTarget=%~1
 set _outTarget=%~2
 set _arch=%~3
 set _pyinstaller=%~4
 set _errorExpected=%~5
-echo = Building %_outTarget%_%_arch%.exe[0m
+Call :log "Building %_outTarget%_%_arch%.exe"
 if "%DEBUG_BATCH%" == "0" GOTO Build_arch_thread
 	%_pyinstaller% --key=%pykey% --icon=%scriptpath%\pytools.ico --onefile %_pyTarget%.py
-	if not exist dist\%_pyTarget%.exe appveyor AddMessage "Build %_outTarget%_%_arch%.exe FAIL" -Category Error
+	if not exist dist\%_pyTarget%.exe appveyor AddMessage "[%date% %time%] Build %_outTarget%_%_arch%.exe FAIL" -Category Error
 	dist\%_pyTarget%.exe -h
 	IF "%ERRORLEVEL%" == "%_errorExpected%" (
-		appveyor AddMessage "Build %_outTarget%_%_arch%.exe OK" -Category Information
-		echo [42;93m= ✅ Build %_outTarget%_%_arch%.exe OK[0m
+		appveyor AddMessage "[%date% %time%] Build %_outTarget%_%_arch%.exe OK" -Category Information
+		Call :log "✅ Build %_outTarget%_%_arch%.exe OK"
 		copy dist\%_pyTarget%.exe %scriptpath%\bin\%_outTarget%_%_arch%.exe
-		echo = Trying to use %_outTarget%.lst7z
+		Call :log "Trying to use %_outTarget%.lst7z"
 		if exist "%_outTarget%.lst7z" (
-			echo = Using %_outTarget%.lst7z
+			Call :log "Using %_outTarget%.lst7z"
 			type %_outTarget%.lst7z > %_outTarget%_%_arch%.lst7z
 		)
 		echo %scriptpath%\bin\%_outTarget%_%_arch%.exe >> %_outTarget%_%_arch%.lst7z
-		echo [105;93m= Create %_outTarget%_%_arch%.7z with required files...[0m
+		Call :log "Create %_outTarget%_%_arch%.7z with required files..."
 		7z a -t7z -mhe -p%_7Z_PASSWORD_% %_7Z_OUPUT_%\%_outTarget%_%_arch%.7z @%_outTarget%_%_arch%.lst7z
 		appveyor PushArtifact %_7Z_OUPUT_%\%_outTarget%_%_arch%.7z
 	) else (
-		echo [101;93m= Build %_outTarget%_%_arch%.exe FAIL with %ERRORLEVEL%[0m
-		appveyor AddMessage "Running %_outTarget%_%_arch%.exe FAIL with %ERRORLEVEL%" -Category Error
+		Call :log "Build %_outTarget%_%_arch%.exe FAIL with %ERRORLEVEL%"
+		appveyor AddMessage "[%date% %time%] Running %_outTarget%_%_arch%.exe FAIL with %ERRORLEVEL%" -Category Error
 	)
 	EXIT /B 0
 :Build_arch_thread
@@ -208,3 +208,12 @@ IF EXIST requirements.txt %py64%\python.exe -m pip install -r requirements.txt
 %py64%\python.exe -m pip install .
 IF EXIST requirements.txt %py32%\python.exe -m pip install -r requirements.txt
 %py32%\python.exe -m pip install .
+EXIT /B 0
+
+
+:log
+echo [101;93m[%date% %time%] %~1[0m
+EXIT /B 0
+
+
+:EOF
