@@ -76,6 +76,7 @@ CALL :Build secretsdump , secretsdump , 1
 CALL :Build smbserver , smbserver , 1
 CALL :Build smbexec , smbexec , 1
 CALL :Build psexec , psexec , 1
+CALL :Build dcomexec , dcomexec , 1
 
 :: Build pypykatz
 CALL :Clone skelsec/pypykatz , pypykatz
@@ -91,6 +92,25 @@ CALL :Build __main__ , pypykatz , 2
 :: Build BloodHound
 CALL :Clone fox-it/BloodHound.py , BloodHound.py
 CALL :Build bloodhound, bloodhound , 1
+
+:: Build mitm6
+CALL :Clone fox-it/mitm6 , mitm6
+cd mitm6
+CALL :Build mitm6, mitm6 , 1
+
+:: Build Responder3
+CALL :Clone skelsec/Responder3 , Responder3
+cd responder3
+echo ..\examples\config.py > Responder3.lst7z
+CALL :Build __main__ , responder3 , 2
+
+:: Build responder
+CALL :Clone lgandx/Responder , Responder
+echo Responder.conf > Responder.lst7z
+echo logs >> Responder.lst7z
+echo files >> Responder.lst7z
+echo certs >> Responder.lst7z
+CALL :Build Responder , Responder , 1
 
 
 :: #############################################################################
@@ -148,12 +168,14 @@ set _errorExpected=%~5
 echo = Building %_outTarget%_%_arch%.exe[0m
 if "%DEBUG_BATCH%" == "0" GOTO Build_arch_thread
 	%_pyinstaller% --key=%pykey% --icon=%scriptpath%\pytools.ico --onefile %_pyTarget%.py
+	if not exist dist\%_pyTarget%.exe appveyor AddMessage "Build %_outTarget%_%_arch%.exe FAIL" -Category Error
 	dist\%_pyTarget%.exe
 	IF "%ERRORLEVEL%" == "%_errorExpected%" (
 		appveyor AddMessage "Build %_outTarget%_%_arch%.exe OK" -Category Information
 		echo [42;93m= ✅ Build %_outTarget%_%_arch%.exe OK[0m
 		copy dist\%_pyTarget%.exe %scriptpath%\bin\%_outTarget%_%_arch%.exe
-		7z a -t7z -mhe -p%_7Z_PASSWORD_% %_7Z_OUPUT_%\%_outTarget%_%_arch%.7z %scriptpath%\bin\%_outTarget%_%_arch%.exe
+		echo %scriptpath%\bin\%_outTarget%_%_arch%.exe >> %_outTarget%.lst7z
+		7z a -t7z -mhe -p%_7Z_PASSWORD_% %_7Z_OUPUT_%\%_outTarget%_%_arch%.7z @%_outTarget%.lst7z
 		appveyor PushArtifact %_7Z_OUPUT_%\%_outTarget%_%_arch%.7z
 	) else (
 		echo [101;93m= Build %_outTarget%_%_arch%.exe FAIL with %ERRORLEVEL%[0m
@@ -165,10 +187,14 @@ if "%DEBUG_BATCH%" == "0" GOTO Build_arch_thread
 	EXIT /B 0
 
 
+:: #############################################################################
+:: @brief Clone repo
+:: @param Github repo without the prefix https://github.com/
+:: @param git clone into >folder<
 :Clone
 cd %tmp%
 rmdir /s /q %~2
-git clone https://github.com/%~1 --depth 1
+git clone https://github.com/%~1 --depth 1 %~2
 cd %~2
 IF EXIST requirements.txt %py64%\python.exe -m pip install -r requirements.txt
 %py64%\python.exe -m pip install .
