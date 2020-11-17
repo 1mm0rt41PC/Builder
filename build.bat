@@ -187,7 +187,7 @@ if "%DEBUG_BATCH%" == "0" GOTO Build_arch_thread
 		appveyor PushArtifact %_7Z_OUPUT_%\%_outTarget%_%_arch%.7z
 	) else (
 		echo [101;93m= Build %_outTarget%_%_arch%.exe FAIL with %ERRORLEVEL%[0m
-		appveyor AddMessage "Build %_outTarget%_%_arch%.exe FAIL" -Category Error
+		appveyor AddMessage "Running %_outTarget%_%_arch%.exe FAIL with %ERRORLEVEL%" -Category Error
 	)
 	EXIT /B 0
 :Build_arch_thread
