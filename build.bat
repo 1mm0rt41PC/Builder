@@ -17,8 +17,8 @@ IF "%_arch%" NEQ "" (
 )
 
 IF "%BUILDER_THREADING%" == "1" (
-	start "Building %_outTarget% x86" /D "%CD%" cmd /c "CALL build.bat %_pyTarget% , %_outTarget% , %_errorExpected% , x86 , %py32%\Scripts\pyinstaller.exe"
-	start "Building %_outTarget% x64" /D "%CD%" cmd /c "CALL build.bat %_pyTarget% , %_outTarget% , %_errorExpected% , x64 , %py64%\Scripts\pyinstaller.exe"
+	start "%BUILDER_THREADING_TITLE% - Building %_outTarget% x86" /D "%CD%" cmd /c "CALL build.bat %_pyTarget% , %_outTarget% , %_errorExpected% , x86 , %py32%\Scripts\pyinstaller.exe > %_outTarget%_%_arch%.log 2>&1"
+	start "%BUILDER_THREADING_TITLE% - Building %_outTarget% x64" /D "%CD%" cmd /c "CALL build.bat %_pyTarget% , %_outTarget% , %_errorExpected% , x64 , %py64%\Scripts\pyinstaller.exe > %_outTarget%_%_arch%.log 2>&1"
 ) ELSE (
 	CALL :Build_arch %_pyTarget% , %_outTarget% , %_errorExpected% , x86 , %py32%\Scripts\pyinstaller.exe
 	CALL :Build_arch %_pyTarget% , %_outTarget% , %_errorExpected% , x64 , %py64%\Scripts\pyinstaller.exe
@@ -62,6 +62,12 @@ EXIT /B 0
 	) ELSE (
 		CALL log.bat ERR "Build %_outTarget%_%_arch%.exe FAIL with %ERRORLEVEL%"
 		appveyor AddMessage "[%date% %time%] Running %_outTarget%_%_arch%.exe FAIL with %ERRORLEVEL%" -Category Error
+		IF "%%_outTarget%_%_arch%_retry%" == "1" (
+			appveyor PushArtifact %_outTarget%_%_arch%.log
+			EXIT /B 0
+		)
+		SET %_outTarget%_%_arch%_retry=1
+		GOTO :Build_arch_main
 	)
 	EXIT /B 0
 
