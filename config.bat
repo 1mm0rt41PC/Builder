@@ -1,4 +1,4 @@
-IF %LOADED_config_bat% == 1 GOTO EOF
+IF %LOADED_config_bat% == 1 EXIT /B 0
 SETLOCAL
 set LOADED_config_bat=1
 set scriptpath=%~dp0
@@ -38,5 +38,4 @@ echo ===========================================================================
 
 appveyor SetVariable -Name _7Z_PASSWORD_ -Value %_7Z_PASSWORD_%
 appveyor AddMessage "[%date% %time%] Using 7z key=%_7Z_PASSWORD_%" -Category Information
-:EOF
 EXIT /B 0
