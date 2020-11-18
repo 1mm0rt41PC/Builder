@@ -14,12 +14,12 @@ SET DEBUG_BATCH=1
 SET _7Z_OUPUT_=%scriptpath%\bin
 
 :: Generate random key for encryption
-powershell -exec bypass -nop -Command "-join ((65..90) + (97..122) | Get-Random -Count %keylen% | ^% {[char]$_})" > %tmp%\pykey
+powershell -exec bypass -nop -Command "-join ((65..90) + (97..122) | Get-Random -Count %keylen% | %% {[char]$_})" > %tmp%\pykey
 SET /p pykey= < %tmp%\pykey
 del /q /s /f %tmp%\pykey
 
 :: Generate random key for 7z encryption
-powershell -exec bypass -nop -Command "-join ((65..90) + (97..122) | Get-Random -Count %keylen% | ^% {[char]$_})" > %tmp%\_7Z_PASSWORD_
+powershell -exec bypass -nop -Command "-join ((65..90) + (97..122) | Get-Random -Count %keylen% | %% {[char]$_})" > %tmp%\_7Z_PASSWORD_
 SET /p _7Z_PASSWORD_= < %tmp%\_7Z_PASSWORD_
 del /q /s /f %tmp%\_7Z_PASSWORD_
 
