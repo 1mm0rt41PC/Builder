@@ -1,6 +1,4 @@
-IF "%LOADED_config_bat%" == "1" (
-	EXIT /B 0
-)
+IF "%LOADED_config_bat%" == "1" EXIT /B 0
 SET LOADED_config_bat=1
 SET scriptpath=%~dp0
 SET scriptpath=%scriptpath:~0,-1%

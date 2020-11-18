@@ -1,3 +1,5 @@
+IF "%LOADED_preinstall_bat%" == "1" EXIT /B 0
+SET LOADED_preinstall_bat=1
 CALL config.bat
 
 IF EXIST "%py64%\python.exe" GOTO py64
