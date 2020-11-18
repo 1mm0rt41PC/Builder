@@ -1,5 +1,6 @@
-IF "%LOADED_config_bat%" == "1" EXIT /B 0
-SETLOCAL
+IF "%LOADED_config_bat%" == "1" (
+	EXIT /B 0
+)
 SET LOADED_config_bat=1
 SET scriptpath=%~dp0
 SET scriptpath=%scriptpath:~0,-1%
@@ -10,7 +11,6 @@ SET PATH=%PATH%;%scriptpath%
 SET py64=C:\Python38-x64
 SET py32=C:\Python38
 SET keylen=64
-SET DEBUG_BATCH=1
 SET _7Z_OUPUT_=%scriptpath%\bin
 
 :: Generate random key for encryption
@@ -34,7 +34,6 @@ echo DEBUG_BATCH=%DEBUG_BATCH%
 echo _7Z_OUPUT_=%_7Z_OUPUT_%
 echo _7Z_PASSWORD_=%_7Z_PASSWORD_%
 echo ===========================================================================[0m
-
 
 appveyor SetVariable -Name _7Z_PASSWORD_ -Value %_7Z_PASSWORD_%
 appveyor AddMessage "[%date% %time%] Using 7z key=%_7Z_PASSWORD_%" -Category Information

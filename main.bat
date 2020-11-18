@@ -1,4 +1,3 @@
-SETLOCAL
 CALL config.bat
 CALL pre-install.bat
 
