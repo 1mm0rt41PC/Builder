@@ -10,6 +10,7 @@ SET py64=C:\Python38-x64
 SET py32=C:\Python38
 SET keylen=64
 SET _7Z_OUPUT_=%scriptpath%\bin
+set BUILDER_THREADING=0
 
 :: Generate random key for encryption
 powershell -exec bypass -nop -Command "-join ((65..90) + (97..122) | Get-Random -Count %keylen% | %% {[char]$_})" > %tmp%\pykey
@@ -21,14 +22,24 @@ powershell -exec bypass -nop -Command "-join ((65..90) + (97..122) | Get-Random 
 SET /p _7Z_PASSWORD_= < %tmp%\_7Z_PASSWORD_
 del /q /s /f %tmp%\_7Z_PASSWORD_
 
+
+:: Generate random title for threading
+IF "%BUILDER_THREADING%" == "1" (
+	powershell -exec bypass -nop -Command "-join ((65..90) + (97..122) | Get-Random -Count %keylen% | %% {[char]$_})" > %tmp%\BUILDER_THREADING_TITLE
+	SET /p BUILDER_THREADING_TITLE= < %tmp%\BUILDER_THREADING_TITLE
+	del /q /s /f %tmp%\BUILDER_THREADING_TITLE
+)
+
+
 echo [105;93m===========================================================================
 echo = CONFIG =
 echo scriptpath=%scriptpath%
 echo APPVEYOR_BUILD_FOLDER=%APPVEYOR_BUILD_FOLDER%
 echo py64=%py64%
 echo py32=%py32%
+echo BUILDER_THREADING=%BUILDER_THREADING%
+echo BUILDER_THREADING_TITLE=%BUILDER_THREADING_TITLE%
 echo keylen=%keylen%
-echo DEBUG_BATCH=%DEBUG_BATCH%
 echo _7Z_OUPUT_=%_7Z_OUPUT_%
 echo _7Z_PASSWORD_=%_7Z_PASSWORD_%
 echo ===========================================================================[0m

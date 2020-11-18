@@ -1,15 +1,29 @@
 CALL config.bat
 CALL pre-install.bat
-
 :: #############################################################################
 :: @brief Build bin in x64 and in x86
 :: @param python script to build
 :: @param prefix for the exe name
 :: @param Error code expected
-CALL :Build_arch %~1 , %~2 , x86 , %py32%\Scripts\pyinstaller.exe , %~3
-CALL :Build_arch %~1 , %~2 , x64 , %py64%\Scripts\pyinstaller.exe , %~3
+SET _pyTarget=%~1
+SET _outTarget=%~2
+SET _errorExpected=%~3
+SET _arch=%~4
+SET _pyinstaller=%~5
+
+IF "%_arch%" NEQ "" (
+	GOTO :Build_arch_main
+	EXIT /B 0
+)
+
+IF "%BUILDER_THREADING%" == "1" (
+	start "Building %_outTarget% x86" /D "%CD%" cmd /c "CALL build.bat %_pyTarget% , %_outTarget% , %_errorExpected% , x86 , %py32%\Scripts\pyinstaller.exe"
+	start "Building %_outTarget% x64" /D "%CD%" cmd /c "CALL build.bat %_pyTarget% , %_outTarget% , %_errorExpected% , x64 , %py64%\Scripts\pyinstaller.exe"
+) ELSE (
+	CALL :Build_arch %_pyTarget% , %_outTarget% , %_errorExpected% , x86 , %py32%\Scripts\pyinstaller.exe
+	CALL :Build_arch %_pyTarget% , %_outTarget% , %_errorExpected% , x64 , %py64%\Scripts\pyinstaller.exe
+)
 EXIT /B 0
-GOTO :EOF
 
 
 :: #############################################################################
@@ -23,9 +37,10 @@ GOTO :EOF
 	echo [105;93m===========================================================================[0m
 	SET _pyTarget=%~1
 	SET _outTarget=%~2
-	SET _arch=%~3
-	SET _pyinstaller=%~4
-	SET _errorExpected=%~5
+	SET _errorExpected=%~3
+	SET _arch=%~4
+	SET _pyinstaller=%~5
+:Build_arch_main
 	CALL log.bat "Building %_outTarget%_%_arch%.exe"
 
 	%_pyinstaller% --key=%pykey% --icon=%scriptpath%\pytools.ico --onefile %_pyTarget%.py

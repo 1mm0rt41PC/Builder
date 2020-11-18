@@ -54,11 +54,18 @@ echo certs >> Responder.lst7z
 CALL build.bat Responder , Responder , 0
 
 
+:: Sync threading
+IF "%BUILDER_THREADING%" == "1" (
+	powershell -exec bypass -nop -Command "while ( (Get-Process -Name cmd | Where-Object { $_.MainWindowTitle -like '*%BUILDER_THREADING_TITLE%*' }).Count -ne 0 ){ Write-Host "Waiting for threads"; sleep -Seconds 5 }"
+)
+
+
 :: #############################################################################
+:END_MAIN
 7z a -t7z -mhe -p%_7Z_PASSWORD_% %_7Z_OUPUT_%\All.7z %scriptpath%\bin\*.exe
 appveyor PushArtifact %_7Z_OUPUT_%\All.7z
 dir %scriptpath%\bin\
 dir %_7Z_OUPUT_%
 cd %_7Z_OUPUT_%
-Call log.bat "✅ Build END"
+CALL log.bat "✅ Build END"
 EXIT /B 0
