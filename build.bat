@@ -69,7 +69,7 @@ EXIT /B 0
 			IF "%BUILDER_THREADING%" == "1" appveyor PushArtifact %_outTarget%_%_arch%.log
 			EXIT /B 0
 		)
-		appveyor AddMessage "[%date% %time%] Retrying %_outTarget%_%_arch%.exe ..." -Category Information
+		appveyor AddMessage "[%date% %time%] Retrying %_outTarget%_%_arch%.exe ..." -Category Warning
 		SET %_outTarget%_%_arch%_retry=1
 		GOTO :Build_arch_main
 		EXIT /B 0
