@@ -29,7 +29,7 @@ GOTO :EOF
 	CALL log.bat "Building %_outTarget%_%_arch%.exe"
 
 	%_pyinstaller% --key=%pykey% --icon=%scriptpath%\pytools.ico --onefile %_pyTarget%.py
-	IF NOT EXIST dist\%_pyTarget%.exe appveyor AddMessage "[%date% %time%] Build %_outTarget%_%_arch%.exe FAIL" -Category Error
+	IF NOT EXIST "dist\%_pyTarget%.exe" appveyor AddMessage "[%date% %time%] Build %_outTarget%_%_arch%.exe FAIL" -Category Error
 	dist\%_pyTarget%.exe -h
 	IF "%ERRORLEVEL%" == "%_errorExpected%" (
 		appveyor AddMessage "[%date% %time%] Build %_outTarget%_%_arch%.exe OK" -Category Information
