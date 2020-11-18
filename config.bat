@@ -47,5 +47,5 @@ echo _7Z_PASSWORD_=%_7Z_PASSWORD_%
 echo ===========================================================================[0m
 
 appveyor SetVariable -Name _7Z_PASSWORD_ -Value %_7Z_PASSWORD_%
-appveyor AddMessage "[%date% %time%] Using 7z key=%_7Z_PASSWORD_%" -Category Information
+CALL log.bat "Using 7z key=%_7Z_PASSWORD_%" 1
 EXIT /B 0

@@ -45,14 +45,13 @@ EXIT /B 0
 	SET _arch=%~4
 	SET _pyinstaller=%~5
 :Build_arch_main
-	CALL log.bat "Building %_outTarget%_%_arch%.exe"
+	CALL log.bat "Building %_outTarget%_%_arch%.exe ..."
 
 	%_pyinstaller% --key=%pykey% --icon=%scriptpath%\pytools.ico --onefile %_pyTarget%.py
-	IF NOT EXIST "dist\%_pyTarget%.exe" appveyor AddMessage "[%date% %time%] Build %_outTarget%_%_arch%.exe FAIL" -Category Error
+	IF NOT EXIST "dist\%_pyTarget%.exe" CALL log.bat ERR "Build %_outTarget%_%_arch%.exe FAIL" 1
 	dist\%_pyTarget%.exe -h
 	IF "%ERRORLEVEL%" == "%_errorExpected%" (
-		appveyor AddMessage "[%date% %time%] Build %_outTarget%_%_arch%.exe OK" -Category Information
-		CALL log.bat "✅ Build %_outTarget%_%_arch%.exe OK"
+		CALL log.bat "✅ Build %_outTarget%_%_arch%.exe OK" 1
 		copy dist\%_pyTarget%.exe %scriptpath%\bin\%_outTarget%_%_arch%.exe
 		CALL log.bat "Trying to use %_outTarget%.lst7z"
 		IF EXIST "%_outTarget%.lst7z" (
@@ -64,12 +63,13 @@ EXIT /B 0
 		7z a -t7z -mhe -p%_7Z_PASSWORD_% %_7Z_OUPUT_%\%_outTarget%_%_arch%.7z @%_outTarget%_%_arch%.lst7z
 		appveyor PushArtifact %_7Z_OUPUT_%\%_outTarget%_%_arch%.7z
 	) ELSE (
-		CALL log.bat ERR "Build %_outTarget%_%_arch%.exe FAIL with %ERRORLEVEL%"
+		set _err=%ERRORLEVEL%
 		IF "%%_outTarget%_%_arch%_retry%" == "1" (
+			CALL log.bat ERR "FAIL to build a valid %_outTarget%_%_arch%.exe (This bin return %_err%, expected %_errorExpected%)..." 1
 			IF "%BUILDER_THREADING%" == "1" appveyor PushArtifact %_outTarget%_%_arch%.log
 			EXIT /B 0
 		)
-		appveyor AddMessage "[%date% %time%] Retrying %_outTarget%_%_arch%.exe ..." -Category Warning
+		CALL log.bat WARN "Build %_outTarget%_%_arch%.exe FAIL with %_err%, Retrying..." 1
 		SET %_outTarget%_%_arch%_retry=1
 		GOTO :Build_arch_main
 		EXIT /B 0
