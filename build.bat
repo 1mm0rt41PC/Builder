@@ -17,8 +17,10 @@ IF "%_arch%" NEQ "" (
 )
 
 IF "%BUILDER_THREADING%" == "1" (
+	CALL sync-thread.bat
 	CALL log.bat "Running thread for %_outTarget% x86"
 	start "%BUILDER_THREADING_TITLE% - Building %_outTarget% x86" /D "%CD%" cmd /c "CALL build.bat %_pyTarget% , %_outTarget% , %_errorExpected% , x86 , %py32%\Scripts\pyinstaller.exe > %_outTarget%_%_arch%.log 2>&1"
+	CALL sync-thread.bat
 	CALL log.bat "Running thread for %_outTarget% x64"
 	start "%BUILDER_THREADING_TITLE% - Building %_outTarget% x64" /D "%CD%" cmd /c "CALL build.bat %_pyTarget% , %_outTarget% , %_errorExpected% , x64 , %py64%\Scripts\pyinstaller.exe > %_outTarget%_%_arch%.log 2>&1"
 ) ELSE (
