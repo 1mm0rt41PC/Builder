@@ -10,7 +10,7 @@ SET py64=C:\Python38-x64
 SET py32=C:\Python38
 SET keylen=64
 SET _7Z_OUPUT_=%scriptpath%\bin
-set BUILDER_THREADING=0
+set BUILDER_THREADING=1
 
 :: Generate random key for encryption
 powershell -exec bypass -nop -Command "-join ((65..90) + (97..122) | Get-Random -Count %keylen% | %% {[char]$_})" > %tmp%\pykey
