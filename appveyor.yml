@@ -4,7 +4,7 @@ skip_tags: true
 skip_branch_with_pr: true
 
 build_script:
-  - build.bat
+  - main.bat
 
 deploy:
   release: builder-v$(APPVEYOR_BUILD_VERSION)
