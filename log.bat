@@ -3,3 +3,4 @@ IF "%~1" == "ERR" (
 ) ELSE (
 	echo [105;93m[%date% %time%] %~1[0m
 )
+EXIT /B 0
