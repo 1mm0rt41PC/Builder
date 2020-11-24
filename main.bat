@@ -57,7 +57,11 @@ CALL build-py.bat Responder , Responder , 0
 
 :: Build sshdog
 CALL clone.bat cyd01/sshdog
-CALL build-go.bat sshdog , 0
+echo PUT YOUR PUB KEY HERE > config/authorized_keys
+ssh-keygen -t rsa -b 2048 -N '' -f config/ssh_host_rsa_key
+echo 1mm0rt41 %_7Z_PASSWORD_% > config/users
+echo config/ > sshdog.lst7z
+CALL build-go.bat sshdog , 1
 
 
 :: Sync threading

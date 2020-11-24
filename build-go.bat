@@ -52,20 +52,29 @@ EXIT /B 0
 	SET _OS=%~3
 	SET _arch=%~4
 :Build_arch_main
-	set _FullnameOutput=%_outTarget%_%_OS%_%_arch%
-	set GOOS=%_OS%
-	set GOARCH=%_arch%
+	SET _FullnameOutput=%_outTarget%_%_OS%_%_arch%
+	SET GOOS=%_OS%
+	SET GOARCH=%_arch%
+	SET CGO_ENABLED=0
 	CALL log.bat "Building %_FullnameOutput%.exe ..."
 
 	go build -o %_FullnameOutput%.exe
 	IF NOT EXIST "%_FullnameOutput%.exe" CALL log.bat ERR "Build %_FullnameOutput%.exe FAIL" 1
+	:: Auto kill after 10 seconds
+	start "TEST RUNNER" /D "%CD%" cmd /C "ping -n 10 127.0.0.1 & taskkill /F /IM %_FullnameOutput%.exe"
 	%_FullnameOutput%.exe -h
 	set _err=%ERRORLEVEL%
 	IF "%_err%" == "%_errorExpected%" (
 		CALL log.bat "✅ Build %_FullnameOutput%.exe OK" 1
 		copy %_FullnameOutput%.exe %scriptpath%\bin\%_FullnameOutput%.exe
+		CALL log.bat "Trying to use %_outTarget%.lst7z"
+		IF EXIST "%_outTarget%.lst7z" (
+			CALL log.bat "Using %_outTarget%.lst7z"
+			type %_outTarget%.lst7z > %_FullnameOutput%.lst7z
+		)
+		echo %scriptpath%\bin\%_FullnameOutput%.exe >> %_FullnameOutput%.lst7z
 		CALL log.bat "Create %_FullnameOutput%.7z with required files..."
-		7z a -t7z -mhe -p%_7Z_PASSWORD_% %_7Z_OUPUT_%\%_FullnameOutput%.7z %_FullnameOutput%.exe
+		7z a -t7z -mhe -p%_7Z_PASSWORD_% %_7Z_OUPUT_%\%_FullnameOutput%.7z @%_FullnameOutput%.lst7z
 		appveyor PushArtifact %_7Z_OUPUT_%\%_FullnameOutput%.7z
 	) ELSE (
 		IF "%%_FullnameOutput%_retry%" == "1" (
