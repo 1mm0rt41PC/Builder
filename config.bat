@@ -6,12 +6,13 @@ IF "%APPVEYOR_BUILD_FOLDER%" NEQ "^%APPVEYOR_BUILD_FOLDER^%" SET scriptpath=%APP
 IF "%scriptpath%" == "" SET scriptpath=%CD%
 IF %scriptpath% == ^%scriptpath^% SET scriptpath=%CD%
 SET PATH=%PATH%;%scriptpath%
-SET py64=C:\Python38-x64
-SET py32=C:\Python38
+SET py64=C:\Python38-x64\python.exe
+SET py32=C:\Python38\python.exe
 SET keylen=64
 SET _7Z_OUPUT_=%scriptpath%\bin
 set BUILDER_THREADING=1
 set BUILDER_NB_THREAD=%NUMBER_OF_PROCESSORS%
+set PYTHONOPTIMIZE=1
 SET CGO_ENABLED=0
 SET GOPATH=%scriptpath%\GOPATH\
 

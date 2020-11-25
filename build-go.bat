@@ -56,7 +56,7 @@ EXIT /B 0
 	SET GOOS=%_OS%
 	SET GOARCH=%_arch%
 	CALL log.bat "Building %_FullnameOutput%.exe ..."
-	
+
 	IF NOT EXIST %_outTarget%.syso (
 		%rsrc% -ico %scriptpath%\pytools.ico -o %_outTarget%.syso
 	)

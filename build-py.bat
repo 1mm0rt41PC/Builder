@@ -9,7 +9,7 @@ SET _pyTarget=%~1
 SET _outTarget=%~2
 SET _errorExpected=%~3
 SET _arch=%~4
-SET _pyinstaller=%~5
+SET _pyExe=%~5
 
 IF "%_arch%" NEQ "" (
 	GOTO :Build_arch_main
@@ -19,13 +19,13 @@ IF "%_arch%" NEQ "" (
 IF "%BUILDER_THREADING%" == "1" (
 	CALL sync-thread.bat
 	CALL log.bat "Running thread for %_outTarget% x86"
-	start "%BUILDER_THREADING_TITLE% - Building %_outTarget% x86" /D "%CD%" cmd /c "CALL build-py.bat %_pyTarget% , %_outTarget% , %_errorExpected% , x86 , %py32%\Scripts\pyinstaller.exe > %_outTarget%_x86.log 2>&1"
+	start "%BUILDER_THREADING_TITLE% - Building %_outTarget% x86" /D "%CD%" cmd /c "CALL build-py.bat %_pyTarget% , %_outTarget% , %_errorExpected% , x86 , %py32% > %_outTarget%_x86.log 2>&1"
 	CALL sync-thread.bat
 	CALL log.bat "Running thread for %_outTarget% x64"
-	start "%BUILDER_THREADING_TITLE% - Building %_outTarget% x64" /D "%CD%" cmd /c "CALL build-py.bat %_pyTarget% , %_outTarget% , %_errorExpected% , x64 , %py64%\Scripts\pyinstaller.exe > %_outTarget%_x64.log 2>&1"
+	start "%BUILDER_THREADING_TITLE% - Building %_outTarget% x64" /D "%CD%" cmd /c "CALL build-py.bat %_pyTarget% , %_outTarget% , %_errorExpected% , x64 , %py64% > %_outTarget%_x64.log 2>&1"
 ) ELSE (
-	CALL :Build_arch %_pyTarget% , %_outTarget% , %_errorExpected% , x86 , %py32%\Scripts\pyinstaller.exe
-	CALL :Build_arch %_pyTarget% , %_outTarget% , %_errorExpected% , x64 , %py64%\Scripts\pyinstaller.exe
+	CALL :Build_arch %_pyTarget% , %_outTarget% , %_errorExpected% , x86 , %py32%
+	CALL :Build_arch %_pyTarget% , %_outTarget% , %_errorExpected% , x64 , %py64%
 )
 EXIT /B 0
 
@@ -43,17 +43,17 @@ EXIT /B 0
 	SET _outTarget=%~2
 	SET _errorExpected=%~3
 	SET _arch=%~4
-	SET _pyinstaller=%~5
+	SET _pyExe=%~5
 :Build_arch_main
 	CALL log.bat "Building %_outTarget%_%_arch%.exe ..."
 
-	%_pyinstaller% --key=%pykey% --icon=%scriptpath%\pytools.ico --onefile %_pyTarget%.py
-	IF NOT EXIST "dist\%_pyTarget%.exe" CALL log.bat ERR "Build %_outTarget%_%_arch%.exe FAIL" 1
-	dist\%_pyTarget%.exe -h
+	%_pyExe% -OO -m PyInstaller --key=%pykey% --icon=%scriptpath%\pytools.ico --onefile %_pyTarget%.py --name %_outTarget%_%_arch% --noupx
+	IF NOT EXIST "dist\%_outTarget%_%_arch%.exe" CALL log.bat ERR "Build %_outTarget%_%_arch%.exe FAIL" 1
+	dist\%_outTarget%_%_arch%.exe -h
 	set _err=%ERRORLEVEL%
 	IF "%_err%" == "%_errorExpected%" (
 		CALL log.bat "✅ Build %_outTarget%_%_arch%.exe OK" 1
-		copy dist\%_pyTarget%.exe %scriptpath%\bin\%_outTarget%_%_arch%.exe
+		copy dist\%_outTarget%_%_arch%.exe %scriptpath%\bin\%_outTarget%_%_arch%.exe
 		CALL log.bat "Trying to use %_outTarget%.lst7z"
 		IF EXIST "%_outTarget%.lst7z" (
 			CALL log.bat "Using %_outTarget%.lst7z"

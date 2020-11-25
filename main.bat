@@ -15,6 +15,8 @@ CALL build-py.bat dcomexec , dcomexec , 0
 
 :: Build pypykatz
 CALL clone.bat skelsec/pypykatz
+%py64% -m pip install minidump minikerberos aiowinreg msldap winsspi
+%py32% -m pip install minidump minikerberos aiowinreg msldap winsspi
 :: https://skelsec.medium.com/play-with-katz-get-scratched-6c2c350fadf2
 :: https://drive.google.com/drive/folders/1KT2yWziJHvaH41jtZMsatey2KycWF824?usp=sharing
 :: From https://github.com/skelsec/pypykatz/commit/f53ed8c691b32c2a5a0189604d56afe4732fb639
@@ -35,8 +37,8 @@ CALL build-py.bat bloodhound, bloodhound , 0
 :: Build mitm6
 ::CALL clone.bat fox-it/mitm6
 ::cd mitm6
-::%py64%\python.exe -m pip install service_identity
-::%py32%\python.exe -m pip install service_identity
+::%py64% -m pip install service_identity
+::%py32% -m pip install service_identity
 ::CALL build-py.bat mitm6, mitm6 , 0
 
 
