@@ -1,0 +1,24 @@
+From a34765562975f3c8dbd5df0bca11711f85d9f431 Mon Sep 17 00:00:00 2001
+From: 1mm0rt41 <1mm0rt41@nowhere.404>
+Date: Wed, 25 Nov 2020 11:12:42 +0100
+Subject: [PATCH 1/1] Add debug message for method handledup
+
+---
+ pypykatz/pypykatz.py | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/pypykatz/pypykatz.py b/pypykatz/pypykatz.py
+index 3894a25..1cd46b9 100644
+--- a/pypykatz/pypykatz.py
++++ b/pypykatz/pypykatz.py
+@@ -100,6 +100,7 @@ class pypykatz:
+ 			raise Exception('No handles found to LSASS!')
+ 		for pid, lsass_handle in lsass_handles:
+ 			try:
++				print('[*] Trying to parse lsass via handle %s[@%s]' % (pid, lsass_handle))
+ 				return pypykatz.go_live_phandle(lsass_handle)
+ 			except Exception as e:
+ 				print('[-] Failed to parse lsass via handle %s[@%s] Reason: %s' % (pid, lsass_handle, e))
+-- 
+2.29.2.windows.2
+

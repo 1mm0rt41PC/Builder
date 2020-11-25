@@ -12,6 +12,8 @@ SET keylen=64
 SET _7Z_OUPUT_=%scriptpath%\bin
 set BUILDER_THREADING=1
 set BUILDER_NB_THREAD=%NUMBER_OF_PROCESSORS%
+SET CGO_ENABLED=0
+SET GOPATH=%scriptpath%\GOPATH\
 
 :: Generate random key for encryption
 powershell -exec bypass -nop -Command "-join ((65..90) + (97..122) | Get-Random -Count %keylen% | %% {[char]$_})" > %tmp%\pykey

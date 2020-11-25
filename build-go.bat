@@ -55,13 +55,15 @@ EXIT /B 0
 	SET _FullnameOutput=%_outTarget%_%_OS%_%_arch%
 	SET GOOS=%_OS%
 	SET GOARCH=%_arch%
-	SET CGO_ENABLED=0
 	CALL log.bat "Building %_FullnameOutput%.exe ..."
-
-	go build -o %_FullnameOutput%.exe
+	
+	IF NOT EXIST %_outTarget%.syso (
+		%rsrc% -ico %scriptpath%\pytools.ico -o %_outTarget%.syso
+	)
+	go build -o %_FullnameOutput%.exe -v
 	IF NOT EXIST "%_FullnameOutput%.exe" CALL log.bat ERR "Build %_FullnameOutput%.exe FAIL" 1
 	:: Auto kill after 10 seconds
-	start "TEST RUNNER" /D "%CD%" cmd /C "ping -n 10 127.0.0.1 & taskkill /F /IM %_FullnameOutput%.exe"
+	start "TEST RUNNER %_FullnameOutput%.exe" /D "%CD%" cmd /C "ping -n 10 127.0.0.1 & taskkill /F /IM %_FullnameOutput%.exe & EXIT /B 0"
 	%_FullnameOutput%.exe -h
 	set _err=%ERRORLEVEL%
 	IF "%_err%" == "%_errorExpected%" (

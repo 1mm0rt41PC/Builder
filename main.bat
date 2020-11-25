@@ -20,7 +20,8 @@ CALL clone.bat skelsec/pypykatz
 :: From https://github.com/skelsec/pypykatz/commit/f53ed8c691b32c2a5a0189604d56afe4732fb639
 git config --global user.email "appveyor@appveyor-vm.com"
 git config --global user.name "1mm0rt41PC"
-git am %scriptpath%\patch_pypykatz
+git am %scriptpath%\pypykatz\BruteForcer.patch
+git am %scriptpath%\pypykatz\Add-debug-message-for-method-handledup.patch
 cd pypykatz
 CALL build-py.bat __main__ , pypykatz , 0
 
@@ -56,12 +57,12 @@ CALL build-py.bat Responder , Responder , 0
 
 
 :: Build sshdog
-CALL clone.bat cyd01/sshdog
-echo PUT YOUR PUB KEY HERE > config/authorized_keys
-ssh-keygen -t rsa -b 2048 -N '' -f config/ssh_host_rsa_key
-echo 1mm0rt41 %_7Z_PASSWORD_% > config/users
-echo config/ > sshdog.lst7z
-CALL build-go.bat sshdog , 1
+::CALL clone.bat cyd01/sshdog
+::echo PUT YOUR PUB KEY HERE > config/authorized_keys
+::ssh-keygen -t rsa -b 2048 -N '' -f config/ssh_host_rsa_key
+::echo 1mm0rt41 %_7Z_PASSWORD_% > config/users
+::echo config/ > sshdog.lst7z
+::CALL build-go.bat sshdog , 1
 
 
 :: Sync threading

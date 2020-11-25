@@ -17,6 +17,6 @@ IF EXIST *.py (
 	%py32%\python.exe -m pip install -r .
 )
 IF EXIST *.go (
-	go get
+	go get -v
 )
 EXIT /B 0

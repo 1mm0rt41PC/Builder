@@ -30,9 +30,16 @@ mkdir %scriptpath%\bin
 :: Install pyinstaller
 %py64%\python.exe -m pip install -U pip wheel ldap3 pywin32 pypiwin32
 %py64%\python.exe -m pip install -U tinyaes dnspython
+%py64%\python.exe -m pip install -U git+https://github.com/pyinstaller/pyinstaller
+
 %py32%\python.exe -m pip install -U pip wheel ldap3 pywin32 pypiwin32
 %py32%\python.exe -m pip install -U tinyaes dnspython
+%py32%\python.exe -m pip install -U git+https://github.com/pyinstaller/pyinstaller
 ::%py32%\python.exe -m pip install -U pip wheel tinyaes dnspython ldap3 pywin32 pypiwin32
-CALL clone.bat pyinstaller/pyinstaller , pyinstaller
+::CALL clone.bat pyinstaller/pyinstaller , pyinstaller
+
+
+go get -v github.com/akavel/rsrc
+SET rsrc=%GOPATH%\bin\rsrc.exe
 
 EXIT /B 0
