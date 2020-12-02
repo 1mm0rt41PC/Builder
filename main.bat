@@ -13,6 +13,10 @@ CALL build-py.bat psexec , psexec , 0
 CALL build-py.bat dcomexec , dcomexec , 0
 
 
+CALL clone.bat NinjaStyle82/rbcd_permissions
+CALL build-py.bat rbcd , rbcd , 0
+
+
 :: Build pypykatz
 CALL clone.bat skelsec/pypykatz
 %py64% -m pip install minidump minikerberos aiowinreg msldap winsspi

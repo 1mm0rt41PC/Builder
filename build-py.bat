@@ -52,7 +52,7 @@ EXIT /B 0
 	dist\%_outTarget%_%_arch%.exe -h
 	set _err=%ERRORLEVEL%
 	IF "%_err%" == "%_errorExpected%" (
-		CALL log.bat "✅ Build %_outTarget%_%_arch%.exe OK" 1
+		CALL log.bat "✅ Build %_outTarget%_%_arch%.exe OK" , 1
 		copy dist\%_outTarget%_%_arch%.exe %scriptpath%\bin\%_outTarget%_%_arch%.exe
 		CALL log.bat "Trying to use %_outTarget%.lst7z"
 		IF EXIST "%_outTarget%.lst7z" (
@@ -64,13 +64,15 @@ EXIT /B 0
 		7z a -t7z -mhe -p%_7Z_PASSWORD_% %_7Z_OUPUT_%\%_outTarget%_%_arch%.7z @%_outTarget%_%_arch%.lst7z
 		appveyor PushArtifact %_7Z_OUPUT_%\%_outTarget%_%_arch%.7z
 	) ELSE (
-		IF "%%_outTarget%_%_arch%_retry%" == "1" (
-			CALL log.bat ERR "FAIL to build a valid %_outTarget%_%_arch%.exe (This bin return %_err%, expected %_errorExpected%)..." 1
+		IF "%retry%" == "1" (
+			SET retry="0"
+			CALL log.bat ERR "FAIL to build a valid %_outTarget%_%_arch%.exe (This bin return %_err%, expected %_errorExpected%)..." , 1
 			IF "%BUILDER_THREADING%" == "1" appveyor PushArtifact %_outTarget%_%_arch%.log
 			EXIT /B 0
 		)
-		CALL log.bat WARN "Build %_outTarget%_%_arch%.exe FAIL with %_err%, Retrying..." 1
-		SET %_outTarget%_%_arch%_retry=1
+		CALL log.bat WARN , "Build %_outTarget%_%_arch%.exe FAIL with %_err%, Retrying..." , 1
+		
+		SET retry="1"
 		GOTO :Build_arch_main
 		EXIT /B 0
 	)
