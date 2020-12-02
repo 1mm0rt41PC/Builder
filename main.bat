@@ -71,6 +71,11 @@ CALL build-py.bat Responder , Responder , 0
 ::CALL build-go.bat sshdog , 1
 
 
+:: Build gpppfinder
+CALL clone.bat https://bitbucket.org/grimhacker/gpppfinder.git
+CALL build-py.bat cli , gpppfinder , 0
+
+
 :: Sync threading
 CALL sync-thread.bat 0
 
