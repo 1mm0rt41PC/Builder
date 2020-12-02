@@ -72,7 +72,7 @@ EXIT /B 0
 		)
 		CALL log.bat WARN , "Build %_outTarget%_%_arch%.exe FAIL with %_err%, Retrying..." , 1
 		
-		SET retry="1"
+		SET retry=1
 		GOTO :Build_arch_main
 		EXIT /B 0
 	)
