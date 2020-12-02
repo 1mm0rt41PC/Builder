@@ -30,6 +30,10 @@ CALL build-py.bat __main__ , pypykatz , 0
 
 :: Build BloodHound
 CALL clone.bat fox-it/BloodHound.py
+type bloodhound.py > bloodhound.py.org
+echo import multiprocessing; multiprocessing.freeze_support(); > bloodhound.py
+echo # >> bloodhound.py
+type bloodhound.py.org >> bloodhound.py.org
 CALL build-py.bat bloodhound, bloodhound , 0
 
 
