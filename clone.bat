@@ -18,8 +18,8 @@ IF EXIST requirements.txt (
 	%py32% -m pip install -r requirements.txt
 )
 IF EXIST *.py (
-	%py64% -m pip install -r .
-	%py32% -m pip install -r .
+	%py64% -m pip install .
+	%py32% -m pip install .
 )
 IF EXIST *.go (
 	go get -v
