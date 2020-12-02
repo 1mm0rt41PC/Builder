@@ -37,7 +37,7 @@ CALL clone.bat fox-it/BloodHound.py
 type bloodhound.py > bloodhound.py.org
 echo import multiprocessing; multiprocessing.freeze_support(); > bloodhound.py
 echo # >> bloodhound.py
-type bloodhound.py.org >> bloodhound.py.org
+type bloodhound.py.org >> bloodhound.py
 CALL build-py.bat bloodhound, bloodhound , 0
 
 

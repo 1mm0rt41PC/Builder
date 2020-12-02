@@ -14,12 +14,12 @@ IF %_git_repo:https://github.com=_% == %_git_repo% (
 )
 cd %_git_folder%
 IF EXIST requirements.txt (
-	%py64% -m pip install -r requirements.txt
-	%py32% -m pip install -r requirements.txt
+	%py64% -m pip install --no-warn-script-location -r requirements.txt
+	%py32% -m pip install --no-warn-script-location -r requirements.txt
 )
 IF EXIST *.py (
-	%py64% -m pip install .
-	%py32% -m pip install .
+	%py64% -m pip install --no-warn-script-location .
+	%py32% -m pip install --no-warn-script-location .
 )
 IF EXIST *.go (
 	go get -v
