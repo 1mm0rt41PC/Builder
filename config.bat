@@ -12,6 +12,7 @@ SET keylen=64
 SET _7Z_OUPUT_=%scriptpath%\bin
 set BUILDER_THREADING=0
 set BUILDER_NB_THREAD=%NUMBER_OF_PROCESSORS%
+SET BUILDER_THREADING_TITLE=%random%%random%%random%%random%%random%%random%
 set PYTHONOPTIMIZE=1
 SET CGO_ENABLED=0
 SET GOPATH=%scriptpath%\GOPATH\
@@ -25,14 +26,6 @@ del /q /s /f %tmp%\pykey
 powershell -exec bypass -nop -Command "-join ((65..90) + (97..122) | Get-Random -Count %keylen% | %% {[char]$_})" > %tmp%\_7Z_PASSWORD_
 SET /p _7Z_PASSWORD_= < %tmp%\_7Z_PASSWORD_
 del /q /s /f %tmp%\_7Z_PASSWORD_
-
-
-:: Generate random title for threading
-IF "%BUILDER_THREADING%" == "1" (
-	powershell -exec bypass -nop -Command "-join ((65..90) + (97..122) | Get-Random -Count %keylen% | %% {[char]$_})" > %tmp%\BUILDER_THREADING_TITLE
-	SET /p BUILDER_THREADING_TITLE= < %tmp%\BUILDER_THREADING_TITLE
-	del /q /s /f %tmp%\BUILDER_THREADING_TITLE
-)
 
 
 echo [105;93m===========================================================================
