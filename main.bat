@@ -17,6 +17,14 @@ CALL clone.bat NinjaStyle82/rbcd_permissions
 CALL build-py.bat rbcd , rbcd , 0
 
 
+:: See https://dirkjanm.io/krbrelayx-unconstrained-delegation-abuse-toolkit/
+CALL clone.bat dirkjanm/krbrelayx
+CALL build-py.bat krbrelayx , krbrelayx , 0
+CALL build-py.bat printerbug , printerbug , 0
+CALL build-py.bat dnstool , dnstool , 0
+CALL build-py.bat addspn , addspn , 0
+
+
 :: Build pypykatz
 CALL clone.bat skelsec/pypykatz
 %py64% -m pip install minidump minikerberos aiowinreg msldap winsspi

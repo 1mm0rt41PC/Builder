@@ -19,10 +19,10 @@ IF "%_arch%" NEQ "" (
 IF "%BUILDER_THREADING%" == "1" (
 	CALL sync-thread.bat
 	CALL log.bat "Running thread for %_outTarget% x86"
-	start "%BUILDER_THREADING_TITLE% - Building %_outTarget% x86" /D "%CD%" cmd /c "CALL build-py.bat %_pyTarget% , %_outTarget% , %_errorExpected% , x86 , %py32% > %_outTarget%_x86.log 2>&1"
+	start "%BUILDER_THREADING_TITLE% - Building %_outTarget% x86" /D "%CD%" cmd /c "CALL build-py.bat %_pyTarget% , %_outTarget% , %_errorExpected% , x86 , %py32% > %scriptpath%\bin\%_outTarget%_x86.log 2>&1"
 	CALL sync-thread.bat
 	CALL log.bat "Running thread for %_outTarget% x64"
-	start "%BUILDER_THREADING_TITLE% - Building %_outTarget% x64" /D "%CD%" cmd /c "CALL build-py.bat %_pyTarget% , %_outTarget% , %_errorExpected% , x64 , %py64% > %_outTarget%_x64.log 2>&1"
+	start "%BUILDER_THREADING_TITLE% - Building %_outTarget% x64" /D "%CD%" cmd /c "CALL build-py.bat %_pyTarget% , %_outTarget% , %_errorExpected% , x64 , %py64% > %scriptpath%\bin\%_outTarget%_x64.log 2>&1"
 ) ELSE (
 	CALL :Build_arch %_pyTarget% , %_outTarget% , %_errorExpected% , x86 , %py32%
 	CALL :Build_arch %_pyTarget% , %_outTarget% , %_errorExpected% , x64 , %py64%
@@ -67,7 +67,7 @@ EXIT /B 0
 		IF "%retry%" == "1" (
 			SET retry="0"
 			CALL log.bat ERR "FAIL to build a valid %_outTarget%_%_arch%.exe (This bin return %_err%, expected %_errorExpected%)..." , 1
-			IF "%BUILDER_THREADING%" == "1" appveyor PushArtifact %_outTarget%_%_arch%.log
+			IF EXIST %scriptpath%\bin\%_outTarget%_%_arch%.log appveyor PushArtifact %scriptpath%\bin\%_outTarget%_%_arch%.log
 			EXIT /B 0
 		)
 		CALL log.bat WARN , "Build %_outTarget%_%_arch%.exe FAIL with %_err%, Retrying..." , 1
