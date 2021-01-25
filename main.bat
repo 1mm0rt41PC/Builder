@@ -8,6 +8,7 @@ cd examples
 CALL build-py.bat wmiexec , wmiexec , 0
 CALL build-py.bat secretsdump , secretsdump , 0
 CALL build-py.bat smbserver , smbserver , 0
+CALL build-py.bat smbclient , smbclient , 0
 CALL build-py.bat smbexec , smbexec , 0
 CALL build-py.bat psexec , psexec , 0
 CALL build-py.bat dcomexec , dcomexec , 0
