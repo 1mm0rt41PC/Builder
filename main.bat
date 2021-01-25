@@ -11,6 +11,10 @@ CALL build-py.bat smbserver , smbserver , 0
 CALL build-py.bat smbexec , smbexec , 0
 CALL build-py.bat psexec , psexec , 0
 CALL build-py.bat dcomexec , dcomexec , 0
+CALL build-py.bat GetUserSPNs , GetUserSPNs , 0
+CALL build-py.bat GetNPUsers , GetNPUsers , 0
+CALL build-py.bat getST , getST , 0
+CALL build-py.bat getTGT , getTGT , 0
 
 
 CALL clone.bat NinjaStyle82/rbcd_permissions
@@ -40,12 +44,17 @@ cd pypykatz
 CALL build-py.bat __main__ , pypykatz , 0
 
 
+CALL clone.bat skelsec/kerberoast
+cd kerberoast
+CALL build-py.bat kerberoast , kerberoast , 0
+
+
 :: Build BloodHound
 CALL clone.bat fox-it/BloodHound.py
-type bloodhound.py > bloodhound.py.org
-echo import multiprocessing; multiprocessing.freeze_support(); > bloodhound.py
-echo # >> bloodhound.py
-type bloodhound.py.org >> bloodhound.py
+:: Patch bloodhound to avoid "unrecognized arguments: --multiprocessing-fork"
+:: In case where the patch doesn't work DO NOT USE "-c ALL" and avoid DCOnly and ACL. Use -c "Group,LocalAdmin,Session,Trusts,DCOM,RDP,PSRemote,LoggedOn,ObjectProps"
+:: Maybe the argument "--disable-pooling" can do the tricks
+%py64% -c "f=open('bloodhound/__init__.py','r');d=f.read().replace('    main()','    import multiprocessing;multiprocessing.freeze_support();main()');f.close();f=open('bloodhound/__init__.py','w').write(d);f.close();"
 CALL build-py.bat bloodhound, bloodhound , 0
 
 
