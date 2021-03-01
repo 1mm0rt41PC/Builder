@@ -16,6 +16,7 @@ CALL build-py.bat GetUserSPNs , GetUserSPNs , 0
 CALL build-py.bat GetNPUsers , GetNPUsers , 0
 CALL build-py.bat getST , getST , 0
 CALL build-py.bat getTGT , getTGT , 0
+CALL build-py.bat ticketer , ticketer , 0
 
 
 CALL clone.bat NinjaStyle82/rbcd_permissions
