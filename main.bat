@@ -104,13 +104,18 @@ CALL log.bat "Building Rubeus..."
 msbuild /property:Configuration=Release
 CALL log.bat "Create Rubeus.7z with required files..."
 cd Rubeus\bin\release
-IF EXIST Rubeus (
+Rubeus.exe -h
+set _err=%ERRORLEVEL%
+set _errorExpected=0
+IF "%ERRORLEVEL%" == "%_errorExpected%" (
 	CALL log.bat "✅ Build Rubeus.exe OK" 1
 	echo Rubeus.exe >Rubeus.lst7z
 	echo Rubeus.exe.config >>Rubeus.lst7z
 	7z a -t7z -mhe -p%_7Z_PASSWORD_% %_7Z_OUPUT_%\Rubeus.7z @Rubeus.lst7z
-	appveyor PushArtifact Rubeus.7z
+	appveyor PushArtifact %_7Z_OUPUT_%\Rubeus.7z
 	copy Rubeus.exe %scriptpath%\bin\Rubeus.exe
+) else (
+	CALL log.bat ERR "FAIL to build a valid Rubeus.exe (This bin return %_err%, expected %_errorExpected%)..." , 1
 )
 
 :: Sync threading
