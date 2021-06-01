@@ -99,6 +99,17 @@ CALL clone.bat https://bitbucket.org/grimhacker/gpppfinder.git
 CALL build-py.bat cli , gpppfinder , 0
 
 
+CALL clone.bat GhostPack/Rubeus
+CALL log.bat "Building Rubeus..."
+msbuild /property:Configuration=Release
+CALL log.bat "Create Rubeus.7z with required files..."
+cd Rubeus\bin\release
+echo Rubeus.exe >Rubeus.lst7z
+echo Rubeus.exe.config >>Rubeus.lst7z
+7z a -t7z -mhe -p%_7Z_PASSWORD_% %_7Z_OUPUT_%\Rubeus.7z @Rubeus.lst7z
+appveyor PushArtifact Rubeus.7z
+
+
 :: Sync threading
 CALL sync-thread.bat 0
 
