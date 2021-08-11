@@ -138,6 +138,11 @@ IF "%ERRORLEVEL%" == "%_errorExpected%" (
 )
 
 
+:: Building custom-scripts
+cd %scriptpath%\custom-scripts
+CALL build-py.bat httpd , httpd , -1
+
+
 :: Sync threading
 CALL sync-thread.bat 0
 
