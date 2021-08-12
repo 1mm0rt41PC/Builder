@@ -18,7 +18,7 @@ IF "%_arch%" NEQ "" (
 
 IF "%BUILDER_THREADING%" == "1" (
 	CALL sync-thread.bat
-	IF "%ENABLE_BUILD_X86% == "1" (
+	IF "%ENABLE_BUILD_X86%" == "1" (
 		CALL log.bat "Running thread for %_outTarget% x86"
 		start "%BUILDER_THREADING_TITLE% - Building %_outTarget% x86" /D "%CD%" cmd /c "CALL build-py.bat %_pyTarget% , %_outTarget% , %_errorExpected% , x86 , %py32% > %scriptpath%\bin\%_outTarget%_x86.log 2>&1"
 	)
@@ -26,7 +26,7 @@ IF "%BUILDER_THREADING%" == "1" (
 	CALL log.bat "Running thread for %_outTarget% x64"
 	start "%BUILDER_THREADING_TITLE% - Building %_outTarget% x64" /D "%CD%" cmd /c "CALL build-py.bat %_pyTarget% , %_outTarget% , %_errorExpected% , x64 , %py64% > %scriptpath%\bin\%_outTarget%_x64.log 2>&1"
 ) ELSE (
-	IF "%ENABLE_BUILD_X86% == "1" (
+	IF "%ENABLE_BUILD_X86%" == "1" (
 		CALL :Build_arch %_pyTarget% , %_outTarget% , %_errorExpected% , x86 , %py32%
 	)
 	CALL :Build_arch %_pyTarget% , %_outTarget% , %_errorExpected% , x64 , %py64%

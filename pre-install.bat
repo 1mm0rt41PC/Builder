@@ -9,7 +9,7 @@ mkdir %scriptpath%\bin
 %py64% -m pip install -U tinyaes dnspython
 %py64% -m pip install -U git+https://github.com/pyinstaller/pyinstaller
 
-IF "%ENABLE_BUILD_X86% == "1" (
+IF "%ENABLE_BUILD_X86%" == "1" (
 	%py32% -m pip install -U pip wheel ldap3 pywin32 pypiwin32
 	%py32% -m pip install -U tinyaes dnspython
 	%py32% -m pip install -U git+https://github.com/pyinstaller/pyinstaller
