@@ -2,25 +2,6 @@ CALL config.bat
 CALL pre-install.bat
 
 
-CALL clone.bat deepinstinct/LsassSilentProcessExit
-CALL log.bat "Building LsassSilentProcessExit..."
-msbuild /property:Configuration=Release
-CALL log.bat "Create LsassSilentProcessExit.7z with required files..."
-cd x64\Release
-LsassSilentProcessExit.exe
-set _err=%ERRORLEVEL%
-set _errorExpected=-1
-IF "%ERRORLEVEL%" == "%_errorExpected%" (
-	CALL log.bat "✅ Build LsassSilentProcessExit.exe OK" 1
-	echo LsassSilentProcessExit.exe >LsassSilentProcessExit.lst7z
-	7z a -t7z -mhe -p%_7Z_PASSWORD_% %_7Z_OUPUT_%\LsassSilentProcessExit.7z @LsassSilentProcessExit.lst7z
-	appveyor PushArtifact %_7Z_OUPUT_%\LsassSilentProcessExit.7z
-	copy LsassSilentProcessExit.exe %scriptpath%\bin\LsassSilentProcessExit.exe
-) else (
-	CALL log.bat ERR "FAIL to build a valid LsassSilentProcessExit.exe (This bin return %_err%, expected %_errorExpected%)..." , 1
-)
-
-
 :: Build impacket
 CALL clone.bat SecureAuthCorp/impacket
 cd examples
@@ -143,17 +124,15 @@ CALL log.bat "Building LsassSilentProcessExit..."
 msbuild /property:Configuration=Release
 CALL log.bat "Create LsassSilentProcessExit.7z with required files..."
 cd x64\Release
-LsassSilentProcessExit.exe
-set _err=%ERRORLEVEL%
-set _errorExpected=-1
-IF "%ERRORLEVEL%" == "%_errorExpected%" (
+:: Running LsassSilentProcessExit will crash the script :'(
+IF EXIST LsassSilentProcessExit.exe (
 	CALL log.bat "✅ Build LsassSilentProcessExit.exe OK" 1
 	echo LsassSilentProcessExit.exe >LsassSilentProcessExit.lst7z
 	7z a -t7z -mhe -p%_7Z_PASSWORD_% %_7Z_OUPUT_%\LsassSilentProcessExit.7z @LsassSilentProcessExit.lst7z
 	appveyor PushArtifact %_7Z_OUPUT_%\LsassSilentProcessExit.7z
 	copy LsassSilentProcessExit.exe %scriptpath%\bin\LsassSilentProcessExit.exe
 ) else (
-	CALL log.bat ERR "FAIL to build a valid LsassSilentProcessExit.exe (This bin return %_err%, expected %_errorExpected%)..." , 1
+	CALL log.bat ERR "FAIL to build a valid LsassSilentProcessExit.exe ..." , 1
 )
 
 

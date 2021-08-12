@@ -18,21 +18,29 @@ IF "%_OS%" NEQ "" (
 
 IF "%BUILDER_THREADING%" == "1" (
 	CALL sync-thread.bat
-	CALL log.bat "Running thread for %_outTarget% for windows 386"
-	start "%BUILDER_THREADING_TITLE% - Building %_outTarget% for windows 386" /D "%CD%" cmd /c "CALL build-go.bat %_outTarget% , %_errorExpected% , windows , 386 > %_outTarget%_windows_386.log 2>&1"
-	CALL sync-thread.bat
+	IF "%ENABLE_BUILD_X86% == "1" (
+		CALL log.bat "Running thread for %_outTarget% for windows 386"
+		start "%BUILDER_THREADING_TITLE% - Building %_outTarget% for windows 386" /D "%CD%" cmd /c "CALL build-go.bat %_outTarget% , %_errorExpected% , windows , 386 > %_outTarget%_windows_386.log 2>&1"
+		CALL sync-thread.bat
+	)
 	CALL log.bat "Running thread for %_outTarget% for windows amd64"
 	start "%BUILDER_THREADING_TITLE% - Building %_outTarget% for windows amd64" /D "%CD%" cmd /c "CALL build-go.bat %_outTarget% , %_errorExpected% , windows , amd64 > %_outTarget%_windows_amd64.log 2>&1"
 	CALL sync-thread.bat
-	CALL log.bat "Running thread for %_outTarget% for linux 386"
-	start "%BUILDER_THREADING_TITLE% - Building %_outTarget% for linux 386" /D "%CD%" cmd /c "CALL build-go.bat %_outTarget% , %_errorExpected% , linux , 386 > %_outTarget%_linux_386.log 2>&1"
-	CALL sync-thread.bat
+	IF "%ENABLE_BUILD_X86% == "1" (
+		CALL log.bat "Running thread for %_outTarget% for linux 386"
+		start "%BUILDER_THREADING_TITLE% - Building %_outTarget% for linux 386" /D "%CD%" cmd /c "CALL build-go.bat %_outTarget% , %_errorExpected% , linux , 386 > %_outTarget%_linux_386.log 2>&1"
+		CALL sync-thread.bat
+	)
 	CALL log.bat "Running thread for %_outTarget% for linux amd64"
 	start "%BUILDER_THREADING_TITLE% - Building %_outTarget% for linux amd64" /D "%CD%" cmd /c "CALL build-go.bat %_outTarget% , %_errorExpected% , linux , amd64 > %_outTarget%_linux_amd64.log 2>&1"
 ) ELSE (
-	CALL :Build_arch %_outTarget% , %_errorExpected% , windows , 386
+	IF "%ENABLE_BUILD_X86% == "1" (
+		CALL :Build_arch %_outTarget% , %_errorExpected% , windows , 386
+	)
 	CALL :Build_arch %_outTarget% , %_errorExpected% , windows , amd64
-	CALL :Build_arch %_outTarget% , %_errorExpected% , linux , 386
+	IF "%ENABLE_BUILD_X86% == "1" (
+		CALL :Build_arch %_outTarget% , %_errorExpected% , linux , 386
+	)
 	CALL :Build_arch %_outTarget% , %_errorExpected% , linux , amd64
 )
 EXIT /B 0
