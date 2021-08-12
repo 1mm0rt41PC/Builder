@@ -8,6 +8,7 @@ IF %scriptpath% == ^%scriptpath^% SET scriptpath=%CD%
 SET PATH=%PATH%;%scriptpath%
 SET py64=C:\Python38-x64\python.exe
 SET py32=C:\Python38\python.exe
+SET ENABLE_BUILD_X86=0
 SET keylen=64
 SET _7Z_OUPUT_=%scriptpath%\bin
 IF NOT DEFINED BUILDER_THREADING SET BUILDER_THREADING=1
