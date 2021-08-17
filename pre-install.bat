@@ -2,6 +2,9 @@ IF "%LOADED_preinstall_bat%" == "1" EXIT /B 0
 SET LOADED_preinstall_bat=1
 CALL config.bat
 
+git config --global user.email "appveyor@appveyor-vm.com"
+git config --global user.name "1mm0rt41PC"
+
 mkdir %scriptpath%\bin
 
 :: Install pyinstaller
