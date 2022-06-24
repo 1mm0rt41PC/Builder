@@ -140,6 +140,31 @@ IF EXIST LsassSilentProcessExit.exe (
 )
 
 
+CALL clone.bat cube0x0/KrbRelay
+CALL log.bat "Building KrbRelay..."
+msbuild /property:Configuration=Release
+CALL log.bat "Create KrbRelay.7z with required files..."
+:: Running KrbRelay will crash the script :'(
+IF EXIST KrbRelay\bin\Release\KrbRelay.exe (
+	CALL log.bat "✅ Build KrbRelay.exe OK" 1
+	echo KrbRelay\bin\Release\KrbRelay.exe            >  KrbRelay.lst7z
+	echo KrbRelay\bin\Release\BouncyCastle.Crypto.dll >> KrbRelay.lst7z
+	echo KrbRelay\bin\Release\KrbRelay.exe.config     >> KrbRelay.lst7z
+	echo KrbRelay\bin\Release\MimeKitLite.dll         >> KrbRelay.lst7z
+	echo KrbRelay\bin\Release\MimeKitLite.xml         >> KrbRelay.lst7z
+	echo KrbRelay\bin\Release\System.Buffers.dll      >> KrbRelay.lst7z
+	echo KrbRelay\bin\Release\System.Buffers.xml      >> KrbRelay.lst7z
+	echo CheckPort\bin\Release\CheckPort.exe           >> KrbRelay.lst7z
+	echo CheckPort\bin\Release\CheckPort.exe.config    >> KrbRelay.lst7z
+	7z a -t7z -mhe -p%_7Z_PASSWORD_% %_7Z_OUPUT_%\KrbRelay.7z @KrbRelay.lst7z
+	appveyor PushArtifact %_7Z_OUPUT_%\KrbRelay.7z
+	copy KrbRelay\bin\Release\* %scriptpath%\bin\
+	copy CheckPort\bin\Release\* %scriptpath%\bin\
+) else (
+	CALL log.bat ERR "FAIL to build a valid KrbRelay.exe ..." , 1
+)
+
+
 :: Building custom-scripts
 cd %scriptpath%\custom-scripts
 CALL build-py.bat httpd , httpd , -1
