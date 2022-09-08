@@ -53,7 +53,8 @@ EXIT /B 0
 	IF EXIST %_pyTarget%.py (
 		%_pyExe% %PYTHONOPTIMIZE_FLAG% -m PyInstaller --key=%pykey% --icon=%scriptpath%\pytools.ico --onefile %_pyTarget%.py --name %_outTarget%_%_arch% --noupx
 	) ELSE (
-		%_pyExe% %PYTHONOPTIMIZE_FLAG% -m PyInstaller --key=%pykey% --icon=%scriptpath%\pytools.ico --onefile %_pyTarget% --name %_outTarget%_%_arch% --noupx
+		%_pyExe% %PYTHONOPTIMIZE_FLAG% -m PyInstaller %_pyTarget%
+		copy dist\%_pyTarget:.spec=.exe% dist\%_outTarget%_%_arch%.exe
 	)
 	IF NOT EXIST "dist\%_outTarget%_%_arch%.exe" CALL log.bat ERR "Build %_outTarget%_%_arch%.exe FAIL" 1
 	dist\%_outTarget%_%_arch%.exe -h
