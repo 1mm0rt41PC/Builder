@@ -28,6 +28,8 @@ cd webclientservicescanner
 git am %scriptpath%\WebclientServiceScanner\0001-Add-color-by-k4nfr3-WebclientServiceScanner.patch
 CALL build-py.bat console , WebclientServiceScanner , 0
 
+CALL clone.bat ly4k/Certipy
+CALL build-py.bat Certipy.spec , Certipy , 0
 
 :: See https://dirkjanm.io/krbrelayx-unconstrained-delegation-abuse-toolkit/
 CALL clone.bat dirkjanm/krbrelayx
@@ -36,11 +38,10 @@ CALL build-py.bat printerbug , printerbug , 0
 CALL build-py.bat dnstool , dnstool , 0
 CALL build-py.bat addspn , addspn , 0
 
-
 :: Build pypykatz
 CALL clone.bat skelsec/pypykatz
 %py64% -m pip install minidump minikerberos aiowinreg msldap winsspi
-%py32% -m pip install minidump minikerberos aiowinreg msldap winsspi
+::%py32% -m pip install minidump minikerberos aiowinreg msldap winsspi
 :: https://skelsec.medium.com/play-with-katz-get-scratched-6c2c350fadf2
 :: https://drive.google.com/drive/folders/1KT2yWziJHvaH41jtZMsatey2KycWF824?usp=sharing
 :: From https://github.com/skelsec/pypykatz/commit/f53ed8c691b32c2a5a0189604d56afe4732fb639
@@ -73,6 +74,7 @@ CALL build-py.bat bloodhound, bloodhound , 0
 ::CALL build-py.bat mitm6, mitm6 , 0
 
 
+:: DISABLED => See https://github.com/skelsec/Responder3/issues/
 :: Build Responder3
 ::CALL clone.bat skelsec/Responder3
 ::cd responder3
@@ -80,6 +82,7 @@ CALL build-py.bat bloodhound, bloodhound , 0
 ::CALL build-py.bat __main__ , responder3 , 0
 
 
+:: DISABLED => See https://github.com/lgandx/Responder/issues/
 :: Build responder
 ::CALL clone.bat lgandx/Responder
 ::echo Responder.conf > Responder.lst7z
