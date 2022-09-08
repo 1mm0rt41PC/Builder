@@ -50,8 +50,11 @@ EXIT /B 0
 	SET _pyExe=%~5
 :Build_arch_main
 	CALL log.bat "Building %_outTarget%_%_arch%.exe ..."
-
-	%_pyExe% %PYTHONOPTIMIZE_FLAG% -m PyInstaller --key=%pykey% --icon=%scriptpath%\pytools.ico --onefile %_pyTarget%.py --name %_outTarget%_%_arch% --noupx
+	IF EXIST %_pyTarget%.py (
+		%_pyExe% %PYTHONOPTIMIZE_FLAG% -m PyInstaller --key=%pykey% --icon=%scriptpath%\pytools.ico --onefile %_pyTarget%.py --name %_outTarget%_%_arch% --noupx
+	) ELSE (
+		%_pyExe% %PYTHONOPTIMIZE_FLAG% -m PyInstaller --key=%pykey% --icon=%scriptpath%\pytools.ico --onefile %_pyTarget% --name %_outTarget%_%_arch% --noupx
+	)
 	IF NOT EXIST "dist\%_outTarget%_%_arch%.exe" CALL log.bat ERR "Build %_outTarget%_%_arch%.exe FAIL" 1
 	dist\%_outTarget%_%_arch%.exe -h
 	set _err=%ERRORLEVEL%
