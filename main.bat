@@ -29,7 +29,7 @@ git am %scriptpath%\WebclientServiceScanner\0001-Add-color-by-k4nfr3-WebclientSe
 CALL build-py.bat console , WebclientServiceScanner , 0
 
 CALL clone.bat ly4k/Certipy
-CALL build-py.bat Certipy.spec , Certipy , 0
+CALL build-py.bat Certipy.spec , Certipy , 1
 
 :: See https://dirkjanm.io/krbrelayx-unconstrained-delegation-abuse-toolkit/
 CALL clone.bat dirkjanm/krbrelayx
