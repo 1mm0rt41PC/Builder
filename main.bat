@@ -30,7 +30,7 @@ CALL build-py.bat console , WebclientServiceScanner , 0
 
 CALL clone.bat ly4k/Certipy
 cd build\lib\certipy
-CALL build-py.bat entry , certipy , 1
+CALL build-py.bat entry , certipy , 0
 
 :: See https://dirkjanm.io/krbrelayx-unconstrained-delegation-abuse-toolkit/
 CALL clone.bat dirkjanm/krbrelayx
