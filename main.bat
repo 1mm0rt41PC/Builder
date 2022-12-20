@@ -29,7 +29,8 @@ git am %scriptpath%\WebclientServiceScanner\0001-Add-color-by-k4nfr3-WebclientSe
 CALL build-py.bat console , WebclientServiceScanner , 0
 
 CALL clone.bat ly4k/Certipy
-CALL build-py.bat Certipy.spec , Certipy , 1
+cd build\lib\certipy
+CALL build-py.bat entry , certipy , 1
 
 :: See https://dirkjanm.io/krbrelayx-unconstrained-delegation-abuse-toolkit/
 CALL clone.bat dirkjanm/krbrelayx
@@ -47,9 +48,10 @@ CALL clone.bat skelsec/pypykatz
 :: From https://github.com/skelsec/pypykatz/commit/f53ed8c691b32c2a5a0189604d56afe4732fb639
 ::git am %scriptpath%\pypykatz\BruteForcer.patch
 ::git am %scriptpath%\pypykatz\Add-debug-message-for-method-handledup.patch
-cd pypykatz
 %py64% setup.py install
-CALL build-py.bat __amain__ , pypykatz , 0
+cd pypykatz
+set hiddenimports= --hidden-import cryptography --hidden-import cffi --hidden-import cryptography.hazmat.backends.openssl --hidden-import cryptography.hazmat.bindings._openssl --hidden-import unicrypto --hidden-import unicrypto.backends.pycryptodome.DES --hidden-import  unicrypto.backends.pycryptodome.TDES --hidden-import unicrypto.backends.pycryptodome.AES --hidden-import unicrypto.backends.pycryptodome.RC4 --hidden-import unicrypto.backends.pure.DES --hidden-import  unicrypto.backends.pure.TDES --hidden-import unicrypto.backends.pure.AES --hidden-import unicrypto.backends.pure.RC4 --hidden-import unicrypto.backends.cryptography.DES --hidden-import  unicrypto.backends.cryptography.TDES --hidden-import unicrypto.backends.cryptography.AES --hidden-import unicrypto.backends.cryptography.RC4 --hidden-import unicrypto.backends.pycryptodomex.DES --hidden-import  unicrypto.backends.pycryptodomex.TDES --hidden-import unicrypto.backends.pycryptodomex.AES --hidden-import unicrypto.backends.pycryptodomex.RC4 --hidden-import unicrypto.backends.pycryptodomex
+CALL build-py.bat __main__ , pypykatz , 0
 
 
 CALL clone.bat skelsec/kerberoast
@@ -62,35 +64,9 @@ CALL clone.bat fox-it/BloodHound.py
 :: Patch bloodhound to avoid "unrecognized arguments: --multiprocessing-fork"
 :: In case where the patch doesn't work DO NOT USE "-c ALL" and avoid DCOnly and ACL. Use -c "Group,LocalAdmin,Session,Trusts,DCOM,RDP,PSRemote,LoggedOn,ObjectProps"
 :: Maybe the argument "--disable-pooling" can do the tricks
-%py64% -c "f=open('bloodhound/__init__.py','r');d=f.read().replace('    main()','    import multiprocessing;multiprocessing.freeze_support();main()');f.close();f=open('bloodhound/__init__.py','w').write(d);f.close();"
+%py64% -c "f=open('bloodhound/__init__.py','r');d=f.read().replace('    main()','    import multiprocessing;multiprocessing.freeze_support();main()');f.close();f=open('bloodhound/__init__.py','w');f.write(d);f.close();"
 CALL build-py.bat bloodhound, bloodhound , 0
 
-
-:: DISABLED => See https://github.com/fox-it/mitm6/issues/3
-:: Build mitm6
-::CALL clone.bat fox-it/mitm6
-::cd mitm6
-::%py64% -m pip install service_identity
-::%py32% -m pip install service_identity
-::CALL build-py.bat mitm6, mitm6 , 0
-
-
-:: DISABLED => See https://github.com/skelsec/Responder3/issues/
-:: Build Responder3
-::CALL clone.bat skelsec/Responder3
-::cd responder3
-::echo ..\examples\config.py > Responder3.lst7z
-::CALL build-py.bat __main__ , responder3 , 0
-
-
-:: DISABLED => See https://github.com/lgandx/Responder/issues/
-:: Build responder
-::CALL clone.bat lgandx/Responder
-::echo Responder.conf > Responder.lst7z
-::echo logs >> Responder.lst7z
-::echo files >> Responder.lst7z
-::echo certs >> Responder.lst7z
-::CALL build-py.bat Responder , Responder , 0
 
 
 :: Build sshdog
