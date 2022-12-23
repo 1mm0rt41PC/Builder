@@ -5,22 +5,27 @@ CALL pre-install.bat
 :: Build impacket
 CALL clone.bat SecureAuthCorp/impacket
 cd examples
-CALL build-py.bat wmiexec , wmiexec , 0
-CALL build-py.bat secretsdump , secretsdump , 0
-CALL build-py.bat smbserver , smbserver , 0
-CALL build-py.bat smbclient , smbclient , 0
-CALL build-py.bat smbexec , smbexec , 0
-CALL build-py.bat psexec , psexec , 0
-CALL build-py.bat dcomexec , dcomexec , 0
-CALL build-py.bat GetUserSPNs , GetUserSPNs , 0
+CALL build-py.bat Get-GPPPassword , Get-GPPPassword , 0
+CALL build-py.bat GetADUsers , GetADUsers , 0
 CALL build-py.bat GetNPUsers , GetNPUsers , 0
+CALL build-py.bat GetUserSPNs , GetUserSPNs , 0
+CALL build-py.bat addcomputer , addcomputer , 0
+CALL build-py.bat dcomexec , dcomexec , 0
+CALL build-py.bat findDelegation , findDelegation , 0
 CALL build-py.bat getST , getST , 0
 CALL build-py.bat getTGT , getTGT , 0
-CALL build-py.bat ticketer , ticketer , 0
-
-
-CALL clone.bat NinjaStyle82/rbcd_permissions
+CALL build-py.bat psexec , psexec , 0
 CALL build-py.bat rbcd , rbcd , 0
+CALL build-py.bat rdp_check , rdp_check , 0
+CALL build-py.bat rpcmap , rpcmap , 0
+CALL build-py.bat secretsdump , secretsdump , 0
+CALL build-py.bat services , services , 0
+CALL build-py.bat smbclient , smbclient , 0
+CALL build-py.bat smbexec , smbexec , 0
+CALL build-py.bat smbserver , smbserver , 0
+CALL build-py.bat ticketer , ticketer , 0
+CALL build-py.bat tstool , tstool , 0
+CALL build-py.bat wmiexec , wmiexec , 0
 
 
 CALL clone.bat Hackndo/WebclientServiceScanner
