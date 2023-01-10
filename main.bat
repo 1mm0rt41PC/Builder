@@ -37,6 +37,9 @@ CALL clone.bat ly4k/Certipy
 cd build\lib\certipy
 CALL build-py.bat entry , certipy , 0
 
+CALL clone.bat ShutdownRepo/pywhisker
+CALL build-py.bat pywhisker , pywhisker , 0
+
 :: See https://dirkjanm.io/krbrelayx-unconstrained-delegation-abuse-toolkit/
 CALL clone.bat dirkjanm/krbrelayx
 CALL build-py.bat krbrelayx , krbrelayx , 0
