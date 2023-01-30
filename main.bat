@@ -27,7 +27,6 @@ CALL build-py.bat ticketer , ticketer , 0
 CALL build-py.bat tstool , tstool , 0
 CALL build-py.bat wmiexec , wmiexec , 0
 
-
 CALL clone.bat Hackndo/WebclientServiceScanner
 cd webclientservicescanner
 git am %scriptpath%\WebclientServiceScanner\0001-Add-color-by-k4nfr3-WebclientServiceScanner.patch
@@ -76,7 +75,6 @@ CALL clone.bat fox-it/BloodHound.py
 CALL build-py.bat bloodhound, bloodhound , 0
 
 
-
 :: Build sshdog
 ::CALL clone.bat cyd01/sshdog
 ::echo PUT YOUR PUB KEY HERE > config/authorized_keys
@@ -93,7 +91,7 @@ CALL build-py.bat cli , gpppfinder , 0
 
 CALL clone.bat GhostPack/Rubeus
 CALL log.bat "Building Rubeus..."
-msbuild /property:Configuration=Release
+msbuild /t:Build /property:Configuration=Release
 CALL log.bat "Create Rubeus.7z with required files..."
 cd Rubeus\bin\release
 Rubeus.exe -h
@@ -108,6 +106,49 @@ IF "%ERRORLEVEL%" == "%_errorExpected%" (
 	copy Rubeus.exe %scriptpath%\bin\Rubeus.exe
 ) else (
 	CALL log.bat ERR "FAIL to build a valid Rubeus.exe (This bin return %_err%, expected %_errorExpected%)..." , 1
+)
+
+
+CALL clone.bat GhostPack/Certify
+CALL log.bat "Building Certify..."
+msbuild /t:Build /property:Configuration=Release
+CALL log.bat "Create Certify.7z with required files..."
+cd Certify\bin\release
+Certify.exe -h
+set _err=%ERRORLEVEL%
+set _errorExpected=0
+IF "%ERRORLEVEL%" == "%_errorExpected%" (
+	CALL log.bat "✅ Build Certify.exe OK" 1
+	echo Certify.exe >Certify.lst7z
+	echo Certify.exe.config >>Rubeus.lst7z
+	7z a -t7z -mhe -p%_7Z_PASSWORD_% %_7Z_OUPUT_%\Certify.7z @Certify.lst7z
+	appveyor PushArtifact %_7Z_OUPUT_%\Certify.7z
+	copy Certify.exe %scriptpath%\bin\Certify.exe
+) else (
+	CALL log.bat ERR "FAIL to build a valid Certify.exe (This bin return %_err%, expected %_errorExpected%)..." , 1
+)
+
+
+CALL clone.bat OPENCYBER-FR/RustHound
+CALL log.bat "Installing Rust tool chain..."
+choco install -y rustup.install
+set "PATH=%PATH;%USERPROFILE%\.cargo\bin"
+::rustup.exe install stable-x86_64-pc-windows-gnu
+::rustup.exe target add x86_64-pc-windows-gnu
+rustup.exe install stable-x86_64-pc-windows-msvc
+rustup.exe target add x86_64-pc-windows-msvc
+CALL log.bat "Building RustHound..."
+set "RUSTFLAGS=-C target-feature=+crt-static"
+cargo build --release --target x86_64-pc-windows-msvc -j %NUMBER_OF_PROCESSORS%
+cd target\x86_64-pc-windows-msvc\release
+IF EXIST rusthound.exe (
+	CALL log.bat "✅ Build rusthound.exe OK" 1
+	echo rusthound.exe >rusthound.lst7z
+	7z a -t7z -mhe -p%_7Z_PASSWORD_% %_7Z_OUPUT_%\rusthound.7z @rusthound.lst7z
+	appveyor PushArtifact %_7Z_OUPUT_%\rusthound.7z
+	copy rusthound.exe %scriptpath%\bin\rusthound.exe
+) else (
+	CALL log.bat ERR "FAIL to build a valid RustHound.exe ..." , 1
 )
 
 
