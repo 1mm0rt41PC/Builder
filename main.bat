@@ -132,7 +132,7 @@ IF "%ERRORLEVEL%" == "%_errorExpected%" (
 CALL clone.bat OPENCYBER-FR/RustHound
 CALL log.bat "Installing Rust tool chain..."
 choco install -y rustup.install
-set "PATH=%PATH;%USERPROFILE%\.cargo\bin"
+set "PATH=%PATH%;%USERPROFILE%\.cargo\bin"
 ::rustup.exe install stable-x86_64-pc-windows-gnu
 ::rustup.exe target add x86_64-pc-windows-gnu
 rustup.exe install stable-x86_64-pc-windows-msvc
