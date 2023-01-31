@@ -89,23 +89,23 @@ CALL clone.bat https://bitbucket.org/grimhacker/gpppfinder.git
 CALL build-py.bat cli , gpppfinder , 0
 
 
-CALL clone.bat icyguider/Nimcrypt2
-CALL log.bat "Install requirements for Nimcrypt2..."
-choco install -y nim
-RefreshEnv.cmd
-nimble install winim nimcrypto docopt ptr_math strenc -y
-CALL log.bat "Building Nimcrypt2..."
-nim c -d=release --cc:gcc --embedsrc=on --hints=on --app=console --cpu=amd64 --out=nimcrypt.exe nimcrypt.nim
-IF EXIST nimcrypt.exe (
-	CALL log.bat "✅ Build nimcrypt.exe OK" 1
-	echo nimcrypt.exe >nimcrypt.lst7z
-	7z a -t7z -mhe -p%_7Z_PASSWORD_% %_7Z_OUPUT_%\nimcrypt.7z @nimcrypt.lst7z
-	appveyor PushArtifact %_7Z_OUPUT_%\nimcrypt.7z
-	copy nimcrypt.exe %scriptpath%\bin\nimcrypt.exe
-	xcopy nimcrypt.exe C:\Windows
-) else (
-	CALL log.bat ERR "FAIL to build a valid nimcrypt.exe ..." , 1
-)
+::CALL clone.bat icyguider/Nimcrypt2
+::CALL log.bat "Install requirements for Nimcrypt2..."
+::choco install -y nim
+::RefreshEnv.cmd
+::nimble install winim nimcrypto docopt ptr_math strenc -y
+::CALL log.bat "Building Nimcrypt2..."
+::nim c -d=release --cc:gcc --embedsrc=on --hints=on --app=console --cpu=amd64 --out=nimcrypt.exe nimcrypt.nim
+::IF EXIST nimcrypt.exe (
+::	CALL log.bat "✅ Build nimcrypt.exe OK" 1
+::	echo nimcrypt.exe >nimcrypt.lst7z
+::	7z a -t7z -mhe -p%_7Z_PASSWORD_% %_7Z_OUPUT_%\nimcrypt.7z @nimcrypt.lst7z
+::	appveyor PushArtifact %_7Z_OUPUT_%\nimcrypt.7z
+::	copy nimcrypt.exe %scriptpath%\bin\nimcrypt.exe
+::	xcopy nimcrypt.exe C:\Windows
+::) else (
+::	CALL log.bat ERR "FAIL to build a valid nimcrypt.exe ..." , 1
+::)
 
 
 CALL clone.bat GhostPack/Rubeus
@@ -118,10 +118,10 @@ set _err=%ERRORLEVEL%
 set _errorExpected=0
 IF "%ERRORLEVEL%" == "%_errorExpected%" (
 	CALL log.bat "✅ Build Rubeus.exe OK" 1
-	nimcrypt -f Rubeus.exe -o Rubeus.nimcrypt.exe -t csharp  -u -e
+	::nimcrypt -f Rubeus.exe -o Rubeus.nimcrypt.exe -t csharp  -u -e
 	echo Rubeus.exe >Rubeus.lst7z
 	echo Rubeus.exe.config >>Rubeus.lst7z
-	echo Rubeus.nimcrypt.exe >>Rubeus.lst7z
+	::echo Rubeus.nimcrypt.exe >>Rubeus.lst7z
 	7z a -t7z -mhe -p%_7Z_PASSWORD_% %_7Z_OUPUT_%\Rubeus.7z @Rubeus.lst7z
 	appveyor PushArtifact %_7Z_OUPUT_%\Rubeus.7z
 	copy Rubeus.exe %scriptpath%\bin\Rubeus.exe
@@ -179,17 +179,17 @@ nmake -f Makefile.msvc
 cd dist
 IF EXIST nanodump.x64.exe (
 	CALL log.bat "✅ Build nanodump OK" 1
-	nimcrypt -f nanodump.x64.exe -o nanodump.x64.nimcrypt.exe -t pe -p explorer.exe -u -e
-	nimcrypt -f nanodump_ppl.x64.exe -o nanodump_ppl.x64.nimcrypt.exe -t pe -p explorer.exe -u -e
+	::nimcrypt -f nanodump.x64.exe -o nanodump.x64.nimcrypt.exe -t pe -p explorer.exe -u -e
+	::nimcrypt -f nanodump_ppl.x64.exe -o nanodump_ppl.x64.nimcrypt.exe -t pe -p explorer.exe -u -e
 	
 	echo load_ssp.x64.exe >nanodump.lst7z
 	echo load_ssp.x86.exe >>nanodump.lst7z
 	echo nanodump.x64.exe >>nanodump.lst7z
-	echo nanodump.x64.nimcrypt.exe >>nanodump.lst7z
+	::echo nanodump.x64.nimcrypt.exe >>nanodump.lst7z
 	echo nanodump.x86.exe >>nanodump.lst7z
 	echo nanodump_ppl.x64.dll >>nanodump.lst7z
 	echo nanodump_ppl.x64.exe >>nanodump.lst7z
-	echo nanodump_ppl.x64.nimcrypt.exe >>nanodump.lst7z
+	::echo nanodump_ppl.x64.nimcrypt.exe >>nanodump.lst7z
 	echo nanodump_ppl.x86.dll >>nanodump.lst7z
 	echo nanodump_ppl.x86.exe >>nanodump.lst7z
 	echo nanodump_ssp.x64.dll >>nanodump.lst7z
@@ -211,9 +211,9 @@ cd x64\Release
 :: Running LsassSilentProcessExit will crash the script :'(
 IF EXIST LsassSilentProcessExit.exe (
 	CALL log.bat "✅ Build LsassSilentProcessExit.exe OK" 1
-	nimcrypt -f LsassSilentProcessExit.exe -o LsassSilentProcessExit.nimcrypt.exe -t pe -p explorer.exe -u -e
+	::nimcrypt -f LsassSilentProcessExit.exe -o LsassSilentProcessExit.nimcrypt.exe -t pe -p explorer.exe -u -e
 	echo LsassSilentProcessExit.exe >LsassSilentProcessExit.lst7z
-	echo LsassSilentProcessExit.nimcrypt.exe >>LsassSilentProcessExit.lst7z
+	::echo LsassSilentProcessExit.nimcrypt.exe >>LsassSilentProcessExit.lst7z
 	7z a -t7z -mhe -p%_7Z_PASSWORD_% %_7Z_OUPUT_%\LsassSilentProcessExit.7z @LsassSilentProcessExit.lst7z
 	appveyor PushArtifact %_7Z_OUPUT_%\LsassSilentProcessExit.7z
 	copy LsassSilentProcessExit.exe %scriptpath%\bin\LsassSilentProcessExit.exe
