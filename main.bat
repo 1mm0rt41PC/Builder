@@ -261,6 +261,10 @@ CALL clone.bat dirkjanm/adidnsdump
 cd adidnsdump
 CALL build-py.bat dnsdump , dnsdump , 0
 
+CALL clone.bat mssalvatore/powershell-pth
+set hiddenimports= --hidden-import cffi
+CALL build-py.bat powershell-pth , powershell-pth , 2
+
 :: Building custom-scripts
 cd %scriptpath%\custom-scripts
 CALL build-py.bat httpd , httpd , -1
