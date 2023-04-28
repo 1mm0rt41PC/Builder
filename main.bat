@@ -79,7 +79,10 @@ CALL build-py.bat pygpoabuse , pygpoabuse , 0
 
 CALL clone.bat skelsec/kerberoast
 cd kerberoast
-CALL build-py.bat kerberoast , kerberoast , 0
+%py64% -m pip install minidump minikerberos aiowinreg msldap winsspi winacl pycryptodome
+%py64% -m pip install git+https://github.com/skelsec/unicrypto
+set hiddenimports= --hidden-import cryptography --hidden-import cffi --hidden-import cryptography.hazmat.backends.openssl --hidden-import cryptography.hazmat.bindings._openssl --hidden-import unicrypto --hidden-import unicrypto.backends.pycryptodome.DES --hidden-import  unicrypto.backends.pycryptodome.TDES --hidden-import unicrypto.backends.pycryptodome.AES --hidden-import unicrypto.backends.pycryptodome.RC4 --hidden-import unicrypto.backends.pure.DES --hidden-import  unicrypto.backends.pure.TDES --hidden-import unicrypto.backends.pure.AES --hidden-import unicrypto.backends.pure.RC4 --hidden-import unicrypto.backends.cryptography.DES --hidden-import  unicrypto.backends.cryptography.TDES --hidden-import unicrypto.backends.cryptography.AES --hidden-import unicrypto.backends.cryptography.RC4 --hidden-import unicrypto.backends.pycryptodomex.DES --hidden-import  unicrypto.backends.pycryptodomex.TDES --hidden-import unicrypto.backends.pycryptodomex.AES --hidden-import unicrypto.backends.pycryptodomex.RC4 --hidden-import unicrypto.backends.pycryptodomex
+CALL build-py.bat __main__ , kerberoast , 0
 
 
 :: Build BloodHound
