@@ -26,6 +26,7 @@ CALL build-py.bat smbserver , smbserver , 0
 CALL build-py.bat ticketer , ticketer , 0
 CALL build-py.bat tstool , tstool , 0
 CALL build-py.bat wmiexec , wmiexec , 0
+CALL build-py.bat atexec , atexec , 0
 
 CALL clone.bat Hackndo/WebclientServiceScanner
 cd webclientservicescanner
