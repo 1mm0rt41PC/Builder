@@ -247,6 +247,10 @@ IF EXIST KrbRelay\bin\Release\KrbRelay.exe (
 	CALL log.bat ERR "FAIL to build a valid KrbRelay.exe ..." , 1
 )
 
+CALL clone.bat dirkjanm/adidnsdump
+:: Require impacket && ldap3
+cd adidnsdump
+CALL build-py.bat dnsdump , dnsdump , 0
 
 :: Building custom-scripts
 cd %scriptpath%\custom-scripts
