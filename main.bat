@@ -5,6 +5,11 @@ CALL pre-install.bat
 :: Build impacket
 CALL clone.bat SecureAuthCorp/impacket
 cd examples
+%py64% -m pip install pcapy pyreadline
+set hiddenimports= --hidden-import Get-GPPPassword --hidden-import ntfs-read --hidden-import registry-read
+type %scriptpath%\custom-scripts\impacker.py > impacker.py
+set "hiddenimports="
+CALL build-py.bat impacker , impacker , 0
 CALL build-py.bat Get-GPPPassword , Get-GPPPassword , 0
 CALL build-py.bat GetADUsers , GetADUsers , 0
 CALL build-py.bat GetNPUsers , GetNPUsers , 0
@@ -275,9 +280,19 @@ CALL clone.bat mssalvatore/powershell-pth
 set hiddenimports= --hidden-import cffi
 CALL build-py.bat powershell-pth , powershell-pth , 2
 
-:: Building custom-scripts
-cd %scriptpath%\custom-scripts
-CALL build-py.bat httpd , httpd , -1
+:: CrackMapExec
+%py64% -m pip install git+https://github.com/skelsec/aardwolf
+%py64% -m pip install minidump minikerberos aiowinreg msldap winsspi winacl pycryptodome
+%py64% -m pip install git+https://github.com/skelsec/unicrypto
+CALL clone.bat mpgn/CrackMapExec
+type %scriptpath%\CrackMapExec\CrackMapExec.spec > CrackMapExec.spec
+CALL build-py.bat CrackMapExec , CrackMapExec , 0
+
+:: aardwolfgui
+CALL clone.bat skelsec/aardwolfgui
+set hiddenimports= --hidden-import aardwolf --hidden-import cryptography --hidden-import cffi --hidden-import cryptography.hazmat.backends.openssl --hidden-import cryptography.hazmat.bindings._openssl --hidden-import unicrypto --hidden-import unicrypto.backends.pycryptodome.DES --hidden-import  unicrypto.backends.pycryptodome.TDES --hidden-import unicrypto.backends.pycryptodome.AES --hidden-import unicrypto.backends.pycryptodome.RC4 --hidden-import unicrypto.backends.pure.DES --hidden-import  unicrypto.backends.pure.TDES --hidden-import unicrypto.backends.pure.AES --hidden-import unicrypto.backends.pure.RC4 --hidden-import unicrypto.backends.cryptography.DES --hidden-import  unicrypto.backends.cryptography.TDES --hidden-import unicrypto.backends.cryptography.AES --hidden-import unicrypto.backends.cryptography.RC4 --hidden-import unicrypto.backends.pycryptodomex.DES --hidden-import  unicrypto.backends.pycryptodomex.TDES --hidden-import unicrypto.backends.pycryptodomex.AES --hidden-import unicrypto.backends.pycryptodomex.RC4
+cd aardwolfgui
+CALL build-py.bat aardpclient , aardpclient , 0
 
 
 :: Sync threading
