@@ -9,7 +9,7 @@ cd examples
 set hiddenimports= --hidden-import Get-GPPPassword --hidden-import ntfs-read --hidden-import registry-read
 type %scriptpath%\custom-scripts\impacker.py > impacker.py
 set "hiddenimports="
-CALL build-py.bat impacker , impacker , 0
+CALL build-py.bat impacker , impacker , 1
 CALL build-py.bat Get-GPPPassword , Get-GPPPassword , 0
 CALL build-py.bat GetADUsers , GetADUsers , 0
 CALL build-py.bat GetNPUsers , GetNPUsers , 0
