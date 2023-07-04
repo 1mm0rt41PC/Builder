@@ -22,7 +22,7 @@ git checkout develop bootloader
 cd bootloader
 CALL "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
 mklink /D "C:\Program Files\Microsoft Visual Studio" "C:\Program Files (x86)\Microsoft Visual Studio"
-%py64% waf waf configure distclean all --msvc_targets=x64
+%py64% waf configure distclean all --msvc_targets=x64
 cd ..
 %py64% -m pip install .
 
