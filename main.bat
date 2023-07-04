@@ -8,8 +8,8 @@ cd examples
 %py64% -m pip install pcapy pyreadline
 set hiddenimports= --hidden-import Get-GPPPassword --hidden-import ntfs-read --hidden-import registry-read
 type %scriptpath%\custom-scripts\impacker.py > impacker.py
-set "hiddenimports="
 CALL build-py.bat impacker , impacker , 1
+set "hiddenimports="
 CALL build-py.bat Get-GPPPassword , Get-GPPPassword , 0
 CALL build-py.bat GetADUsers , GetADUsers , 0
 CALL build-py.bat GetNPUsers , GetNPUsers , 0
