@@ -29,5 +29,9 @@ powershell -exec bypass -nop -Command "$neo4j = cat .\neo4j-community-*\conf\neo
 
 type %scriptpath%\Bloodhound\run.bat > run.bat
 
-7z a -t7z -mhe -p%_7Z_PASSWORD_% %_7Z_OUPUT_%\BloodHound-UI.7z BloodHound-win32-x64 BloodHound-linux-x64 customqueries.json ..\Collectors neo4j-community run.bat
+curl.exe -k -L https://download.java.net/java/GA/jdk20.0.1/b4887098932d415489976708ad6d1a4b/9/GPL/openjdk-20.0.1_windows-x64_bin.zip --output jdk.zip
+7z x jdk.zip
+powershell -exec bypass -nop -Command "mv jdk-20.0.1 jdk"
+
+7z a -t7z -mhe -p%_7Z_PASSWORD_% %_7Z_OUPUT_%\BloodHound-UI.7z BloodHound-win32-x64 BloodHound-linux-x64 customqueries.json ..\Collectors neo4j-community jdk run.bat
 appveyor PushArtifact %_7Z_OUPUT_%\BloodHound-UI.7z
