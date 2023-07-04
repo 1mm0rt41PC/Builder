@@ -135,13 +135,13 @@ CALL build-py.bat cli , gpppfinder , 0
 
 CALL clone.bat GhostPack/Rubeus
 CALL log.bat "Building Rubeus..."
-msbuild /t:Build /property:Configuration=Release
+msbuild /t:Build /property:Configuration=Release /p:Platform="Any CPU"
 CALL log.bat "Create Rubeus.7z with required files..."
 cd Rubeus\bin\release
 Rubeus.exe -h
 set _err=%ERRORLEVEL%
 set _errorExpected=0
-IF "%ERRORLEVEL%" == "%_errorExpected%" (
+IF "%_err%" == "%_errorExpected%" (
 	CALL log.bat "✅ Build Rubeus.exe OK" 1
 	::nimcrypt -f Rubeus.exe -o Rubeus.nimcrypt.exe -t csharp  -u -e
 	echo Rubeus.exe >Rubeus.lst7z
@@ -158,7 +158,7 @@ IF "%ERRORLEVEL%" == "%_errorExpected%" (
 CALL clone.bat GhostPack/Certify
 CALL log.bat "Building Certify..."
 nuget install Certify\packages.config -OutputDirectory packages
-msbuild /t:Build /property:Configuration=Release
+msbuild /t:Build /property:Configuration=Release /p:Platform="Any CPU"
 CALL log.bat "Create Certify.7z with required files..."
 cd Certify\bin\release
 Certify.exe -h
