@@ -29,4 +29,5 @@ powershell -exec bypass -nop -Command "$neo4j = cat .\neo4j-community-*\conf\neo
 
 type %scriptpath%\Bloodhound\run.bat > run.bat
 
-7z a BloodHound-win32-x64 BloodHound-linux-x64 customqueries.json ..\Collectors neo4j-community run.bat
+7z a -t7z -mhe -p%_7Z_PASSWORD_% %_7Z_OUPUT_%\BloodHound-UI.7z BloodHound-win32-x64 BloodHound-linux-x64 customqueries.json ..\Collectors neo4j-community run.bat
+appveyor PushArtifact %_7Z_OUPUT_%\BloodHound-UI.7z
