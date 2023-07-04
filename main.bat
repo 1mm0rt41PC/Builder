@@ -295,6 +295,7 @@ set hiddenimports= --hidden-import aardwolf --hidden-import cryptography --hidde
 cd aardwolfgui
 CALL build-py.bat aardpclient , aardpclient , 0
 
+CALL Bloodhound\build.bat
 
 :: Sync threading
 CALL sync-thread.bat 0
