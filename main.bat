@@ -250,7 +250,7 @@ IF EXIST LsassSilentProcessExit.exe (
 
 CALL clone.bat cube0x0/KrbRelay
 CALL log.bat "Building KrbRelay..."
-msbuild /property:Configuration=Release
+msbuild /t:Build /property:Configuration=Release /p:Platform="Any CPU"
 CALL log.bat "Create KrbRelay.7z with required files..."
 :: Running KrbRelay will crash the script :'(
 IF EXIST KrbRelay\bin\Release\KrbRelay.exe (
