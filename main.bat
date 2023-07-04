@@ -157,13 +157,14 @@ IF "%ERRORLEVEL%" == "%_errorExpected%" (
 
 CALL clone.bat GhostPack/Certify
 CALL log.bat "Building Certify..."
+nuget install Certify\packages.config -OutputDirectory packages
 msbuild /t:Build /property:Configuration=Release
 CALL log.bat "Create Certify.7z with required files..."
 cd Certify\bin\release
 Certify.exe -h
 set _err=%ERRORLEVEL%
 set _errorExpected=0
-IF "%ERRORLEVEL%" == "%_errorExpected%" (
+IF "%_err%" == "%_errorExpected%" (
 	CALL log.bat "✅ Build Certify.exe OK" 1
 	echo Certify.exe >Certify.lst7z
 	7z a -t7z -mhe -p%_7Z_PASSWORD_% %_7Z_OUPUT_%\Certify.7z @Certify.lst7z
