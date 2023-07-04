@@ -13,14 +13,16 @@ xcopy %scriptpath%\bin\Certify.exe ..\Collectors\
 xcopy %scriptpath%\bin\rusthound.exe ..\Collectors\
 
 CALL log.bat "Building Bloodhound: Packaging"
-npm install -g electron-packager
-npm install
+CALL npm config set audit false --location=global
+CALL npm config set fund false --location=global
+CALL npm install -g electron-packager
+CALL npm install
 SET NODE_OPTIONS=--openssl-legacy-provider
 setx NODE_OPTIONS --openssl-legacy-provider
 setx /M NODE_OPTIONS --openssl-legacy-provider
 ::npm run build:win32 --arch=x64
-npm run compile
-npm run package -- --platform=linux,win32 --arch=x64 --icon=src/img/icon.ico
+CALL npm run compile
+CALL npm run package -- --platform=linux,win32 --arch=x64 --icon=src/img/icon.ico
 
 :: Download custom queries
 curl -L -k https://github.com/1mm0rt41PC/BloodHoundQueries/raw/master/customqueries.json --output customqueries.json
