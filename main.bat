@@ -201,7 +201,7 @@ IF EXIST rusthound.exe (
 
 CALL clone.bat helpsystems/nanodump
 CALL log.bat "Install requirements for nanodump..."
-CALL "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
+:: CALL "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
 nmake -f Makefile.msvc
 cd dist
 IF EXIST nanodump.x64.exe (
