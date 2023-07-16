@@ -5,6 +5,8 @@ CALL config.bat
 git config --global user.email "appveyor@appveyor-vm.com"
 git config --global user.name "1mm0rt41PC"
 
+CALL "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
+
 mkdir %scriptpath%\bin
 
 :: Install pyinstaller
