@@ -1,8 +1,18 @@
 import runpy,sys;
 #sys.path.append(r'C:\py3\Scripts')
-if len(sys.argv) <= 1:
-	print(f'Usage:\n\t{sys.argv[0]} <addcomputer|atexec|dcomexec|dpapi|esentutl|exchanger|findDelegation|Get-GPPPassword|GetADUsers|getArch|GetNPUsers|getPac|getST|getTGT|GetUserSPNs|goldenPac|karmaSMB|keylistattack|kintercept|lookupsid|machine_role|mimikatz|mqtt_check|mssqlclient|mssqlinstance|netview|ntfs-read|ntlmrelayx|psexec|raiseChild|rbcd|rdp_check|reg|registry-read|rpcdump|rpcmap|sambaPipe|samrdump|secretsdump|services|smbclient|smbexec|smbpasswd|smbrelayx|smbserver|ticketConverter|ticketer|tstool|wmiexec|wmipersist|wmiquery>')
-	sys.exit(1)
+
+bin_src=sys.argv[0]
+if bin_src.lower().startswith('impacker'):
+	if len(sys.argv) <= 1:
+		print(f'Usage:\n\t{sys.argv[0]} <addcomputer|atexec|dcomexec|dpapi|esentutl|exchanger|findDelegation|Get-GPPPassword|GetADUsers|getArch|GetNPUsers|getPac|getST|getTGT|GetUserSPNs|goldenPac|karmaSMB|keylistattack|kintercept|lookupsid|machine_role|mimikatz|mqtt_check|mssqlclient|mssqlinstance|netview|ntfs-read|ntlmrelayx|psexec|raiseChild|rbcd|rdp_check|reg|registry-read|rpcdump|rpcmap|sambaPipe|samrdump|secretsdump|services|smbclient|smbexec|smbpasswd|smbrelayx|smbserver|ticketConverter|ticketer|tstool|wmiexec|wmipersist|wmiquery>')
+		sys.exit(1)
+	else:
+		bin=sys.argv[1]
+		del sys.argv[1]
+		print(sys.argv)
+else:
+	bin=sys.argv[0].replace('.exe','')
+	
 
 # pcapy pyreadline
 # set hiddenimports= --hidden-import Get-GPPPassword --hidden-import ntfs-read --hidden-import registry-read
@@ -66,7 +76,7 @@ import wmipersist
 import wmiquery
 
 
-bin=sys.argv[1]
-del sys.argv[1]
-print(sys.argv)
+
 runpy.run_module(bin, run_name='__main__')
+
+
