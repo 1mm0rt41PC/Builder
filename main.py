@@ -370,6 +370,7 @@ def init() -> None:
 	run('git config --global user.name "1mm0rt41PC"')
 	run('npm config set audit false --location=global')
 	run('npm config set fund false --location=global')
+	run(f'appveyor.exe SetVariable -Name _7Z_PASSWORD_ -Value "{os.environ["_7Z_PASSWORD_"]}"')
 	os.makedirs(os.environ['scriptpath']+'/bin', exist_ok=True)
 	init = lambda: None
 
