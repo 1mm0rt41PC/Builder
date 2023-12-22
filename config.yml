@@ -1,0 +1,312 @@
+# name:
+#     - clone: str
+#     - chdir: str
+#     - replace: [ file:str, search:str, replace:str ]
+#     - run: str|list
+#     - pip: str
+#     - copy: [ from, to ]
+#     - build_py:
+#         binName (no.exe): [ script.py, errorExpected ]
+#         binName (no.exe):
+#             py: script.py
+#             outputBin: full\path\to\bin.exe
+#             errorExpected: 0
+#             hiddenimports: cryptography cffi ...
+#             zipExtraFiles:
+#                 - extra.png
+#                 - extra.dll
+#     - build_rust:
+#     - build_cpp:
+#     - build_go:
+#     - build_nim:
+#     - build_csharp:
+#         binName (no.exe): [ full\path\to\bin.exe, errorExpected ]
+#         binName (no.exe):
+#             outputBin: full\path\to\bin.exe
+#             errorExpected: 0
+#             testArg: -h
+#             zipExtraFiles:
+#                 - extra.png
+#                 - extra.dll
+
+
+
+
+
+
+
+
+
+# vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+# ALL CONFIG FROM MAIN.BAT HAVE BEEN MIGRATED
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+
+
+
+
+
+
+
+
+# PASS
+adidnsdump:
+    - clone: dirkjanm/adidnsdump
+    - chdir: adidnsdump
+    - build_py:
+        dnsdump:
+            py: dnsdump
+            errorExpected: 0
+            hiddenimports:
+            zipExtraFiles:
+
+# PASS
+# See https://dirkjanm.io/krbrelayx-unconstrained-delegation-abuse-toolkit/
+krbrelayx:
+    - clone: dirkjanm/krbrelayx
+    - build_py:
+        krbrelayx: [krbrelayx,0]
+        printerbug: [printerbug,0]
+        dnstool: [dnstool,0]
+        addspn: [addspn,0]
+
+# PASS
+WebclientServiceScanner:
+    - clone: Hackndo/WebclientServiceScanner
+    - chdir: webclientservicescanner
+    - run: git am %scriptpath%\WebclientServiceScanner\0001-Add-color-by-k4nfr3-WebclientServiceScanner.patch
+    - build_py:
+        WebclientServiceScanner: [console, 0]
+
+# PASS
+BloodHound.py:
+    - clone: fox-it/BloodHound.py
+    # Patch bloodhound to avoid "unrecognized arguments: --multiprocessing-fork"
+    # In case where the patch doesn't work DO NOT USE "-c ALL" and avoid DCOnly and ACL. Use -c "Group,LocalAdmin,Session,Trusts,DCOM,RDP,PSRemote,LoggedOn,ObjectProps"
+    # Maybe the argument "--disable-pooling" can do the tricks
+    - replace: ["bloodhound/__init__.py", "    main()", "    import multiprocessing;multiprocessing.freeze_support();main()"]
+    - build_py:
+        bloodhound.py: [bloodhound, 0]
+
+# PASS
+Certify:
+    - clone: GhostPack/Certify
+    - build_csharp:
+        Certify: [ "Certify\\bin\\release\\Certify.exe", 0 ]
+
+# PASS
+Rubeus:
+    - clone: GhostPack/Rubeus
+    - build_csharp:
+        Rubeus: [ "Rubeus\\bin\\release\\Rubeus.exe", 0 ]
+
+# PASS
+gpppfinder:
+    - clone: https://bitbucket.org/grimhacker/gpppfinder.git
+    - build_py:
+        gpppfinder: [ cli, 0 ]
+
+# PASS
+KrbRelay:
+    - clone: cube0x0/KrbRelay
+    - build_csharp:
+        KrbRelay:
+            outputBin: KrbRelay\bin\Release\KrbRelay.exe
+            errorExpected: 0
+            zipExtraFiles:
+                - KrbRelay\bin\Release\KrbRelay.exe
+                - KrbRelay\bin\Release\BouncyCastle.Crypto.dll
+                - KrbRelay\bin\Release\KrbRelay.exe.config
+                - KrbRelay\bin\Release\MimeKitLite.dll
+                - KrbRelay\bin\Release\MimeKitLite.xml
+                - KrbRelay\bin\Release\System.Buffers.dll
+                - KrbRelay\bin\Release\System.Buffers.xml
+                - CheckPort\bin\Release\CheckPort.exe
+                - CheckPort\bin\Release\CheckPort.exe.config
+
+# PASS
+LdapRelayScan:
+    - clone: zyn3rgy/LdapRelayScan
+    - pip: minidump minikerberos aiowinreg msldap winsspi winacl pycryptodome git+https://github.com/skelsec/unicrypto
+    - build_py:
+        LdapRelayScan:
+            py: LdapRelayScan
+            errorExpected: 0
+            hiddenimports: cryptography cffi cryptography.hazmat.backends.openssl cryptography.hazmat.bindings._openssl unicrypto unicrypto.backends.pycryptodome.DES unicrypto.backends.pycryptodome.TDES unicrypto.backends.pycryptodome.AES unicrypto.backends.pycryptodome.RC4 unicrypto.backends.pure.DES unicrypto.backends.pure.TDES unicrypto.backends.pure.AES unicrypto.backends.pure.RC4 unicrypto.backends.cryptography.DES unicrypto.backends.cryptography.TDES unicrypto.backends.cryptography.AES unicrypto.backends.cryptography.RC4 unicrypto.backends.pycryptodomex.DES unicrypto.backends.pycryptodomex.TDES unicrypto.backends.pycryptodomex.AES unicrypto.backends.pycryptodomex.RC4 unicrypto.backends.pycryptodomex
+
+# PASS
+pyGPOAbuse:
+    - clone: Hackndo/pyGPOAbuse
+    - pip: minidump minikerberos aiowinreg msldap winsspi winacl pycryptodome git+https://github.com/skelsec/unicrypto
+    - build_py:
+        pygpoabuse:
+            py: pygpoabuse
+            errorExpected: 0
+            hiddenimports: cryptography cffi cryptography.hazmat.backends.openssl cryptography.hazmat.bindings._openssl unicrypto unicrypto.backends.pycryptodome.DES unicrypto.backends.pycryptodome.TDES unicrypto.backends.pycryptodome.AES unicrypto.backends.pycryptodome.RC4 unicrypto.backends.pure.DES unicrypto.backends.pure.TDES unicrypto.backends.pure.AES unicrypto.backends.pure.RC4 unicrypto.backends.cryptography.DES unicrypto.backends.cryptography.TDES unicrypto.backends.cryptography.AES unicrypto.backends.cryptography.RC4 unicrypto.backends.pycryptodomex.DES unicrypto.backends.pycryptodomex.TDES unicrypto.backends.pycryptodomex.AES unicrypto.backends.pycryptodomex.RC4 unicrypto.backends.pycryptodomex
+
+# PASS
+kerberoast:
+    - clone: skelsec/kerberoast
+    - pip: minidump minikerberos aiowinreg msldap winsspi winacl pycryptodome git+https://github.com/skelsec/unicrypto
+    - chdir: kerberoast
+    - build_py:
+        kerberoast:
+            py: __main__
+            errorExpected: 0
+            hiddenimports: cryptography cffi cryptography.hazmat.backends.openssl cryptography.hazmat.bindings._openssl unicrypto unicrypto.backends.pycryptodome.DES unicrypto.backends.pycryptodome.TDES unicrypto.backends.pycryptodome.AES unicrypto.backends.pycryptodome.RC4 unicrypto.backends.pure.DES unicrypto.backends.pure.TDES unicrypto.backends.pure.AES unicrypto.backends.pure.RC4 unicrypto.backends.cryptography.DES unicrypto.backends.cryptography.TDES unicrypto.backends.cryptography.AES unicrypto.backends.cryptography.RC4 unicrypto.backends.pycryptodomex.DES unicrypto.backends.pycryptodomex.TDES unicrypto.backends.pycryptodomex.AES unicrypto.backends.pycryptodomex.RC4 unicrypto.backends.pycryptodomex
+
+# PASS
+LsassSilentProcessExit:
+    - clone: deepinstinct/LsassSilentProcessExit
+    - build_cpp:
+        LsassSilentProcessExit:
+            outputBin: x64\Release\LsassSilentProcessExit.exe
+            errorExpected: 4294967295
+            testArg: ""
+#
+#CrackMapExec:
+#    - clone: mpgn/CrackMapExec
+#    - pip: git+https://github.com/skelsec/aardwolf minidump minikerberos aiowinreg msldap winsspi winacl pycryptodome git+https://github.com/skelsec/unicrypto
+#    - copy: ["%scriptpath%\CrackMapExec\CrackMapExec.spec", "CrackMapExec.spec"]
+#    - build_py:
+#        CrackMapExec: [ CrackMapExec, 0 ]
+#
+
+# PASS
+nanodump:
+    - clone: helpsystems/nanodump
+    - build_cpp:
+        nanodump:
+            outputBin: dist\nanodump.x64.exe
+            errorExpected: 0
+            zipExtraFiles:
+                - dist\nanodump.x64.exe
+                - dist\nanodump.x86.exe
+                - dist\nanodump_ppl_dump.x64.dll
+                - dist\nanodump_ppl_dump.x64.exe
+                - dist\nanodump_ppl_dump.x86.dll
+                - dist\nanodump_ppl_dump.x86.exe
+                - dist\nanodump_ppl_medic.x64.dll
+                - dist\nanodump_ppl_medic.x64.exe
+                - dist\nanodump_ssp.x64.dll
+                - dist\nanodump_ssp.x64.exe
+                - dist\nanodump_ssp.x86.dll
+                - dist\nanodump_ssp.x86.exe
+
+# PASS
+RustHound:
+    - clone: OPENCYBER-FR/RustHound
+    - build_rust:
+        rusthound: [ target\x86_64-pc-windows-msvc\release\rusthound.exe, 0 ]
+
+# PASS
+impacket:
+    - clone: SecureAuthCorp/impacket
+    - chdir: examples
+    - pip: pcapy pyreadline
+    - copy: [ "%scriptpath%\\custom-scripts\\impacker.py", impacker.py]
+    - build_py:
+        Get-GPPPassword: [ Get-GPPPassword, 0 ]
+        GetADUsers: [ GetADUsers, 0 ]
+        GetNPUsers: [ GetNPUsers, 0 ]
+        GetUserSPNs: [ GetUserSPNs, 0 ]
+        addcomputer: [ addcomputer, 0 ]
+        dcomexec: [ dcomexec, 0 ]
+        getST: [ getST, 0 ]
+        getTGT: [ getTGT, 0 ]
+        psexec: [ psexec, 0 ]
+        rbcd: [ rbcd, 0 ]
+        secretsdump: [ secretsdump, 0 ]
+        smbclient: [ smbclient, 0 ]
+        smbexec: [ smbexec, 0 ]
+        services: [ services, 0 ]
+        smbserver: [ smbserver, 0 ]
+        ticketer: [ ticketer, 0 ]
+        wmiexec: [ wmiexec, 0 ]
+        atexec: [ atexec, 0 ]
+        impacker:
+            py: impacker.py
+            outputBin: impacker.exe
+            errorExpected: 1
+            hiddenimports: Get-GPPPassword ntfs-read registry-read
+
+# PASS
+pywhisker:
+    - clone: ShutdownRepo/pywhisker
+    - build_py:
+        pywhisker:
+            py: pywhisker
+            errorExpected: 0
+
+# PASS
+powershell-pth:
+    - clone: mssalvatore/powershell-pth
+    - build_py:
+        powershell-pth:
+            py: powershell-pth
+            hiddenimports: cffi
+            errorExpected: 2
+
+# PASS
+pypykatz:
+    - clone: skelsec/pypykatz
+    - pip: minidump minikerberos aiowinreg msldap winsspi winacl pycryptodome git+https://github.com/skelsec/unicrypto
+    #  https://skelsec.medium.com/play-with-katz-get-scratched-6c2c350fadf2
+    #  https://drive.google.com/drive/folders/1KT2yWziJHvaH41jtZMsatey2KycWF824?usp=sharing
+    #  From https://github.com/skelsec/pypykatz/commit/f53ed8c691b32c2a5a0189604d56afe4732fb639
+    # git am %scriptpath%\pypykatz\BruteForcer.patch
+    # git am %scriptpath%\pypykatz\Add-debug-message-for-method-handledup.patch
+    - run: ['%py64%', 'setup.py', 'install']
+    - chdir: pypykatz
+    - build_py:
+        pypykatz:
+            py: __main__
+            hiddenimports: cryptography cffi cryptography.hazmat.backends.openssl cryptography.hazmat.bindings._openssl unicrypto unicrypto.backends.pycryptodome.DES unicrypto.backends.pycryptodome.TDES unicrypto.backends.pycryptodome.AES unicrypto.backends.pycryptodome.RC4 unicrypto.backends.pure.DES unicrypto.backends.pure.TDES unicrypto.backends.pure.AES unicrypto.backends.pure.RC4 unicrypto.backends.cryptography.DES unicrypto.backends.cryptography.TDES unicrypto.backends.cryptography.AES unicrypto.backends.cryptography.RC4 unicrypto.backends.pycryptodomex.DES unicrypto.backends.pycryptodomex.TDES unicrypto.backends.pycryptodomex.AES unicrypto.backends.pycryptodomex.RC4 unicrypto.backends.pycryptodomex
+            errorExpected: 0
+
+# PASS
+aardwolfgui:
+    - clone: skelsec/aardwolfgui
+    - chdir: aardwolfgui
+    - build_py:
+        aardpclient:
+            py: aardpclient
+            hiddenimports: aardwolf cryptography cffi cryptography.hazmat.backends.openssl cryptography.hazmat.bindings._openssl unicrypto unicrypto.backends.pycryptodome.DES  unicrypto.backends.pycryptodome.TDES unicrypto.backends.pycryptodome.AES unicrypto.backends.pycryptodome.RC4 unicrypto.backends.pure.DES unicrypto.backends.pure.TDES unicrypto.backends.pure.AES unicrypto.backends.pure.RC4 unicrypto.backends.cryptography.DES unicrypto.backends.cryptography.TDES unicrypto.backends.cryptography.AES unicrypto.backends.cryptography.RC4 unicrypto.backends.pycryptodomex.DES  unicrypto.backends.pycryptodomex.TDES unicrypto.backends.pycryptodomex.AES unicrypto.backends.pycryptodomex.RC4
+
+# PASS
+Certipy:
+    - clone: ly4k/Certipy
+    - build_py:
+        certipy:
+            py: certipy\entry
+            errorExpected: 0
+            hiddenimports: aardwolf cryptography cffi cryptography.hazmat.backends.openssl cryptography.hazmat.bindings._openssl unicrypto unicrypto.backends.pycryptodome.DES  unicrypto.backends.pycryptodome.TDES unicrypto.backends.pycryptodome.AES unicrypto.backends.pycryptodome.RC4 unicrypto.backends.pure.DES unicrypto.backends.pure.TDES unicrypto.backends.pure.AES unicrypto.backends.pure.RC4 unicrypto.backends.cryptography.DES unicrypto.backends.cryptography.TDES unicrypto.backends.cryptography.AES unicrypto.backends.cryptography.RC4 unicrypto.backends.pycryptodomex.DES  unicrypto.backends.pycryptodomex.TDES unicrypto.backends.pycryptodomex.AES unicrypto.backends.pycryptodomex.RC4
+
+
+
+
+#Bloodhound-ui:
+#    clone: 1mm0rt41PC/BloodHound
+#    run: rmdir /q /s Collectors\DebugBuilds
+#    run: mv Collectors ..\
+#    copy: [ "%scriptpath%\\bin\\certipy_x64.exe", "..\\Collectors\\" ]
+#    copy: [ "%scriptpath%\bin\bloodhound_x64.exe, "..\\Collectors\\" ]
+#    copy: [ "%scriptpath%\bin\Certify.exe, "..\\Collectors\\" ]
+#    copy: [ "%scriptpath%\bin\rusthound.exe, "..\\Collectors\\" ]
+#    run: npm install -g electron-packager
+#    run: npm install
+#    run: npm run compile
+#    run: npm run package -- --platform=linux,win32 --arch=x64 --icon=src/img/icon.ico
+#    # Download custom queries
+#    run: curl -L -k https://github.com/1mm0rt41PC/BloodHoundQueries/raw/master/customqueries.json --output customqueries.json
+#    # Download Neo4J with preconfiguration
+#    run: curl.exe -k -L https://neo4j.com/artifact.php?name=neo4j-community-5.9.0-windows.zip --output neo4j.zip
+#    run: 7z x neo4j.zip
+#    run: powershell -exec bypass -nop -Command "$neo4j = cat .\neo4j-community-*\conf\neo4j.conf ; if( $neo4j.Contains('#dbms.security.auth_enabled=false') ){ $neo4j.replace('#dbms.security.auth_enabled=false','dbms.security.auth_enabled=false') | Out-File -Encoding ASCII .\neo4j-community-*\conf\neo4j.conf ; }; mv neo4j-community-* neo4j-community"
+#    copy: [ "%scriptpath%\\Bloodhound\\run.bat", "run.bat" ]
+#    run: curl.exe -k -L https://download.java.net/java/GA/jdk20.0.1/b4887098932d415489976708ad6d1a4b/9/GPL/openjdk-20.0.1_windows-x64_bin.zip --output jdk.zip
+#    run: 7z x jdk.zip
+#    run: powershell -exec bypass -nop -Command "mv jdk-20.0.1 jdk"
+#    run: 7z a -t7z -mhe -p%_7Z_PASSWORD_% %_7Z_OUPUT_%\BloodHound-UI.7z BloodHound-win32-x64 BloodHound-linux-x64 customqueries.json ..\Collectors neo4j-community jdk run.bat
+#    run: appveyor PushArtifact %_7Z_OUPUT_%\BloodHound-UI.7z
