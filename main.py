@@ -297,9 +297,10 @@ class Build:
 		if '.exe' not in outputBin:
 			outputBin += '.exe'
 
+		logFile = os.environ['scriptpath']+'/bin/'+outputBin.replace('\\','/').split('/')[-1].replace('.exe','.log')
 		if not args['job']:
 			log_info(f'Running thread for {repo}...')
-			logOutput = open(os.environ['scriptpath']+'/bin/'+outputBin.replace('\\','/').split('/')[-1].replace('.exe','.log'),'w')
+			logOutput = open(logFile,'w')
 			Popen([sys.executable, os.path.abspath(__file__),'-j',repo], shell=True, stdout=logOutput, stderr=logOutput, stdin=sys.stdin, env=os.environ)
 			return None
 		
@@ -315,6 +316,7 @@ class Build:
 			if retry:
 				log_warn(f'FAIL to build a valid {repo} (This bin return {_err}, expected {errorExpected}) Retrying...')
 				return Build._build(cmd=cmd, repo=repo, outputBin=outputBin, testArg=testArg, errorExpected=errorExpected, retry=False, lockThread=False)
+			appveyor_push(logFile)
 			return log_err(f'FAIL to build a valid {repo} (This bin return {_err}, expected {errorExpected})...')
 
 		for f in [outputBin]+zipExtraFiles:
