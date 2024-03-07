@@ -200,6 +200,12 @@ RustHound:
     - build_rust:
         rusthound: [ target\x86_64-pc-windows-msvc\release\rusthound.exe, 0 ]
 
+
+netstat:
+    - clone: 1mm0rt41PC/netstat-rust
+    - build_rust:
+        netstat: [ target\x86_64-pc-windows-msvc\release\netstat-rust.exe, 0 ]
+
 # PASS
 impacket:
     - clone: SecureAuthCorp/impacket
