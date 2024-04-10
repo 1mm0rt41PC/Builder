@@ -298,6 +298,14 @@ SharpDPAPI:
             zipExtraFiles:
                 - SharpDPAPI\bin\Release\SharpDPAPI.exe
 
+SharpSCCM:
+    - clone: Mayyhem/SharpSCCM
+    - build_csharp:
+        SharpSCCM:
+            outputBin: SharpSCCM\bin\Release\SharpSCCM.exe
+            errorExpected: 0
+            zipExtraFiles:
+                - SharpSCCM\bin\Release\SharpSCCM.exe
 
 #Bloodhound-ui:
 #    clone: 1mm0rt41PC/BloodHound
