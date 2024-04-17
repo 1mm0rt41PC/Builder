@@ -153,6 +153,7 @@ def main() -> int:
 					errorExpected = 0
 					zipExtraFiles = []
 					testArg       = '-h'
+					configuration = 'Release'
 					if type(tasks[item]) == type([]):
 						outputBin      = tasks[item][0]
 						errorExpected  = tasks[item][1]
@@ -165,13 +166,15 @@ def main() -> int:
 							errorExpected  = tasks[item]['errorExpected']
 						if 'zipExtraFiles' in tasks[item] and tasks[item]['zipExtraFiles']:
 							zipExtraFiles  = tasks[item]['zipExtraFiles']
+						if 'configuration' in tasks[item]:
+							configuration = tasks[item]['configuration']
 						if 'testArg' in tasks[item]:
 							testArg        = tasks[item]['testArg']
 							testArg        = '' if testArg == None else testArg
 					else:
 						raise f'Unexcepted format. Expected `dict` recv `{type(tasks[item])}` with value: {tasks[item]}'
 					if actionName == 'build_csharp':
-						Build.csharp( repo=itemName+'/'+item, outputBin=outputBin, testArg=testArg, errorExpected=errorExpected, zipExtraFiles=zipExtraFiles )
+						Build.csharp( repo=itemName+'/'+item, outputBin=outputBin, testArg=testArg, errorExpected=errorExpected, zipExtraFiles=zipExtraFiles, configuration=configuration )
 					elif actionName == 'build_cpp':
 						Build.cpp( repo=itemName+'/'+item, outputBin=outputBin, testArg=testArg, errorExpected=errorExpected, zipExtraFiles=zipExtraFiles )
 					elif actionName == 'build_rust':
@@ -278,9 +281,9 @@ class Build:
 
 		Build._build(cmd, repo=repo, outputBin=outputBin, testArg=testArg, errorExpected=errorExpected, zipExtraFiles=zipExtraFiles )
 
-	def csharp( repo:str, outputBin:str, testArg:str, errorExpected:int, zipExtraFiles:list=[] ) -> None:
+	def csharp( repo:str, outputBin:str, testArg:str, errorExpected:int, zipExtraFiles:list=[], configuration:str='Release' ) -> None:
 		Requirement.csharp()
-		Build._build('msbuild /t:Build /property:Configuration=Release /p:Platform="Any CPU"', repo=repo, outputBin=outputBin, testArg=testArg, errorExpected=errorExpected, zipExtraFiles=zipExtraFiles )
+		Build._build(f'msbuild /t:Build /property:Configuration={configuration} /p:Platform="Any CPU"', repo=repo, outputBin=outputBin, testArg=testArg, errorExpected=errorExpected, zipExtraFiles=zipExtraFiles )
 
 	def cpp( repo:str, outputBin:str, testArg:str, errorExpected:int, zipExtraFiles:list=[] ) -> None:
 		Requirement.cpp()
