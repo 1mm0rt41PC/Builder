@@ -22,6 +22,7 @@
 #     - build_csharp:
 #         binName (no.exe): [ full\path\to\bin.exe, errorExpected ]
 #         binName (no.exe):
+#             configuration: Debug
 #             outputBin: full\path\to\bin.exe
 #             errorExpected: 0
 #             testArg: -h
@@ -44,11 +45,31 @@
 
 
 
+#PingCastle:
+#    - clone: vletoux/pingcastle
+#    - build_csharp:
+#        PingCastle:
+#            configuration: Debug
+#            outputBin: bin\Debug\PingCastle.exe
+#            errorExpected: 0
+#			env:
+#				- DEBUG=1
+#            zipExtraFiles:
+#                - bin\Debug\Newtonsoft.Json.dll
+#                - bin\Debug\PingCastle.exe
+#                - bin\Debug\PingCastle.exe.config
+#                - bin\Debug\PingCastle.pdb
+#                - bin\Debug\PingCastleAutoUpdater.exe
+#                - bin\Debug\PingCastleAutoUpdater.exe.config
+#                - bin\Debug\PingCastleAutoUpdater.pdb
 
 
-
-
-
+# PASS
+rustdns:
+    - clone: bramp/rustdns
+    - chdir: dig
+    - build_rust:
+        rustdns: [ ..\target\x86_64-pc-windows-msvc\release\dig.exe, 0 ]
 
 # PASS
 adidnsdump:
