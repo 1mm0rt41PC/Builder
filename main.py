@@ -313,6 +313,7 @@ class Build:
 		run(cmd)
 
 		if not os.path.isfile(outputBin):
+			appveyor_push(logFile)
 			return log_err(f'Build {repo} FAIL: `{outputBin}` not present')
 
 		if (_err:=run((outputBin+' '+str(testArg)).strip('\r\n\t '))) != errorExpected:
