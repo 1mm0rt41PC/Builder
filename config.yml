@@ -86,6 +86,7 @@ adidnsdump:
 # See https://dirkjanm.io/krbrelayx-unconstrained-delegation-abuse-toolkit/
 krbrelayx:
     - clone: dirkjanm/krbrelayx
+    - pip: git+https://github.com/SecureAuthCorp/impacket
     - build_py:
         krbrelayx: [krbrelayx,0]
         printerbug: [printerbug,0]
