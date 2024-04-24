@@ -184,7 +184,7 @@ def main() -> int:
 	if not args['job']:
 		log_info('Waiting for thread...')
 		FileLock.wait()
-	log_info('Done')
+	log_info(f'Done {sys.argv[1:]}')
 	return 0
 
 
