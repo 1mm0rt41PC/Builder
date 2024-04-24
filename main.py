@@ -36,6 +36,7 @@ args = {
 
 
 def main() -> int:
+	print(f'Envionement detected: IS_APPVEYOR={IS_APPVEYOR}')
 	if len(sys.argv) > 1:
 		if sys.argv[1] in ['help','-h','-help','--help']:
 			print(myHelp)
@@ -188,14 +189,16 @@ def main() -> int:
 
 
 def chdir( d ):
-	if IS_APPVEYOR:
-		os.chdir(d)
-	
+	if not IS_APPVEYOR:
+		return log_debug(f'Ignored chdir({d}). IS_APPVEYOR=false')
+	os.chdir(d)
+
+
 class Requirement:
 	@staticmethod
 	def python():
 		if os.path.isfile(os.environ['scriptpath']+'/python.installed'):
-			return;
+			return log_debug(f'Ignored Requirement.python(). Already loaded')
 		pwdb = os.getcwd()
 		log_info('Install requirement: pip & co...')
 		pip(['-U','pip','wheel','ldap3','pywin32','pypiwin32','tinyaes','dnspython'])
@@ -216,7 +219,7 @@ class Requirement:
 	@staticmethod
 	def go():
 		if os.path.isfile(os.environ['scriptpath']+'/go.installed'):
-			return;
+			return log_debug(f'Ignored Requirement.go(). Already loaded');
 		log_info('Install requirement: rsrc...')
 		run('go get -v github.com/akavel/rsrc')
 		os.environ['rsrc'] = os.environ['GOPATH']+r'\bin\rsrc.exe'
@@ -227,8 +230,10 @@ class Requirement:
 		
 	@staticmethod
 	def cpp():
-		if not IS_APPVEYOR or 'WindowsSdkDir' in os.environ:
-			return
+		if not IS_APPVEYOR:
+			return log_debug(f'Ignored Requirement.cpp(). IS_APPVEYOR=false')
+		if 'WindowsSdkDir' in os.environ:
+			return log_debug(f'Ignored Requirement.cpp(). Already loaded')
 		process = Popen(r'("C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat">nul)&&"'+sys.executable+'" -c "import os; print(repr(os.environ))"', stdout=PIPE, shell=True)
 		stdout, _ = process.communicate()
 		if process.wait() == 0:
@@ -242,7 +247,7 @@ class Requirement:
 	@staticmethod
 	def rust():
 		if os.path.isfile(os.environ['scriptpath']+'/rust.installed'):
-			return;
+			return log_debug(f'Ignored Requirement.rust(). Already loaded')
 		log_info('Install requirement: rust,cargo...')
 		run('choco install -y rustup.install')
 		run('rustup.exe install stable-x86_64-pc-windows-msvc')
@@ -313,6 +318,7 @@ class Build:
 		run(cmd)
 
 		if not os.path.isfile(outputBin):
+			logOutput.close()
 			appveyor_push(logFile)
 			return log_err(f'Build {repo} FAIL: `{outputBin}` not present')
 
@@ -320,6 +326,7 @@ class Build:
 			if retry:
 				log_warn(f'FAIL to build a valid {repo} (This bin return {_err}, expected {errorExpected}) Retrying...')
 				return Build._build(cmd=cmd, repo=repo, outputBin=outputBin, testArg=testArg, errorExpected=errorExpected, retry=False, lockThread=False)
+			logOutput.close()
 			appveyor_push(logFile)
 			return log_err(f'FAIL to build a valid {repo} (This bin return {_err}, expected {errorExpected})...')
 
@@ -383,8 +390,11 @@ def appveyor_push( outputBin:str ) -> None:
 	if os.path.isfile(os.environ['_7Z_OUPUT_']+f'\\{outputBin}.7z'):
 		run(['appveyor','PushArtifact',f'%_7Z_OUPUT_%\\{outputBin}.7z'])
 		return None
+	if os.path.isfile(outputBin):
+		run(['appveyor','PushArtifact',outputBin])
+		return None
 	run(['appveyor','PushArtifact',f'%_7Z_OUPUT_%\\{outputBin}.log'])
-	
+
 def zip( outputBin:str, zipExtraFiles:list ) -> None:
 	log_info(f'Create {outputBin}.7z with required files...')
 	fd, zipName = tempfile.mkstemp()
@@ -401,7 +411,7 @@ def zip( outputBin:str, zipExtraFiles:list ) -> None:
 def replace( sfile:str, search:str, rpl:str ) -> None:
 	log_info(f'Replace string in file `{sfile}`')
 	if not IS_APPVEYOR:
-		return None
+		return log_debug(f'replace({sfile},{search},{rpl}) => IS_APPVEYOR=false')
 	d = ''
 	with open(sfile,'r') as fp:
 		d=fp.read().replace(search,rpl)
@@ -415,6 +425,7 @@ def run( cmd:list|str, shell:bool=True, logOutput:str=None ) -> int:
 		logOutput=sys.stdout
 	log_debug(f'Running `{cmd}` in dir `{os.getcwd()}`')
 	if not IS_APPVEYOR:
+		log_debug(f'run({cmd},{shell},{logOutput}) => IS_APPVEYOR=false')
 		return 0
 	return Popen(cmd, shell=True, stdout=logOutput, stderr=logOutput, stdin=sys.stdin, env=os.environ).wait()
 
