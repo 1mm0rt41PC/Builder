@@ -386,7 +386,7 @@ def appveyor_push( outputBin:str ) -> None:
 	run(['appveyor','PushArtifact',f'%_7Z_OUPUT_%\\{outputBin}.log'])
 	
 def zip( outputBin:str, zipExtraFiles:list ) -> None:
-	log_info('Create {outputBin}.7z with required files...')
+	log_info(f'Create {outputBin}.7z with required files...')
 	fd, zipName = tempfile.mkstemp()
 	zipName += '.lst7z'
 	with open(zipName,'w') as fp:
