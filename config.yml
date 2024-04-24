@@ -324,10 +324,23 @@ SharpSCCM:
     - clone: Mayyhem/SharpSCCM
     - build_csharp:
         SharpSCCM:
-            outputBin: SharpSCCM\bin\Release\SharpSCCM.exe
+            outputBin: bin\Release\SharpSCCM.exe
             errorExpected: 0
             zipExtraFiles:
-                - SharpSCCM\bin\Release\SharpSCCM.exe
+                - bin\Release\Microsoft.ConfigurationManagement.Messaging.dll
+                - bin\Release\Microsoft.ConfigurationManagement.Security.Cryptography.dll
+                - bin\Release\Newtonsoft.Json.dll
+                - bin\Release\SharpSCCM.exe
+                - bin\Release\SharpSCCM.exe.config
+                - bin\Release\System.Buffers.dll
+                - bin\Release\System.CommandLine.dll
+                - bin\Release\System.CommandLine.NamingConventionBinder.dll
+                - bin\Release\System.Memory.dll
+                - bin\Release\System.Net.Http.Formatting.dll
+                - bin\Release\System.Numerics.Vectors.dll
+                - bin\Release\System.Runtime.CompilerServices.Unsafe.dll
+                - bin\Release\System.Threading.Tasks.Extensions.dll
+                - bin\Release\System.ValueTuple.dll
 
 #Bloodhound-ui:
 #    clone: 1mm0rt41PC/BloodHound
