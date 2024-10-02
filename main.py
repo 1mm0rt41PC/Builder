@@ -319,7 +319,8 @@ class Build:
 		run(cmd)
 
 		if not os.path.isfile(outputBin):
-			logOutput.close()
+			if logOutput:
+				logOutput.close()
 			appveyor_push(logFile)
 			return log_err(f'Build {repo} FAIL: `{outputBin}` not present')
 
@@ -327,7 +328,8 @@ class Build:
 			if retry:
 				log_warn(f'FAIL to build a valid {repo} (This bin return {_err}, expected {errorExpected}) Retrying...')
 				return Build._build(cmd=cmd, repo=repo, outputBin=outputBin, testArg=testArg, errorExpected=errorExpected, retry=False, lockThread=False)
-			logOutput.close()
+			if logOutput:
+				logOutput.close()
 			appveyor_push(logFile)
 			return log_err(f'FAIL to build a valid {repo} (This bin return {_err}, expected {errorExpected})...')
 
