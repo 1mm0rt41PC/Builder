@@ -207,9 +207,9 @@ class Requirement:
 		clone('pyinstaller/pyinstaller',ignore_requirements=True,ignore_pip=True)
 		run('git fetch --all --tags --prune')
 		run('git checkout v5.13.0 .')
-		run('git checkout develop bootloader')
+		run('git checkout v6.7.0 bootloader')
 		chdir(os.getcwd()+'/bootloader')
-		run('%py64% waf configure distclean all --msvc_targets=x64')
+		run('%py64% waf configure distclean all --msvc_targets=x64 -v')
 		chdir(os.getcwd()+'/../')
 		pip(['.'])
 		with open(os.environ['scriptpath']+'/python.installed','w') as fp:
