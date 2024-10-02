@@ -306,6 +306,7 @@ class Build:
 			outputBin += '.exe'
 
 		logFile = os.environ['scriptpath']+'/bin/'+outputBin.replace('\\','/').split('/')[-1].replace('.exe','.log')
+		logOutput = False
 		if not args['job']:
 			log_info(f'Running thread for {repo}...')
 			logOutput = open(logFile,'w')
