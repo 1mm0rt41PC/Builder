@@ -108,7 +108,7 @@ def main() -> int:
 				elif actionName == 'run':
 					run(tasks)
 				elif actionName == 'pip':
-					pip('install '+tasks)
+					pip(tasks)
 				elif actionName == 'copy':
 					copy(tasks[0], tasks[1])
 			if actionName == 'build_py':
