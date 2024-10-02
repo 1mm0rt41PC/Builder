@@ -63,6 +63,40 @@
 #                - bin\Debug\PingCastleAutoUpdater.exe.config
 #                - bin\Debug\PingCastleAutoUpdater.pdb
 
+# PASS
+aiosmb:
+    - clone: skelsec/msldap
+    - clone: skelsec/aiosmb
+    - chdir: aiosmb/examples
+    - build_py:
+        aiosmb_smbclient:
+            py: smbclient
+            hiddenimports: cryptography cffi cryptography.hazmat.backends.openssl cryptography.hazmat.bindings._openssl unicrypto unicrypto.backends.pycryptodome.DES  unicrypto.backends.pycryptodome.TDES unicrypto.backends.pycryptodome.AES unicrypto.backends.pycryptodome.RC4 unicrypto.backends.pure.DES  unicrypto.backends.pure.TDES unicrypto.backends.pure.AES unicrypto.backends.pure.RC4 unicrypto.backends.cryptography.DES  unicrypto.backends.cryptography.TDES unicrypto.backends.cryptography.AES unicrypto.backends.cryptography.RC4 unicrypto.backends.pycryptodomex.DES  unicrypto.backends.pycryptodomex.TDES unicrypto.backends.pycryptodomex.AES unicrypto.backends.pycryptodomex.RC4
+        # Fail
+        aiosmb_smbcertreq:
+            py: smbcertreq
+            hiddenimports: cryptography cffi cryptography.hazmat.backends.openssl cryptography.hazmat.bindings._openssl unicrypto unicrypto.backends.pycryptodome.DES  unicrypto.backends.pycryptodome.TDES unicrypto.backends.pycryptodome.AES unicrypto.backends.pycryptodome.RC4 unicrypto.backends.pure.DES  unicrypto.backends.pure.TDES unicrypto.backends.pure.AES unicrypto.backends.pure.RC4 unicrypto.backends.cryptography.DES  unicrypto.backends.cryptography.TDES unicrypto.backends.cryptography.AES unicrypto.backends.cryptography.RC4 unicrypto.backends.pycryptodomex.DES  unicrypto.backends.pycryptodomex.TDES unicrypto.backends.pycryptodomex.AES unicrypto.backends.pycryptodomex.RC4
+        aiosmb_smbgetfile:
+            py: smbgetfile
+            hiddenimports: cryptography cffi cryptography.hazmat.backends.openssl cryptography.hazmat.bindings._openssl unicrypto unicrypto.backends.pycryptodome.DES  unicrypto.backends.pycryptodome.TDES unicrypto.backends.pycryptodome.AES unicrypto.backends.pycryptodome.RC4 unicrypto.backends.pure.DES  unicrypto.backends.pure.TDES unicrypto.backends.pure.AES unicrypto.backends.pure.RC4 unicrypto.backends.cryptography.DES  unicrypto.backends.cryptography.TDES unicrypto.backends.cryptography.AES unicrypto.backends.cryptography.RC4 unicrypto.backends.pycryptodomex.DES  unicrypto.backends.pycryptodomex.TDES unicrypto.backends.pycryptodomex.AES unicrypto.backends.pycryptodomex.RC4
+        aiosmb_smbshareenum:
+            py: smbshareenum
+            hiddenimports: cryptography cffi cryptography.hazmat.backends.openssl cryptography.hazmat.bindings._openssl unicrypto unicrypto.backends.pycryptodome.DES  unicrypto.backends.pycryptodome.TDES unicrypto.backends.pycryptodome.AES unicrypto.backends.pycryptodome.RC4 unicrypto.backends.pure.DES  unicrypto.backends.pure.TDES unicrypto.backends.pure.AES unicrypto.backends.pure.RC4 unicrypto.backends.cryptography.DES  unicrypto.backends.cryptography.TDES unicrypto.backends.cryptography.AES unicrypto.backends.cryptography.RC4 unicrypto.backends.pycryptodomex.DES  unicrypto.backends.pycryptodomex.TDES unicrypto.backends.pycryptodomex.AES unicrypto.backends.pycryptodomex.RC4
+        aiosmb_smbdownloader:
+            py: smbdownloader
+            hiddenimports: cryptography cffi cryptography.hazmat.backends.openssl cryptography.hazmat.bindings._openssl unicrypto unicrypto.backends.pycryptodome.DES  unicrypto.backends.pycryptodome.TDES unicrypto.backends.pycryptodome.AES unicrypto.backends.pycryptodome.RC4 unicrypto.backends.pure.DES  unicrypto.backends.pure.TDES unicrypto.backends.pure.AES unicrypto.backends.pure.RC4 unicrypto.backends.cryptography.DES  unicrypto.backends.cryptography.TDES unicrypto.backends.cryptography.AES unicrypto.backends.cryptography.RC4 unicrypto.backends.pycryptodomex.DES  unicrypto.backends.pycryptodomex.TDES unicrypto.backends.pycryptodomex.AES unicrypto.backends.pycryptodomex.RC4
+
+msldap:
+    - clone: skelsec/msldap
+    - chdir: msldap/examples
+    - build_py:
+        skelsec_msldapclient:
+            py: msldapclient
+            hiddenimports: cryptography cffi cryptography.hazmat.backends.openssl cryptography.hazmat.bindings._openssl unicrypto unicrypto.backends.pycryptodome.DES  unicrypto.backends.pycryptodome.TDES unicrypto.backends.pycryptodome.AES unicrypto.backends.pycryptodome.RC4 unicrypto.backends.pure.DES  unicrypto.backends.pure.TDES unicrypto.backends.pure.AES unicrypto.backends.pure.RC4 unicrypto.backends.cryptography.DES  unicrypto.backends.cryptography.TDES unicrypto.backends.cryptography.AES unicrypto.backends.cryptography.RC4 unicrypto.backends.pycryptodomex.DES  unicrypto.backends.pycryptodomex.TDES unicrypto.backends.pycryptodomex.AES unicrypto.backends.pycryptodomex.RC4
+        skelsec_msldapbloodhound:
+            py: msldapbloodhound
+            hiddenimports: cryptography cffi cryptography.hazmat.backends.openssl cryptography.hazmat.bindings._openssl unicrypto unicrypto.backends.pycryptodome.DES  unicrypto.backends.pycryptodome.TDES unicrypto.backends.pycryptodome.AES unicrypto.backends.pycryptodome.RC4 unicrypto.backends.pure.DES  unicrypto.backends.pure.TDES unicrypto.backends.pure.AES unicrypto.backends.pure.RC4 unicrypto.backends.cryptography.DES  unicrypto.backends.cryptography.TDES unicrypto.backends.cryptography.AES unicrypto.backends.cryptography.RC4 unicrypto.backends.pycryptodomex.DES  unicrypto.backends.pycryptodomex.TDES unicrypto.backends.pycryptodomex.AES unicrypto.backends.pycryptodomex.RC4
+
 
 # PASS
 rustdns:
