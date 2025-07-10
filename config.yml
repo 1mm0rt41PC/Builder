@@ -134,6 +134,13 @@ WebclientServiceScanner:
     - build_py:
         WebclientServiceScanner: [console, 0]
 
+# Pass
+SOAPHound:
+    - clone: FalconForceTeam/SOAPHound
+    - run: ['nuget','restore','SOAPHound.sln']
+    - build_csharp:
+        Certify: [ "bin\\Release\\SOAPHound.exe", 0 ]
+        
 # PASS
 BloodHound.py:
     - clone: fox-it/BloodHound.py
